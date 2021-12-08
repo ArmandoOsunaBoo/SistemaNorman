@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% load static %} {% block head_content %}
+<title>NormanMexico - Nóminas </title>
+{% endblock%} {% block container %}
+<div>
+    <div id="content">
+        <div class="row">
+
+            <div class="col-md-6">
+                <!--panel de -->
+                <div class="panel">
+                    <div class="panel-heading">
+                        <span class="panel-title">Control de Nónimas</span>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <label class="control-label mb15">Cálculo de Nómina por Excel</label>
+                                    <input type="file" class="form-control" name="calculate_payroll">
+                                </div>
+                            </div>
+                            <div class='border-bot'>
+                                <input type='submit' class=' border-bot btn btn-default btn-gradient dark btn-block' value="Cargar documento">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <label class="control-label mb15">Unir de PDF</label>
+                                    <input type="file" class="form-control" name="order_all_payrolls" multiple="multiple">
+                                </div>
+                            </div>
+                            <div class='border-bot'>
+                                <input type='submit' class=' border-bot btn btn-default btn-gradient dark btn-block' value="Cargar documento">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %} {% block 'js' %}
+<script type="text/javascript">
+</script>
+{% endblock %}
