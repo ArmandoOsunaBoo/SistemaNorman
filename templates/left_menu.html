@@ -1,7 +1,7 @@
 <ul class="nav sidebar-menu">
-                    <li class="sidebar-label pt20">Control Empleados</li>
+                    <li class="sidebar-label pt20">Utilidades principales</li>
                     <li>
-                        <a href="{% url 'employees' %}">
+                        <a href="{% url 'dashboard' %}">
                             <span class="glyphicons glyphicons-magic"></span>
                             <span class="sidebar-title">Novedades</span>
                             <span class="sidebar-title-tray">
@@ -9,7 +9,9 @@
                             </span>
                         </a>
                     </li>
+                    
                     {{request.user.profile_user.area}}
+                    {% if request.user.profile_user.area == "Recursos Humanos" or request.user.profile_user.area == "Admin" %}
                     <li>
                         <a class="accordion-toggle" href="#">
                             <span class="glyphicons glyphicons-user"></span>
@@ -19,7 +21,7 @@
                         <ul class="nav sub-nav" style="">
                             <li>
                                 <a href="{% url 'employees' %}">
-                                    <span class="glyphicons glyphicons-user"></span>Empleados</a>
+                                <span class="glyphicons glyphicons-user"></span>Empleados</a>
                             </li>
                             <li>
                                 <a href="{% url 'payroll' %}">
@@ -31,6 +33,22 @@
                             </li>
                         </ul>
                     </li>
+                    {% endif %}
+                    {% if request.user.profile_user.area == "Gerencia" or request.user.profile_user.area == "Admin" %}
+                    <li>
+                        <a class="accordion-toggle" href="#">
+                            <span class="glyphicons glyphicons-user"></span>
+                            <span class="sidebar-title">Tiendita Norman </span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav" style="">
+                            <li>
+                                <a href="{% url 'manage' %}">
+                                <span class="glyphicons glyphicons-user"></span>Productos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     {% comment %} <li class="sidebar-label pt20">Menu1</li>
                     <li>
                         <a href="pages_calendar.html">

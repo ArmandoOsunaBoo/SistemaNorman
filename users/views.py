@@ -20,10 +20,13 @@ def login_view(request):
         print(username,':',password)
         user = authenticate(request,username=username,password=password)
         if user:
-            login(request,user)
-            return redirect('dashboard')
+            if "Comun" != user.profile_user.area and "Activo" == user.profile_user.active:
+                login(request,user)
+                return redirect('dashboard')
+            else:
+                return render(request,'users/login.html',{'error':'No tienes permisos para entrar'})
         else:
-            return render(request,'users/login.html',{'error':'Invalid username or password'})
+            return render(request,'users/login.html',{'error':'Usuario y contraseña erroneos'})
     return render(request,'users/login.html')
 
 @login_required

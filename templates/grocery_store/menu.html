@@ -1,0 +1,122 @@
+{% extends "grocery_store/base.html" %} 
+{% load static %}
+{% block head_content %}
+    <title>NormanMexico - Asistencias </title>
+{% endblock%} 
+
+
+{% block header %}
+<div class="page-heading" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Listado de productos</h2>
+                    <span>Revisa todos los productos navegando hacia abajo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+
+{% block container %}
+<section class="section" id="products">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Listado de productos</h2>
+                    <span>Revisa todos los productos navegando hacia abajo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-2">
+                <div class="item">
+                    <div class="thumb">
+                        <div class="hover-content">
+                            <ul>
+                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
+                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <img src="{% static 'grocery_store/images/kid-01.jpg' %}" alt="">
+                    </div>
+                    <div class="down-content">
+                        <h4>School Collection</h4>
+                        <span>$80.00</span>
+                        <ul class="stars">
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="pagination">
+                    <ul>
+                        <li>
+                            <a href="#">1</a>
+                        </li>
+                        <li class="active">
+                            <a href="#">2</a>
+                        </li>
+                        <li>
+                            <a href="#">3</a>
+                        </li>
+                        <li>
+                            <a href="#">4</a>
+                        </li>
+                        <li>
+                            <a href="#">></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
+
+
+
+
+
+
+{% block js %}
+    <script type="text/javascript">
+        console.clear()
+        console.log("heyyyyy")
+        
+        $.ajax({
+            url: '{% url 'post_ajax' %}',
+            type: 'get', // This is the default though, you don't actually need to always mention it
+            success: function(data) {
+                $.each(data, function(k, v) {
+                    /// do stuff
+                    console.log(k)
+                    console.log(v)
+                });
+            },
+            failure: function(response) { 
+                alert('Got an error dude');
+            }
+        });  
+        
+        
+    </script>
+{% endblock %}
+
+
+
+

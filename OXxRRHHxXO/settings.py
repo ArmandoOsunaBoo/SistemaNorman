@@ -40,7 +40,8 @@ INSTALLED_APPS = [
         
     #local apps
     'users',
-    'employees'
+    'employees',
+    'grocery_shop',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'OXxRRHHxXO.middleware.SimpleMiddleware'
 ]
 
 ROOT_URLCONF = 'OXxRRHHxXO.urls'

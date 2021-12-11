@@ -28,7 +28,7 @@ class ProfileAdmin(admin.ModelAdmin):
         }),
         ('Extra info',{
             'fields':(
-                ('area','nivel'),
+                ('area','type'),
             )
         }),
         ('Metadata',{

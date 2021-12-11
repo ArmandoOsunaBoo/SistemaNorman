@@ -14,37 +14,32 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def employee_payroll(request):
     pass
-    return render(request,'employees/payroll.html')
-
-
-@login_required
-def employee_attendance(request):
-    pass
-    return render(request,'employees/attendance.html')
-
-
-
-
-
-
-#Logic for the view
-@login_required
-def employee_index(request):
     if request.method == 'POST':
-        #Metodo para subir empleados
         if 'order_all_payrolls' in request.FILES:
             pass
             doc = request.FILES
             print(type(doc.getlist('order_all_payrolls')))
             merge_payroll(doc.getlist('order_all_payrolls'))
-            
-            
+
         if 'calculate_payroll' in request.FILES:
             pass
             doc = request.FILES
             excel_file = doc["calculate_payroll"]
             generate_payroll(excel_file)
+    else:
+        return render(request,'employees/payroll.html')
 
+
+@login_required
+def employee_attendance(request):
+    pass
+    if request.method == 'POST':
+
+        if  'carga_checadas' in request.FILES:
+            doc = request.FILES
+            excel_file = doc["carga_checadas"]
+            upload_assistances(excel_file)
+        
         if 'reporte_semanal' in request.POST:
             d = request.POST.get('reporte_semanal', None)
             
@@ -66,30 +61,29 @@ def employee_index(request):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename('ReporteOrdenado.xlsx')
             return response
 
-        if  'carga_checadas' in request.FILES:
-            doc = request.FILES
-            excel_file = doc["carga_checadas"]
-            upload_assistances(excel_file)
+        return render(request,'employees/attendance.html')
+
+    else:
+     return render(request,'employees/attendance.html')
+
+#Logic for the view
+@login_required
+def employee_index(request):
+    if request.method == 'POST':
             
         if 'upload_employees' in request.FILES:
-            pass
             doc = request.FILES
             excel_file = doc["upload_employees"]
-            # You may put validations here to check extension or file size
             wb = xlrd.open_workbook(excel_file.temporary_file_path())
-            # Getting a particular sheet by name out of many sheets
             ws = wb.sheet_by_index(0)
             try:
                 upload_employees(ws,wb)
             except Exception as e: print(e)
             
         if 'download_employees' in request.POST:
-            pass
-            
             wb = Workbook()
             ws = wb.active
             create_employee_excel(wb,ws)
-
             wb.save("FaltaChecadas.xlsx")
             fh = open("FaltaChecadas.xlsx", 'rb')
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
