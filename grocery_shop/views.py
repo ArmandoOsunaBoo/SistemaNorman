@@ -10,11 +10,32 @@ from grocery_shop.library.db_manager import upload_products_by_excel
 from django.contrib.auth.decorators import login_required
 from grocery_shop.models import Product
 from django.http import JsonResponse
+from django.core.paginator import Paginator
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+
+
+def detalles(request):
+    pass
+    id_product=int(request.GET['id'])
+    product = Product.objects.get(id=id_product)
+    return render(request,'grocery_store/detalles.html',{'product':product})
+
 
 def ajax(request):
     pass
     print("enviando peticion")
-    return JsonResponse({"instancia":"hehe"},status=200)
+    cont=int(request.GET['page'])
+    print("----------------------------------")
+    products_list = Product.objects.all().order_by("id_master")
+    peg = Paginator(products_list, 4)
+    products = peg.page(cont).object_list
+    print(products)
+    print("@---------------------------------------------------------------------------------")
+    print((products[0].name))
+    serialized_q = json.dumps(list(products.values()),  ensure_ascii=True)
+    print(serialized_q)
+    return JsonResponse(serialized_q,status=200,safe=False)
 
 
 @login_required
@@ -26,8 +47,12 @@ def logout_view(request):
 @login_required
 def menu(request):
     pass
-    products = Product.objects.filter()
-    return render(request,'grocery_store/menu.html')
+    products_list = Product.objects.all()
+    page = request.GET.get('page', 1) 
+    print(page)
+    peg = Paginator(products_list, 4)
+    products = peg.page(page)
+    return render(request,'grocery_store/menu.html',{'products_list': products_list,'products': products})
 
 def index(request):
     

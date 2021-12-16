@@ -10,5 +10,6 @@ urlpatterns = [
     path(route='menu/',view=views.menu,name='menu'),
     path(route='manage/',view=views.manage,name='manage'),
     path(route='get_data/',view= views.ajax, name = "post_ajax"),
+    path(route="detalle/", view=views.detalles,name="detalle"),
 ] 
 

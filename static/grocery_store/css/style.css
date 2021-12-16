@@ -1,0 +1,14 @@
+.item {
+    animation-name: fadeInAnimation;
+    animation-iteration-count: 0;
+    animation-duration: 4s;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

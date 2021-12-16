@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{% static 'grocery_store/css/owl-carousel.css' %}">
 
     <link rel="stylesheet" href="{% static 'grocery_store/css/lightbox.css' %}">
+    <link rel="stylesheet" href="{% static 'grocery_store/css/style.css' %}">
 
     </head>
     
@@ -53,6 +54,7 @@
     <!-- ***** Products Area Ends ***** -->
     
     <!-- ***** Footer Start ***** -->
+    {% if request.path != "/grocery_shop/menu/" %}
     <footer>
         <div class="container">
             <div class="row">
@@ -110,7 +112,7 @@
             </div>
         </div>
     </footer>
-    
+    {% endif %}
 
     <!-- jQuery -->
     <script src="{% static 'grocery_store/js/jquery-2.1.0.min.js' %}"></script>

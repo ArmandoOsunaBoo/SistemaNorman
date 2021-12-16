@@ -23,6 +23,7 @@
 
 {% block container %}
 <section class="section" id="products">
+    <input type="hidden" value="2" id="page_counter">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -34,23 +35,23 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            
-            <div class="col-lg-2">
+        <div id="" class="row">
+            {% for product in products %}    
+            <div id="" class="col-lg-3">
                 <div class="item">
                     <div class="thumb">
                         <div class="hover-content">
                             <ul>
-                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="{% url 'detalle' %}?id={{product.id}}"><i class="fa fa-eye"></i></a></li>
                                 <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
                                 <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
-                        <img src="{% static 'grocery_store/images/kid-01.jpg' %}" alt="">
+                        <img src="/images/{{ product.image }}" alt="">
                     </div>
                     <div class="down-content">
-                        <h4>School Collection</h4>
-                        <span>$80.00</span>
+                        <h4>{{ product.name }}</h4>
+                        <span>${{ product.price }} MXN</span>
                         <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -61,8 +62,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-12">
+            {% endfor %}
+        <div id="product_li" class="row">
+           
+        </div>
+         {% comment %}    <div class="col-lg-12">
                 <div class="pagination">
                     <ul>
                         <li>
@@ -82,38 +86,135 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
+        <br> <br> <br>
     </div>
 </section>
 {% endblock %} 
 
 
-
-
-
-
 {% block js %}
     <script type="text/javascript">
+        var m = 0;
+        var error = 0;
+        var product_obtainer_promise;
+        
         console.clear()
-        console.log("heyyyyy")
         
-        $.ajax({
-            url: '{% url 'post_ajax' %}',
-            type: 'get', // This is the default though, you don't actually need to always mention it
-            success: function(data) {
-                $.each(data, function(k, v) {
-                    /// do stuff
-                    console.log(k)
-                    console.log(v)
-                });
-            },
-            failure: function(response) { 
-                alert('Got an error dude');
+        var Myelement = document.getElementById("page_counter");
+            val = Myelement.value;
+            var div = document.getElementById('product_li');
+            if (m==0){ 
+                m=1;
+                console.log(Myelement.value)
+                p();
+                
+               
             }
-        });  
+            
         
+        window.onscroll = function() {
+            
+            if ((window.innerHeight + Math.ceil(window.pageYOffset)) >= (document.body.offsetHeight- 100 )) {
+            //alert('At the bottom!')
+            var Myelement = document.getElementById("page_counter");
+            val = Myelement.value;
+            
+            console.log(Myelement.value)
+            if (m==0){
+               m=1;
+               p();
+               
+               
+            }
+            
+            
+            }
+          }
         
+          function p(){
+            var product_obtainer_promise = new Promise((resolve,reject) => {
+                var a = ajax_product_get();
+                if (a ==true){
+                    resolve('Succes')
+                } else{
+                    console.log("se logro macho")
+                    reject('Failed')
+                }
+           });
+           product_obtainer_promise.then((message)=> {
+               m=0;
+               console.log("se logro macho")
+               val=parseInt(val)+1;
+               Myelement.value=val;
+           }).catch((message)=> {
+               m=0;
+           });
+          }
+
+          function ajax_product_get(){
+            $.ajax({
+                url: '{% url 'post_ajax' %}?page='+val,
+                type: 'get', // This is the default though, you don't actually need to always mention it
+                success: function(data) {
+                    data = JSON.parse(data)
+                    data.forEach(function(item) {
+                        console.log(item);
+                        var a=item.id ;
+                        var link ='{% url 'detalle' %}'
+                        div.insertAdjacentHTML('beforeend', `<div  class="col-lg-3">
+                            <div class="item">
+                                <div class="thumb">
+                                    <div class="hover-content">
+                                        <ul>
+                                            <li><a href="${link}?id=${a}"><i class="fa fa-eye"></i></a></li>
+                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <img src="/images/${item.image}" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <h4>${ item.name }</h4>
+                                    <span>$ ${ item.price } MXN</span>
+                                    <ul class="stars">
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>`);
+                       
+                    });
+                    return true;
+                    }
+                ,
+                failure: function(response) { 
+                    alert('Got an error dude');
+                    return false;
+                }
+            }); 
+            
+                    return true;
+
+
+
+          }
+
+
+          function ajax_product_succes(){
+            m=0;
+            val=parseInt(val)+1;
+            Myelement.value=val;
+          }
+          
+          function ajax_product_error(){
+            m=0;
+          }
     </script>
 {% endblock %}
 
