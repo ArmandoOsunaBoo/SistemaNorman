@@ -72,7 +72,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-    },
+},
 ]
 
 WSGI_APPLICATION = 'OXxRRHHxXO.wsgi.application'
@@ -154,4 +154,4 @@ FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 ]
 
-LOGIN_URL = '/users/login/'
+LOGIN_URL = '/'

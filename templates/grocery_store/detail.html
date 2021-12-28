@@ -1,0 +1,132 @@
+{% extends "grocery_store/base.html" %} 
+{% load static %}
+{% block head_content %}
+    <title>NormanMexico - Asistencias </title>
+{% endblock%} 
+
+
+{% block header %}
+<div class="page-heading" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Detalle del producto</h2>
+                    <span>Realice la compra de uno o varios productos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+
+{% block container %}
+<section class="section" id="product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+            <div class="left-images">
+                <img src="{% static '/images/' %}{{product.image}}" alt="">
+                <img src="assets/images/single-product-02.jpg" alt="">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="" style="display:flex; flex-direction:column;">
+                <h4>{{ product.name }}</h4>
+                <span>$<span class="price" id="precio">{{product.price}}</span>MXN</span> 
+                <ul class="stars" style="display: flex; flex:">
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                </ul>
+                <span  >{{ product.description }}</span>
+                
+                <form method="POST" action="" style="display:flex;flex-flow:column;">
+                    {% csrf_token %}
+                <div class="quantity-content">
+                    <div class="left-content">
+                        <h6>No. de productos</h6>
+                    </div>
+                    <div class="right-content">
+                        <div class="quantity buttons_added">
+                            <input id="minus" type="button" value="-" class="minus">
+                            <input type="hidden"  value="{{product.name}}" name="name" />
+                            <input type="hidden"  value="{{product.price}}" name="price" />
+                            <input type="hidden"  value="{{request.user}}" name="user_name" />
+                            <input type="hidden"  value="{{request.user.id}}" name="user_id" />
+                            <input type="hidden"  value="{{product.name}}" name="name" />
+                            
+                            <input type="hidden"  value="{{product.id}}" name="product_id" />
+                            <input type="hidden" id="unidad" name="unit" value="{{unit}}" />
+                            <input id="cantidad_producto" type="number" step=".01"  min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4">
+                            <input id="plus" type="button" value="+" class="plus">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="total">
+                    <h4>Total: <div id="total">${{product.price}}</div></h4>
+                   
+                </div>
+                <button type="submit"  class="main-border-button" style="margin: 0 auto;">Añadir al carro</button>
+            </form>
+
+
+
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
+
+
+
+
+
+
+{% block js %}
+
+<script>
+    var qt = 1;
+    function plus(){
+        qt=qt+0.5;
+        document.getElementById("cantidad_producto").value = qt;
+        a = document.getElementById("precio").innerHTML;
+        t = parseFloat(a) * parseFloat((qt));
+        document.getElementById("total").innerHTML = "$ "+t.toString()+" MXN";
+
+    }
+
+    function minus(){
+        qt=qt-0.5;
+        if( qt <=0){
+            qt=0;
+        }
+        document.getElementById("cantidad_producto").value = qt;
+        a = document.getElementById("precio").innerHTML;
+        console.log(a)
+        console.log(qt)
+        t = parseFloat(a) * parseFloat((qt));
+        document.getElementById("total").innerHTML = "$ "+t.toString()+" MXN";
+    }
+    console.log("aaa")
+    document.getElementById("plus").addEventListener("click",plus);
+    document.getElementById("minus").addEventListener("click",minus);
+
+    {% if message != "¡Wops No se pudo guardar tu compra! :(" and message  %}
+     Swal.fire(
+        'Bien hecho!',
+        '{{message}}',
+        'success'
+      )
+    {% elif message %}
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '{{message}}',
+      })
+    {% endif %}
+</script>
+
+{% endblock %} 

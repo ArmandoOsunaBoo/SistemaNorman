@@ -1,0 +1,248 @@
+{% extends "grocery_store/base.html" %} 
+{% load static %}
+{% block head_content %}
+    <title>NormanMexico - Cart </title>
+{% endblock%} 
+
+
+{% block header %}
+<div class="page-heading" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Carrito de compras</h2>
+                    <span>Listado de productos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
+
+
+{% block container %}
+<section class="section" id="product">
+    <div class="container">
+        <div class="row">
+            <hr class="cart_hr">
+            {% for order in orders %}
+            <div class="cart_container" id="order_{{order.id}}">
+                <div class="col-lg-3">
+                    <img class="cart_image" src="{% static '/images/' %}{{order.product_ref.image}}"/>
+                </div>
+                <div class="col-lg-9">
+                    <div>
+                        <h2>{{order.product_ref.name}}</h2>
+                        <span class="cart_description">{{order.product_ref.description}}<span>
+                        <p>Precio Unitario: 
+                            <div  id='unitary_price_{{forloop.counter}}'>{{order.product_ref.price}} por
+                                <div id='unitary_price_{{forloop.counter}}'>
+                                {{order.unit}}
+                                </div> 
+                            </div>
+                            </p>
+                    </div>
+                    <div class="cart_information">
+                        <form method="POST" action="">
+                            <p>
+                                <input name="minusbtn" id="minus_{{forloop.counter}}" type="button" value="-" class="minus">
+                                <input id="product_qty_{{forloop.counter}}" name="qty_b" type="number" step=".01"  min="1" max="" name="quantity" value="{{order.amount}}" title="Qty" class="input-text qty text cart_qty" size="1">
+                                <input name="plusbtn" id="plus_{{forloop.counter}}" type="button" value="+" class="plus">
+
+                                <input type="hidden" id="" name="name_products" value="{{order.product_name}}"/>
+                                <input type="hidden" id="" name="user_names" value="{{order.user_name}}"/>
+                                <input type="hidden" id="" name="order_amount" value="{{order.amount}}"/>
+                                <input type="hidden" id="" name="unit_prices" value="{{order.unit_price}}"/>
+                                <input type="hidden" id="" name="user_id" value="{{order.id_user_id}}"/>
+                                
+                                <input type="hidden" id="" name="product_unit" value="{{order.unit}}"/>
+                                <input type="hidden" id="" name="product_ref" value="{{order.product_ref.id}}"/>
+                                
+                                <input type="hidden" id="" name="order_id" value="{{order.id}}"/>
+                            </p>
+                        </form>
+                        <p class="cart_subtotal">Sub total: $<span name="subtotal" id="product_price_{{forloop.counter}}"></span> MXN</p>
+                        <button class="font-little" type="button" name="delete_elemnt" data-value="{{order.id}}" >Borrar Producto</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="cart_hr">
+        {% endfor %}
+        </div>
+        <div class="cart_total">
+            Total: $
+            <span id="total_price">0</span>
+            MXN
+        </div>
+        <div class="cart_total ">
+            <button class="font-little" type="button" id="save_cart">Guardar todo</button>
+        </div>
+    </div>
+</section>
+{% endblock %} 
+
+
+
+
+
+
+{% block js %}
+<script>
+    
+    delete_elemnt_btn = document.getElementsByName("delete_elemnt");
+    for (let i = 0, l = delete_elemnt_btn.length; i < l; i++) {
+    
+        delete_elemnt_btn[i].addEventListener("click", function(evt) {
+            console.log(delete_elemnt_btn[i].dataset.value)
+            var elem = delete_elemnt_btn[i].dataset.value;
+            Swal.fire({
+                title: '¿Seguro que quieres borrar el producto?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Borrar',
+                denyButtonText: `No Borrar`,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{% url 'cart_delete' %}?id="+delete_elemnt_btn[i].dataset.value,
+                        type: 'get', // This is the default though, you don't actually need to always mention it
+                        success: function(data) {
+                            save_cart_btn = document.getElementById("order_"+elem);
+                            save_cart_btn.remove();
+                            Swal.fire(
+                                'Bien hecho!',
+                                'El producto ha sido eliminado',
+                                'success'
+                            )
+                        },
+                        failure: function(response) { 
+                            wal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'El producto no ha sido borrado',
+                              })
+                        }
+                    }); 
+                } else if (result.isDenied) {
+                  Swal.fire('El producto no ha sido borrado', '', 'info')
+                }
+              })
+            
+        });
+    
+    
+    }
+
+
+
+
+
+
+    save_cart_btn = document.getElementById("save_cart");
+    save_cart_btn.addEventListener("click", function(evt) {
+
+        productos = document.getElementsByName("name_products");
+        user_names = document.getElementsByName("user_names");
+        order_amount = document.getElementsByName("qty_b");
+        unit_prices = document.getElementsByName("unit_prices");
+
+        user_id = document.getElementsByName("user_id");
+        product_ref = document.getElementsByName("product_ref");
+        product_unit = document.getElementsByName("product_unit");
+        
+        order_id = document.getElementsByName("order_id");
+        for (let i = 0, l = productos.length; i < l; i++) {
+            console.log(order_id[i].value);
+             
+        $.ajax({
+            url: "{% url 'cart_update' %}?ammount="+order_amount[i].value+"&price="+unit_prices[i].value+"&product_name="+productos[i].value+"&user_names="+user_names[i].value+"&unit_prices="+unit_prices[i].value+"&user_id="+user_id[i].value+'&product_ref='+product_ref[i].value+'&order_id='+order_id[i].value+'&product_unit='+product_unit[i].value,
+            type: 'get', // This is the default though, you don't actually need to always mention it
+            success: function(data) {
+                Swal.fire(
+                    'Bien hecho!',
+                    'El carrito ha sido actualizado',
+                    'success'
+                )
+            },
+            failure: function(response) { 
+                wal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El carrito no ha sido guardado',
+                  })
+            }
+        }); 
+        }
+       
+        
+    });
+
+      
+    function get_total(){
+        plusbtncollection = document.getElementsByName("subtotal");
+        let total=0;
+        for (let i = 0, l = plusbtncollection.length; i < l; i++) {
+            let n = i + 1;
+            console.log(":----------------------------------------------------:")
+            console.log(total);
+            total = parseFloat(total)  + parseFloat(plusbtncollection[i].innerHTML);
+            console.log(document.getElementById("total_price").innerHTML);
+            console.log(plusbtncollection[i].innerHTML);
+            console.log(total);
+        }
+        document.getElementById("total_price").innerHTML = total;
+        total=0;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        sub = document.getElementsByName("subtotal");
+        unitary_price = document.getElementsByName("unit_prices");
+        qty = document.getElementsByName("qty_b");
+        let total=0;
+        for (let i = 0, l = sub.length; i < l; i++) {
+            console.log(qty[i].value)
+            console.log(unitary_price[i].value)
+            sub[i].innerHTML= parseFloat(qty[i].value)*parseFloat(unitary_price[i].value);
+        }
+
+
+
+        plusbtncollection = document.getElementsByName("plusbtn");
+        for (let i = 0, l = plusbtncollection.length; i < l; i++) {
+            let n = i + 1;
+            plusbtncollection[i].addEventListener("click", function(evt) {
+                cambio = 1;
+                total_price
+                console.log(document.getElementById("product_qty_" + n))
+                document.getElementById("product_qty_" + n).value = parseFloat(document.getElementById("product_qty_" + n).value) +parseFloat(0.5);
+                document.getElementById("product_price_"+n).innerHTML = document.getElementById("product_qty_" + n).value * parseFloat(document.getElementById("unitary_price_"+n).innerHTML);
+                get_total()
+        });
+    }
+
+
+
+    minusbtncollection = document.getElementsByName("minusbtn");
+    for (let i = 0, l = minusbtncollection.length; i < l; i++) {
+        let n = i + 1;
+        minusbtncollection[i].addEventListener("click", function(evt) {
+            cambio = 1;
+            console.log(document.getElementById("product_qty_" + n))
+            total=  parseFloat(document.getElementById("product_qty_" + n).value) -parseFloat(0.5);
+            if (total<0.5){
+                total=0.5;
+            }
+                
+            document.getElementById("product_qty_" + n).value = total;
+            document.getElementById("product_price_"+n).innerHTML = document.getElementById("product_qty_" + n).value;
+            document.getElementById("product_price_"+n).innerHTML = document.getElementById("product_qty_" + n).value * parseFloat(document.getElementById("unitary_price_"+n).innerHTML);
+            get_total()
+        });
+    }
+
+    get_total()
+    });
+
+</script>
+{% endblock %} 

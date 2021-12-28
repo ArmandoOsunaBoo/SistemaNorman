@@ -26,6 +26,7 @@
     <input type="hidden" value="2" id="page_counter">
     <div class="container">
         <div class="row">
+            
             <div class="col-lg-12">
                 <div class="section-heading">
                     <h2>Listado de productos</h2>
@@ -33,6 +34,23 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="section">
+        <div class="row">
+            <div class="col-lg-12 ">
+              
+                <form method="POST" class="menu_search">
+                    {% csrf_token %}
+              <fieldset>
+                <input class="search_bar" name="search_bar" type="text" id="name" placeholder="Your Name" required="">
+              </fieldset>
+              
+              <fieldset>
+                <button class="search_button" type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
+              </fieldset>
+            </form>
+            </div> 
+          </div>
     </div>
     <div class="container">
         <div id="" class="row">
@@ -42,27 +60,28 @@
                     <div class="thumb">
                         <div class="hover-content">
                             <ul>
-                                <li><a href="{% url 'detalle' %}?id={{product.id}}"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="{% url 'detail' %}?id={{product.id}}"><i class="fa fa-eye"></i></a></li>
+                                {% comment %} <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> {% endcomment %}
+                                {% comment %} <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li> {% endcomment %}
                             </ul>
                         </div>
                         <img src="/images/{{ product.image }}" alt="">
                     </div>
                     <div class="down-content">
-                        <h4>{{ product.name }}</h4>
+                        <b>{{ product.name }}</b>
                         <span>${{ product.price }} MXN</span>
-                        <ul class="stars">
+                        {% comment %} <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
-                        </ul>
+                        </ul> {% endcomment %}
                     </div>
                 </div>
             </div>
             {% endfor %}
+            
         <div id="product_li" class="row">
            
         </div>
@@ -90,6 +109,9 @@
         </div>
         <br> <br> <br>
     </div>
+    <div class="menu_no_products">
+        <span>Ya no hay mas productos en la lista</span>
+    </div>
 </section>
 {% endblock %} 
 
@@ -109,13 +131,10 @@
                 m=1;
                 console.log(Myelement.value)
                 p();
-                
-               
             }
             
         
         window.onscroll = function() {
-            
             if ((window.innerHeight + Math.ceil(window.pageYOffset)) >= (document.body.offsetHeight- 100 )) {
             //alert('At the bottom!')
             var Myelement = document.getElementById("page_counter");
@@ -125,12 +144,7 @@
             if (m==0){
                m=1;
                p();
-               
-               
-            }
-            
-            
-            }
+            }}
           }
         
           function p(){
@@ -139,13 +153,11 @@
                 if (a ==true){
                     resolve('Succes')
                 } else{
-                    console.log("se logro macho")
                     reject('Failed')
                 }
            });
            product_obtainer_promise.then((message)=> {
                m=0;
-               console.log("se logro macho")
                val=parseInt(val)+1;
                Myelement.value=val;
            }).catch((message)=> {
@@ -162,29 +174,23 @@
                     data.forEach(function(item) {
                         console.log(item);
                         var a=item.id ;
-                        var link ='{% url 'detalle' %}'
+                        var link ='{% url 'detail' %}'
                         div.insertAdjacentHTML('beforeend', `<div  class="col-lg-3">
                             <div class="item">
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
                                             <li><a href="${link}?id=${a}"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                            
+                                            
                                         </ul>
                                     </div>
                                     <img src="/images/${item.image}" alt="">
                                 </div>
                                 <div class="down-content">
-                                    <h4>${ item.name }</h4>
+                                    <b>${ item.name }</b>
                                     <span>$ ${ item.price } MXN</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                         </div>`);

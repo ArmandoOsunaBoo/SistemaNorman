@@ -54,6 +54,8 @@ class Product(models.Model):
     image = models.ImageField(null=True,blank=True)
     
     category_name = models.ForeignKey(Category,on_delete=models.CASCADE,unique=False)
+    
+    active=models.BooleanField(verbose_name='activo', max_length=100,null=True,default=True)
     shop_name = models.ForeignKey(Shop,on_delete=models.CASCADE)
     unit_name = models.ForeignKey(Unit,on_delete=models.CASCADE)
 
@@ -69,13 +71,14 @@ class Product(models.Model):
 class Order(models.Model):
     pass
     date = models.DateField(verbose_name='fecha')
-    amount = models.CharField(verbose_name='code', max_length=100,null=True)
-    unit = models.CharField(verbose_name='code', max_length=100,null=True)
-    product_name = models.CharField(verbose_name='code', max_length=100,null=True)
-    id_user = models.ForeignKey(User,on_delete=models.CASCADE,null=True) 
-    user_name = models.CharField(verbose_name='code', max_length=100,null=True)
-    unidad_cantidad = models.CharField(max_length=50,null=True)
-    unit_price = models.CharField(verbose_name='code', max_length=100,null=True)
+    amount = models.CharField(verbose_name='amount', max_length=100,null=True)
+    unit = models.CharField(verbose_name='unit', max_length=100,null=True)
+    product_name = models.CharField(verbose_name='product_name', max_length=100,null=True)
+    id_user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,verbose_name='id_user') 
+    user_name = models.CharField(verbose_name='user_name', max_length=100,null=True)
+    unidad_cantidad = models.CharField(verbose_name='unidad_cantidad',max_length=50,null=True)
+    unit_price = models.CharField(verbose_name='unit_price', max_length=100,null=True)
+    product_ref = models.ForeignKey(Product,on_delete=models.CASCADE,unique=False,null=True)
     
     def total_cost(self):
         return float(self.cantidad) * self.id_producto.price

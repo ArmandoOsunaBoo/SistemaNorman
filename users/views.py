@@ -33,7 +33,7 @@ def login_view(request):
 def logout_view(request):
     pass
     logout(request)
-    return redirect('login')
+    return redirect('start')
 
 
 @login_required

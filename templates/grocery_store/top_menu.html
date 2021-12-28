@@ -12,8 +12,8 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="index.html">123Men's</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'menu' %}" class="">Inicio</a></li>
+                            {% comment %} <li class="scroll-to-section"><a href="index.html">Carito</a></li>
                             <li class="scroll-to-section"><a href="index.html">Women's</a></li>
                             <li class="scroll-to-section"><a href="index.html">Kid's</a></li>
                             <li class="submenu">
@@ -24,8 +24,8 @@
                                     <li><a href="single-product.html">Single Product</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>
                                 </ul>
-                            </li>
-                            <li class="submenu">
+                            </li> {% endcomment %}
+                            {% comment %} <li class="submenu">
                                 <a href="javascript:;">Features</a>
                                 <ul>
                                     <li><a href="#">Features Page 1</a></li>
@@ -33,8 +33,9 @@
                                     <li><a href="#">Features Page 3</a></li>
                                     <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
                                 </ul>
-                            </li>
-                            <li class="scroll-to-section"><a href="index.html">Explore</a></li>
+                            </li> {% endcomment %}
+                            <li class="scroll-to-section"><a href="{% url 'cart' %}">Carrito</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
