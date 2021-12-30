@@ -177,89 +177,175 @@ def save_order(order,actual_date,quantity,product_unit,product_name,user_name,pr
 
 
 
-
-def generate_reports(week):
+def generate_individual_reports(week):
         print("*****************************************")
-        print(week)
         week2=str(week)
         week2=week2[-2:]
         week2=int(week2)
-        print(week2)
         start_thuesday = datetime.datetime.strptime(week + '-2', "%Y-W%W-%w")
         start_thuesday= str(start_thuesday)
         today = datetime.datetime(int(start_thuesday[0:4]), int(start_thuesday[5:7]), int(start_thuesday[8:10]))
-        print(today)
         next_monday = today + datetime.timedelta( (7-today.weekday()) % 7 )
-        print(next_monday)
-        orders = Order.objects.filter(date__range=(today, next_monday)).order_by('-product_ref__shop_name','-product_ref_id')
-        # El documento
-        old_shop=""
-        actual_shop=""
-        actual_product=""
-        old_product=""
-        actual_amount=0.0
+        shops = Shop.objects.all()
+        orders = Order.objects.filter(date__range=(today, next_monday)).order_by('-id_user')
         wb = Workbook()
+        ws = wb.active
         row=1
         column=1
-        actual_product_name=""
-        # grab the active worksheet
-        ws = wb.active
-        cont=0
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        p_row=4
+        p_column=1
+        actual_total=0.0
+        old_user=""
         for order in orders.iterator():
-            cont=cont+1
-            print("///////////////////////////////////////////////////")
-            actual_shop =  order.product_ref.shop_name.name
-            actual_product= order.product_ref.id
-            actual_product_name= order.product_ref.name
-            print(actual_shop)
-            print(actual_product)
-            print(order.amount)
-            print("----------------------------------------------")
-            print(actual_shop)
-            print(old_shop)
-            print(actual_amount)
-            if old_shop != actual_shop:
-                if cont==1:
-                    old_shop=actual_shop
-                print("TIENDAS DIFERENTES")
-                row=row+2
-                ws.cell(row,column+1).value = "TIENDA"
-                ws.cell(row,column+2).value = actual_shop
-                row=row+1
-                ws.cell(row,column+1).value = "PRODUCTO"
-                ws.cell(row,column+2).value = "CANTIDAD"
-                row=row+1
-                old_shop=actual_shop
+            actual_user=order.id_user
+
+            if actual_user !=old_user and old_user!="":
+                ws.cell(p_row,p_column).value = "TOTAL"
+                ws.cell(p_row,p_column+1).value = "$ "+str(actual_total)
+                actual_total=0
+                p_row=4
+                p_column=p_column+4
+                row=1
+                column=column+4
+            old_user=actual_user
+            ws.cell(row,column).value = "Nombre"
+            ws.cell(row,column+1).value = order.id_user.username
+            ws.cell(row+1,column).value = "PRODUCTO"
+            ws.cell(row+1,column+1).value = "CANTIDAD"
 
 
-            if old_product != actual_product:
-                print("PRODUCTOS DIFERENTES")
-                ws.cell(row,column+1).value = actual_product_name
-                ws.cell(row,column+2).value = actual_amount
-                old_product = actual_product
-                actual_amount=actual_amount+float(order.amount)
-                ws.cell(row,column+2).value = actual_amount
-                print("****")
-                print(actual_amount)
-                actual_amount=0
-                row=row+1
-            else:
-                print("PRODUCTOS IGUALES")
-                row=row-1
-                old_product = actual_product
-                actual_amount=actual_amount+float(order.amount)
-                ws.cell(row,column+2).value = actual_amount
-                print(actual_amount)
-                row=row+1
-            
-            
-        
+            ws.cell(p_row,p_column).value = order.product_name
+            ws.cell(p_row,p_column+1).value = order.amount
+            ws.cell(p_row,p_column+2).value = order.unit
+            actual_total = actual_total + (float(order.unit_price)*float(order.amount))
+
+            p_row=p_row+1
+
+        ws.cell(p_row,p_column).value = "TOTAL"
+        ws.cell(p_row,p_column+1).value = "$ "+str(actual_total)
+
         wb.save("ListadoCompleto.xlsx")
         fh = open("ListadoCompleto.xlsx", 'rb')
         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
         response['Content-Disposition'] = 'inline; filename=' + os.path.basename('ListadoCompleto.xlsx')
         return response
+            
+
+
+def generate_group_reports(week):
+        week2=str(week)
+        week2=week2[-2:]
+        week2=int(week2)
+        start_thuesday = datetime.datetime.strptime(week + '-2', "%Y-W%W-%w")
+        start_thuesday= str(start_thuesday)
+        today = datetime.datetime(int(start_thuesday[0:4]), int(start_thuesday[5:7]), int(start_thuesday[8:10]))
+        next_monday = today + datetime.timedelta( (7-today.weekday()) % 7 )
+        shops = Shop.objects.all()
+        old_shop=""
+        actual_shop=""
+        actual_product=""
+        old_product=""
+        actual_amount=0.0
+        old_amount=0.0
+        wb = Workbook()
+        row=3
+        column=2
+        actual_product_name=""
+        old_product_name=""
+        # grab the active worksheet
+        ws = wb.active
+        s_row=2
+        s_column=2
+        total_price=0
+        for shop in shops.iterator():
+            print("****************************")
+            print(shop.name)
+            ws.cell(s_row,s_column).value = "TIENDA"
+            ws.cell(s_row,s_column+1).value = shop.name
+            ws.cell(s_row+1,s_column).value = "PRODUCTO"
+            ws.cell(s_row+1,s_column+1).value = "CANTIDAD"
+            orders = Order.objects.filter(product_ref__shop_name=shop.id,date__range=(today, next_monday)).order_by('-product_ref__shop_name','-product_ref_id')
+            print(orders.count())
+            s_row=s_row+2
+            for order in orders.iterator():
+                actual_shop =  order.product_ref.shop_name.name
+                actual_product = order.product_ref.id
+                actual_product_name = order.product_ref.name
+                actual_amount = float(order.amount)
+                print("patapatapatapon")
+                print(actual_product_name)
+                print(actual_amount)
+                total_price = total_price + (float(order.unit_price)*float(actual_amount))
+                
+                
+                if old_product_name!=actual_product_name:
+                    ws.cell(s_row,s_column).value = actual_product_name
+                    ws.cell(s_row,s_column+1).value = actual_amount
+                    ws.cell(s_row,s_column+2).value = order.unit
+                    old_amount= actual_amount
+                else:
+                    s_row=s_row-1
+                    ws.cell(s_row,s_column+1).value = actual_amount +old_amount
+                    old_amount= actual_amount+old_amount
+
+                old_product_name=actual_product_name
+                s_row=s_row+1
+            
+            ws.cell(s_row,s_column).value = "TOTAL "
+            ws.cell(s_row,s_column+1).value ="$"+str(total_price)
+            ws.cell(s_row,s_column).value = "MXN "
+            s_row = 2
+            s_column= s_column+4
+            total_price=0.0
+        wb.save("ListadoCompleto.xlsx")
+        fh = open("ListadoCompleto.xlsx", 'rb')
+        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename('ListadoCompleto.xlsx')
+        return response
+                
+""" 
+print("/////////////////ACTUALES////////////////////")
+print(actual_shop)
+print(actual_product_name)
+print(order.amount)
+print("--------------VIEJOS------------------")
+print(old_shop)
+print(old_product_name)
+print(old_amount) """
+
+
+""" 
+
+        if cont==1:
+            old_shop = actual_shop
+            old_product = actual_product
+            old_product_name = actual_product_name
+            old_amount = actual_amount 
+            ws.cell(s_row,s_column).value = old_product_name
+            ws.cell(s_row,s_column+1).value = old_amount
+        else:
+            pass
+            if old_product == actual_product:
+                print("IGUALES")
+                old_amount = actual_amount + old_amount
+                ws.cell(s_row,s_column+1).value = old_amount
+                print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            else:
+                print("DIFERENTES")
+                ws.cell(s_row,s_column).value = old_product_name
+                ws.cell(s_row,s_column+1).value = old_amount
+                
+                old_shop= actual_shop
+                old_product = actual_product 
+                old_product_name =  actual_product_name 
+                old_amount= actual_amount
+                s_row=s_row+1
+    print("Saltamos a otra tienda")
+    s_row = 2
+    s_column= s_column+3 """
+
+        
+       
 
 
 

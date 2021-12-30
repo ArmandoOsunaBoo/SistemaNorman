@@ -6,7 +6,7 @@ from django import template
 #imports propios
 from django.contrib.auth import authenticate,login, logout
 from django.shortcuts import redirect,render
-from grocery_shop.library.db_manager import upload_products_by_excel,insert_order,get_cart,update_cart,generate_reports
+from grocery_shop.library.db_manager import upload_products_by_excel,insert_order,get_cart,update_cart,generate_individual_reports,generate_group_reports
 from django.contrib.auth.decorators import login_required
 from grocery_shop.models import Product,Unit,Order
 from users.models import User
@@ -197,8 +197,14 @@ def reports(request):
             pass 
             week = request.POST['individual_report']
             week = str(week)
-            generate_reports(week)
-            return render(request,'grocery_store/store_reports.html')
+            return generate_individual_reports(week)
+            #return render(request,'grocery_store/store_reports.html')
+        if 'group_report' in request.POST:
+            pass 
+            week = request.POST['group_report']
+            week = str(week)
+            return generate_group_reports(week)
+            #return render(request,'grocery_store/store_reports.html')
         else:
             return render(request,'grocery_store/store_reports.html')
     else:
