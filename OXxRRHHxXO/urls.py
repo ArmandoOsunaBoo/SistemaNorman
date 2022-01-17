@@ -26,6 +26,7 @@ urlpatterns = [
     path('dashboard/',users_views.dashboard_view,name='dashboard'),
     path('employees/', include('employees.urls')),
     path('grocery_shop/', include('grocery_shop.urls')),
+    path('badge/', include('badge.urls')),
     path('users/', include('users.urls')),
 ]
 

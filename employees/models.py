@@ -16,6 +16,7 @@ class Attendance(models.Model):
     modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
 
 
+
 class Employees(models.Model):
     master_id = models.CharField(max_length=20,blank=True,verbose_name='Master ID')
     old_number = models.CharField(max_length=20,blank=True,verbose_name='Numero Antiguo')

@@ -31,7 +31,7 @@ def get_cart(user_id):
     products = Order.objects.filter(date__range=(first_date,seccond_date),id_user=user_id)
     return products
 
-    
+
 def insert_order(request):
     pass
     product_name = request.POST['name']
@@ -186,7 +186,6 @@ def generate_individual_reports(week):
         start_thuesday= str(start_thuesday)
         today = datetime.datetime(int(start_thuesday[0:4]), int(start_thuesday[5:7]), int(start_thuesday[8:10]))
         next_monday = today + datetime.timedelta( (7-today.weekday()) % 7 )
-        shops = Shop.objects.all()
         orders = Order.objects.filter(date__range=(today, next_monday)).order_by('-id_user')
         wb = Workbook()
         ws = wb.active
