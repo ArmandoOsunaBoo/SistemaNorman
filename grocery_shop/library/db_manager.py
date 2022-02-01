@@ -369,3 +369,36 @@ def generate_reports2(week):
         print("-----------------------------------------")
         for order in orders.iterator():
             print(order.product_ref.shop_name.name)
+
+
+
+def insert_order_ajax(request,order_id,user,product):
+    pass
+    product_name = product.name
+    print(product_name)
+    id_product = product.id
+    unit=product.unit_name.name 
+    user_name = user.username
+    product_unit = product.unit_name.name
+    product_price = product.price
+    first_day,seccond_day = dates_range()
+    user_id = user
+    today = date.today()
+    actual_date = today.strftime("%Y-%m-%d")
+    try:
+        if Order.objects.filter(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name).exists():
+            order = Order.objects.get(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name)
+            quantity = float(order.amount) + 1
+            save_order(order,actual_date,quantity,product_unit,product_name,user_name,product_price,user_id,id_product)
+            message = "¡Compra Actualizada Correctamente!"
+            return message,unit,product
+        else:
+            order = Order()
+            save_order(order,actual_date,1,product_unit,product_name,user_name,product_price,user_id,id_product)    
+            message = "¡Producto Guardado Correctamente!"
+    except Exception as e:
+        pass
+        message = "¡Wops No se pudo guardar tu compra! :("
+    finally:
+        pass
+        return message,unit,product

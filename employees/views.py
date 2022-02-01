@@ -3,13 +3,19 @@ from django.shortcuts import render,redirect
 from django.http.response import HttpResponse
 
 #Personal imports
-from employees.library.db_manager import merge_payroll,upload_employees,create_employee_excel,upload_assistances,download_week_atendance,generate_payroll
+from employees.library.db_manager import upload_incidences,merge_payroll,upload_employees,create_employee_excel,upload_assistances,download_week_atendance,generate_payroll
 import xlrd
 import os
 from openpyxl import Workbook
 import datetime
 from django.contrib.auth.decorators import login_required
+from employees.models import Incidences
+from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+@login_required
+def get_incidences(request):
+    pass
 
 @login_required
 def employee_payroll(request):
@@ -34,6 +40,12 @@ def employee_payroll(request):
 def employee_attendance(request):
     pass
     if request.method == 'POST':
+
+        if  'carga_incidencias' in request.FILES:
+            doc = request.FILES
+            excel_file = doc["carga_incidencias"]
+            upload_incidences(excel_file)
+
 
         if  'carga_checadas' in request.FILES:
             doc = request.FILES
@@ -64,7 +76,16 @@ def employee_attendance(request):
         return render(request,'employees/attendance.html')
 
     else:
-     return render(request,'employees/attendance.html')
+        incidences = Incidences.objects.all()
+        paginator = Paginator(incidences, 10)
+        page = request.GET.get('page', 1)
+        try:
+            incidences = paginator.page(page)
+        except PageNotAnInteger:
+            incidences = paginator.page(1)
+        except EmptyPage:
+            incidences = paginator.page(paginator.num_pages)
+        return render(request,'employees/attendance.html',{'incidences':incidences})
 
 #Logic for the view
 @login_required

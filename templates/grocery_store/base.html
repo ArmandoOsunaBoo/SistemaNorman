@@ -8,21 +8,17 @@
     <meta name="description" content="">
     <meta name="author" content="Armando Osuna">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
+    <link rel="icon" type="image/png" href="{% static 'images/ilustraciones/norman.ico' %}"/>
     <title>Tiendita Norman - Listita de Productitos chiquitos</title>
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'grocery_store/css/bootstrap.min.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'experimental/styles.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'grocery_store/css/font-awesome.css' %}">
-
     <link rel="stylesheet" href="{% static 'grocery_store/css/templatemo-hexashop.css' %}">
-
     <link rel="stylesheet" href="{% static 'grocery_store/css/owl-carousel.css' %}">
-
     <link rel="stylesheet" href="{% static 'grocery_store/css/lightbox.css' %}">
     <link rel="stylesheet" href="{% static 'grocery_store/css/style.css' %}">
-
     <link rel="stylesheet" href="{% static 'assets/sweetalertv11.3.0/dist/sweetalert2.min.css' %}">
 
     </head>
@@ -60,7 +56,7 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
+                {% comment %} <div class="col-lg-3">
                     <div class="first-item">
                         <div class="logo">
                             <img src="{% static 'grocery_store/images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
@@ -100,8 +96,7 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
-                        
+                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved.
                         <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                         <ul>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -110,7 +105,7 @@
                             <li><a href="#"><i class="fa fa-behance"></i></a></li>
                         </ul>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </footer>

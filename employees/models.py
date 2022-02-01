@@ -15,7 +15,16 @@ class Attendance(models.Model):
     created = models.DateTimeField(auto_now_add=True,verbose_name='Fecha Creación')
     modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
 
-
+class Incidences(models.Model):
+    number = models.CharField(max_length=90,blank=True,verbose_name='Numero empleado')
+    name = models.CharField(max_length=20,blank=True,verbose_name='Nombre')
+    incidence = models.CharField(max_length=20,blank=True,verbose_name='Incidencia')
+    date = models.CharField(max_length=20,blank=True,verbose_name='Fecha')
+    hours = models.CharField(max_length=20,blank=True,verbose_name='Hours')
+    minutes=models.CharField(max_length=20,blank=True,verbose_name='Hours')
+    day=models.CharField(max_length=20,blank=True,verbose_name='Day')
+    created = models.DateTimeField(auto_now_add=True,verbose_name='Fecha Creación')
+    modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
 
 class Employees(models.Model):
     master_id = models.CharField(max_length=20,blank=True,verbose_name='Master ID')
@@ -80,4 +89,4 @@ class Employees(models.Model):
     modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
 
     def __str__(self):
-        return self.user.username
+        return self.name

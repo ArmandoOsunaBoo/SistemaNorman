@@ -14,7 +14,7 @@ urlpatterns = [
     path(route="cart/", view=views.cart,name="cart"),
     path(route="cart_update/", view=views.save_cart_items,name="cart_update"),
     path(route="cart_delete/", view=views.delete_cart_item,name="cart_delete"),
-
+    path(route="insert_to_cart/", view=views.insert_to_cart,name="insert_to_cart"),
 
 
 

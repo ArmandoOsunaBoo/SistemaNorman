@@ -8,9 +8,52 @@
 
 /* Modificadores */
 
-.panel_header {
+
+/* Modificador para menu de las entradas de busqueda */
+
+.search_header {
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 16px;
-    margin-top: 10px;
+    margin: 10px;
+}
+
+.search_code {
+    height: 60px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin: 0px 10px;
+}
+
+.body_header {
+    margin-left: 100px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+}
+
+.search_radio_opc {
+    display: flex;
+    margin: 0px 10px;
+}
+
+.search_input {
+    width: 320px;
+    margin: 0px 10px;
+}
+
+.search_button {
+    width: 220px;
+    margin: 0px 10px;
+}
+
+.black-filter {
+    width: 100%;
+    height: 400px;
+    background: rgb(0 0 0 / 34%);
+    position: absolute;
 }

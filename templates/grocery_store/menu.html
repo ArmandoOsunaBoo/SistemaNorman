@@ -6,18 +6,19 @@
 
 
 {% block header %}
-<div class="page-heading" id="top">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="inner-content">
-                    <h2>Listado de productos</h2>
-                    <span>Revisa todos los productos navegando hacia abajo</span>
+    <div class="page-heading" id="top" style="background-image:url('/images/ilustraciones/fondo1.jpg');">
+        <div class="black-filter" ></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+                        <h2>Listado de productos</h2>
+                        <span>Revisa todos los productos navegando hacia abajo</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %} 
 
 
@@ -62,7 +63,7 @@
                             <ul>
                                 <li><a href="{% url 'detail' %}?id={{product.id}}"><i class="fa fa-eye"></i></a></li>
                                 {% comment %} <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> {% endcomment %}
-                                {% comment %} <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li> {% endcomment %}
+                                 <li><a href="#" name="send_to_cart" data-id="{{product.id}}" ><i class="fa fa-shopping-cart"></i></a></li> 
                             </ul>
                         </div>
                         <img src="/images/{{ product.image }}" alt="">
@@ -221,6 +222,36 @@
           function ajax_product_error(){
             m=0;
           }
+
+
+          
+        console.clear()
+        product_unit = document.getElementsByName("send_to_cart");
+        
+         
+        for (let i = 0, l = product_unit.length; i < l; i++) {
+            console.log(product_unit[i].getAttribute('data-id'));
+            product_unit[i].addEventListener("click", function(evt) {
+                $.ajax({
+                    url: "{% url 'insert_to_cart' %}?id="+product_unit[i].getAttribute('data-id')+"&user="+"{{request.user}}",
+                    type: 'get',
+                    success: function(data) {
+                        Swal.fire(
+                            'Bien hecho!',
+                            'El producto ha sido guardado',
+                            'success'
+                        )
+                    },
+                    failure: function(response) { 
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'El producto no ha sido guardado',
+                          })
+                    }
+                }); 
+            });
+        }
     </script>
 {% endblock %}
 

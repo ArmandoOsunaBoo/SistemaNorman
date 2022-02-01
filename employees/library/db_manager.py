@@ -4,7 +4,7 @@
 from django.shortcuts import render,redirect
 
 #Personal imports
-from employees.models import Employees, Attendance
+from employees.models import Employees, Attendance,Incidences
 import xlrd
 import datetime
 from datetime import date
@@ -664,6 +664,302 @@ def evaluate_str(atributte):
             return False
     return True
 
+
+pos_name=0
+pos_date_monday=0
+pos_date_thuesday=0
+pos_date_wednesday=0
+pos_date_thursday=0
+pos_date_friday=0
+pos_date_saturday=0
+pos_date_sunday=0
+
+
+
+def upload_incidences(excel_file):
+    wb = xlrd.open_workbook(excel_file.temporary_file_path())
+    ws = wb.sheet_by_name("INGRESO DE DATOS")
+
+    
+    
+    sunday= process_excel_date(ws.cell(3,15).value,wb)
+    monday= process_excel_date(ws.cell(3,17).value,wb)
+    thuesday= process_excel_date(ws.cell(3,23).value,wb)
+    wednesday= process_excel_date(ws.cell(3,29).value,wb)
+    thursday = process_excel_date(ws.cell(3,35).value,wb)
+    friday= process_excel_date(ws.cell(3,41).value,wb)
+    saturday= process_excel_date(ws.cell(3,47).value,wb)
+    print("************")
+    print(sunday)
+    print(monday)
+    print(thuesday)
+    print(wednesday)
+    print(thursday)
+    print(friday)
+    print(saturday)
+    print(ws.nrows)
+    print(ws.ncols)
+
+    for j,a in enumerate(range(ws.nrows)):
+        #Las asistencias se guardan con un 0 en horas, lo que significa que trabajo 8 horas y 0 horas extra
+        #... si tiene horas extra vendra la asistencia con un numero
+        #... los minutos que se quitan de esas 8 horas salen del resultado de guardar PS,R,F
+        if j>=5:
+                employee_number = ws.cell(j,1).value
+                employee_number =str(employee_number)
+                employee_number=employee_number[:-2]
+                employee_name = ws.cell(j,2).value
+                #Events passed on sunday
+                event_sunday= (ws.cell(j,15).value)
+                extras_sunday= str((ws.cell(j,16).value))
+                extras_sunday = extras_sunday[:-2]
+                #Events passed on monday
+                event_monday= str(ws.cell(j,17).value)
+                extras_monday=str(ws.cell(j,18).value)
+                r_monday= str(ws.cell(j,19).value)
+                p_monday= str(ws.cell(j,20).value)
+                f_monday= str(ws.cell(j,21).value)
+                v_monday= str(ws.cell(j,22).value)
+                
+                #Events passed on thuesday
+                event_thuesday= (ws.cell(j,23).value)
+                extras_thuesday= (ws.cell(j,24).value)
+                r_thuesday= (ws.cell(j,25).value)
+                p_thuesday= (ws.cell(j,26).value)
+                f_thuesday= (ws.cell(j,27).value)
+                v_thuesday= (ws.cell(j,28).value)
+                #Events passed on wednesday
+                event_wednesday= (ws.cell(j,29).value)
+                extras_wednesday= (ws.cell(j,30).value)
+                r_wednesday = (ws.cell(j,31).value)
+                p_wednesday= (ws.cell(j,32).value)
+                f_wednesday= (ws.cell(j,33).value)
+                v_wednesday= (ws.cell(j,34).value)
+                #Events passed on thurdsday
+                event_thursday= (ws.cell(j,35).value)
+                extras_thursday= (ws.cell(j,36).value)
+                r_thursday = (ws.cell(j,37).value)
+                p_thursday= (ws.cell(j,38).value)
+                f_thursday= (ws.cell(j,39).value)
+                v_thursday= (ws.cell(j,40).value)
+                #Events passed on friday
+                event_friday= (ws.cell(j,41).value)
+                extras_friday= (ws.cell(j,42).value)
+                r_friday = (ws.cell(j,43).value)
+                p_friday= (ws.cell(j,44).value)
+                f_friday= (ws.cell(j,45).value)
+                v_friday= (ws.cell(j,46).value)
+                #Events passed on saturday
+                event_saturday= (ws.cell(j,47).value)
+                extras_saturday= (ws.cell(j,48).value)
+                r_saturday = (ws.cell(j,49).value)
+                p_saturday= (ws.cell(j,50).value)
+                f_saturday = (ws.cell(j,51).value)
+                v_saturday = (ws.cell(j,52).value)
+                #All events from sunday
+                if(event_sunday=="A"):
+                    pass
+                    if(extras_sunday!=""):
+                        print("============================")
+                        print(extras_sunday)
+                        upload_incideces(employee_number,employee_name,"A",sunday,extras_sunday,0)
+
+                elif(event_sunday=="DL"):
+                    pass
+                    print(extras_sunday)
+                    upload_incideces(employee_number,employee_name,"DL",sunday,extras_sunday,0)
+                #MONDAY
+                if(event_monday=="A"):
+                    pass
+                    if(extras_monday!=""):
+                        upload_incideces(employee_number,employee_name,"A",monday,extras_monday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",monday,0,0)
+                    if(r_monday!=""):
+                        upload_incideces(employee_number,employee_name,"R",monday,0,r_monday)
+                    if(p_monday!=""):
+                        upload_incideces(employee_number,employee_name,"P",monday,0,p_monday)
+                    if(f_monday!=""):
+                        upload_incideces(employee_number,employee_name,"F",monday,0,f_monday)
+                elif(event_monday=="V"):
+                    pass
+                    if(v_monday!=""):
+                        upload_incideces(employee_number,employee_name,"V",monday,v_monday,0)
+                elif(event_monday=="DL"):
+                    pass
+                    print(extras_sunday)
+                    upload_incideces(employee_number,employee_name,"DL",monday,extras_monday,0)
+                elif(event_monday=="F" or event_monday=="f"):
+                    pass
+                    print(extras_sunday)
+                    upload_incideces(employee_number,employee_name,"F",monday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_monday,monday,8,0)
+                #THUESDAY
+                if(event_thuesday=="A"):
+                    pass
+                    if(extras_thuesday!=""):
+                        upload_incideces(employee_number,employee_name,"A",thuesday,extras_thuesday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",thuesday,0,0)
+                    if(r_thuesday!=""):
+                        upload_incideces(employee_number,employee_name,"R",thuesday,0,r_thuesday)
+                    if(p_thuesday!=""):
+                        upload_incideces(employee_number,employee_name,"P",thuesday,0,p_thuesday)
+                    if(f_thuesday!=""):
+                        upload_incideces(employee_number,employee_name,"FP",thuesday,0,f_thuesday)
+                elif(event_thuesday=="V"):
+                    pass
+                    if(v_thuesday!=""):
+                        upload_incideces(employee_number,employee_name,"V",thuesday,v_thuesday,0)
+                elif(event_thuesday=="DL"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"DL",thuesday,extras_thuesday,0)
+                elif(event_thuesday=="F" or extras_thuesday=="f"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"F",thuesday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_thuesday,thuesday,8,0)
+                #WEDNESDAY
+                if(event_wednesday=="A"):
+                    pass
+                    if(extras_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"A",wednesday,extras_wednesday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",wednesday,0,0)
+                    if(r_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"R",wednesday,0,r_wednesday)
+                    if(p_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"P",wednesday,0,p_wednesday)
+                    if(f_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"FP",wednesday,0,f_wednesday)
+                    if(v_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"A",wednesday,0,v_wednesday)
+                elif(event_wednesday=="V"):
+                    pass
+                    if(v_wednesday!=""):
+                        upload_incideces(employee_number,employee_name,"V",wednesday,v_wednesday,0)
+                elif(event_wednesday=="DL"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"DL",wednesday,extras_wednesday,0)
+                elif(event_wednesday=="F" or event_wednesday=="f"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"F",wednesday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_wednesday,wednesday,8,0)
+                #THURSDAY
+                if(event_thursday=="A"):
+                    pass
+                    if(extras_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"A",thursday,extras_thursday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",thursday,0,0)
+                    if(r_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"R",thursday,0,r_thursday)
+                    if(p_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"P",thursday,0,p_thursday)
+                    if(f_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"FP",thursday,0,f_thursday)
+                    if(v_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"A",thursday,0,v_thursday)
+                elif(event_thursday=="V"):
+                    pass
+                    if(v_thursday!=""):
+                        upload_incideces(employee_number,employee_name,"V",thursday,v_thursday,0)
+                elif(event_thursday=="DL"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"DL",thursday,extras_thursday,0)
+                elif(event_thursday=="F" or event_thursday=="f"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"F",thursday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_thursday,thursday,8,0)
+                #FRIDAY
+                if(event_friday=="A"):
+                    pass
+                    if(extras_friday!=""):
+                        upload_incideces(employee_number,employee_name,"A",friday,extras_friday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",friday,0,0)
+                    if(r_friday!=""):
+                        upload_incideces(employee_number,employee_name,"R",friday,0,r_friday)
+                    if(p_friday!=""):
+                        upload_incideces(employee_number,employee_name,"P",friday,0,p_friday)
+                    if(f_friday!=""):
+                        upload_incideces(employee_number,employee_name,"FP",friday,0,f_friday)
+                    if(v_friday!=""):
+                        upload_incideces(employee_number,employee_name,"A",friday,0,v_friday)
+                elif(event_friday=="V"):
+                    pass
+                    if(extras_friday!=""):
+                        upload_incideces(employee_number,employee_name,"V",friday,extras_friday,0)
+                    if(r_friday!=""):
+                        upload_incideces(employee_number,employee_name,"V",friday,0,r_friday)
+                    if(p_friday!=""):
+                        upload_incideces(employee_number,employee_name,"V",friday,0,p_friday)
+                    if(f_friday!=""):
+                        upload_incideces(employee_number,employee_name,"V",friday,0,f_friday)
+                    if(v_friday!=""):
+                        upload_incideces(employee_number,employee_name,"V",friday,v_friday,0)
+                elif(event_friday=="DL"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"DL",friday,extras_friday,0)
+                elif(event_friday=="F" or event_friday=="f"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"F",friday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_friday,friday,8,0)
+                #SATURDAY
+                if(event_saturday=="A"):
+                    pass
+                    if(extras_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"A",saturday,extras_saturday,0)
+                    else:
+                        upload_incideces(employee_number,employee_name,"A",saturday,0,0)
+                    if(r_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"R",saturday,0,r_saturday)
+                    if(p_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"P",saturday,0,p_saturday)
+                    if(f_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"FP",saturday,0,f_saturday)
+                    if(v_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"A",saturday,0,v_saturday)
+                elif(event_saturday=="V"):
+                    pass
+                    if(extras_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"V",saturday,extras_saturday,0)
+                    if(r_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"V",saturday,0,r_saturday)
+                    if(p_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"V",saturday,0,p_saturday)
+                    if(f_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"V",saturday,0,f_saturday)
+                    if(v_saturday!=""):
+                        upload_incideces(employee_number,employee_name,"V",saturday,v_saturday,0)
+                elif(event_saturday=="DL"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"DL",saturday,extras_saturday,0)
+                elif(event_saturday=="F" or event_saturday=="f"):
+                    pass
+                    upload_incideces(employee_number,employee_name,"F",saturday,8,0)
+                else:
+                    upload_incideces(employee_number,employee_name,event_saturday,saturday,8,0)
+
+def upload_incideces(employee_number,employee_name,incidence,date,hours,minutes):
+    incidence_obj = Incidences()
+    incidence_obj.number = employee_number
+    incidence_obj.name = employee_name
+    incidence_obj.incidence = incidence
+    incidence_obj.date = date
+    incidence_obj.hours = hours
+    incidence_obj.minutes=minutes 
+    incidence_obj.save()
+
+def clean_decimals(number):
+    if "." in number:
+        number = number[:-2]
+    return number
+
 def upload_employees(ws,wb):
     '''
     This function uploads employees using an excel file
@@ -991,3 +1287,10 @@ def create_payroll_excels():
     sheet.cell(row=1, column=12).value = "Monto Acumulado"
     sheet.cell(row=1, column=13).value = "Criterio INFONAVIT"
     return wb_1,wb_2
+
+
+
+
+def process_excel_date(cell_value,wb):
+    day = datetime.datetime(*xlrd.xldate_as_tuple(cell_value, wb.datemode))
+    return day

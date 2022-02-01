@@ -6,7 +6,7 @@ from django import template
 #imports propios
 from django.contrib.auth import authenticate,login, logout
 from django.shortcuts import redirect,render
-from grocery_shop.library.db_manager import upload_products_by_excel,insert_order,get_cart,update_cart,generate_individual_reports,generate_group_reports
+from grocery_shop.library.db_manager import insert_order_ajax,upload_products_by_excel,insert_order,get_cart,update_cart,generate_individual_reports,generate_group_reports
 from django.contrib.auth.decorators import login_required
 from grocery_shop.models import Product,Unit,Order
 from users.models import User
@@ -19,6 +19,32 @@ import datetime
 
 
 
+
+
+@login_required
+def insert_to_cart(request):
+   
+    
+    try: 
+        order_id = request.GET['id']
+        user = request.GET['user']
+        user = User.objects.get(username=user)
+        product = Product.objects.get(id=int(order_id))
+        print("H---------------------------")
+        message,unit,product = insert_order_ajax(request,order_id,user,product)
+    
+        response = {
+            'status': 'True',
+            'message': 'Carrito Actualizado con Exito'
+        }
+        return JsonResponse(response,status=200,safe=False)
+    except Exception as e:
+        response = {
+            'status': 'False',
+            'message': 'Hubo un Error al actualizar el carrito'
+        }
+        print(e)
+        return JsonResponse(response,status=200,safe=False)
 
 @login_required
 def delete_cart_item(request):

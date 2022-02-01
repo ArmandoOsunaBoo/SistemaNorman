@@ -110,26 +110,22 @@
         <div class="row position-relative justify-content-center">
           <div class="col-xl-8 col-lg-9 col-md-12 order-lg-1 order-1" data-aos="fade-up" data-aos-duration="500" data-aos-once="true">
             <div class="content">
-              <h1>Landing page123 <br class="d-none d-md-block"> built for software.</h1>
+              <h1>Sistema Administrativo<br class="d-none d-md-block">para Norman Mexico.</h1>
               <div class="row banner-l-11-bottom-content">
                 <div class="col-lg-8 col-md-8 col-sm-10">
-                  <p class="position-relative banner-main-content-l-11">Create custom landing pages with
-                    Shades that convert more
-                    visitors
-                    than any website—no coding required.
+                  <p class="position-relative banner-main-content-l-11">
+                    Creamos la mejor experiencia para tu entorno con las mejores persianas.
                     <span class="line-left-content"></span>
                   </p>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 flex-y-center ">
-                  <a class="btn l-11-hero-btn" href="#">Download free trial</a>
+                  <a class="btn l-11-hero-btn" href="https://www.nienmade.com.tw/default.aspx">Conocer más</a>
                 </div>
                 <div class="col-xl-3 col-lg-4">
                   <div class="compitable-text border-top d-inline-block">
                     <p>Compitable with:</p>
-                    <div class="compatible-icon flex-y-center img-grayscale">
-                      <a href="#" class="font-size-13 mr-7"><img src="{ % static 'home/image/l2/windows.svg' %}" alt=""></a>
-                      <a href="#" class="font-size-13 mr-7"><img src="{ % static 'home/image/l2/apple.svg' %}" alt=""></a>
-                      <a href="#" class="font-size-13"><img src="{ % static 'home/image/l2/penguine.svg' %}" alt=""></a>
+                    <div class="compatible-icon flex-y-center ">
+                      <iframe width="560" height="315" src="https://www.youtube.com/embed/P7EDZ1Jozd4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                   </div>
                 </div>
@@ -178,25 +174,26 @@
     <div class="content-area-l-11-1">
       <div class="container">
         <div class="row align-items-center justify-content-lg-start justify-content-center">
-          <div class="col-xl-6 col-md-5 col-md-10" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
+          <div class="col-xl-6 col-md-10 col-md-10" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
             <div class="content-img position-relative z-index-1">
-              <img src="image/l2/content-img1.png" alt="" class="w-100">
+              <img src="{% static 'images/ilustraciones/Foto_Caseta.jpg' %}" alt="" class="w-100">
             </div>
           </div>
-          <div class="offset-xxl-1 col-xxl-5 col-xl-6 col-lg-7 col-md-9" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
+          <div style="margin:30px;" class="offset-xxl-1 col-xxl-5 col-xl-5 col-lg-7 col-md-9" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
             <div class="content section-heading-5">
               <h2>
-                Build Beautiful Landing Pages Faster.
+                También tenemos contenido en inglés de otras plantas hermana <a href="https://www.nienmade.com"> aquí</a>.
               </h2>
-              <p>Create custom landing pages with Shades that convert more visitors than any website, no coding
-                required.</p>
+              <p>
+                Nuestras plantas hermanas mayores, nos respaldan con años de experiencia y una buena metología de trabajo.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Content Area-2  -->
-    <div class="content-area-l-11-2">
+{% comment %}     <div class="content-area-l-11-2">
       <div class="container">
         <div class="row align-items-center justify-content-lg-between justify-content-center">
           <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9 order-lg-1 order-1" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
@@ -240,9 +237,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
     <!-- Content Area -->
-    <div class="content-area-l-11-3 position-relative">
+  {% comment %}   <div class="content-area-l-11-3 position-relative">
       <div class="container">
         <div class="row align-items-center justify-content-center justify-content-lg-start">
           <div class="col-xl-6 col-lg-6 col-md-8 order-lg-1 order-0" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000">
@@ -270,9 +267,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
     <!-- Feature Area -->
-    <div class="feature-l-11">
+  {% comment %}   <div class="feature-l-11">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-9 px-lg-12 col-md-12">
@@ -364,9 +361,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
     <!-- Testimonial Section -->
-    <div class="testimonial-area-l-11">
+{% comment %}     <div class="testimonial-area-l-11">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-7 col-lg-9" data-aos="fade-down" data-aos-duration="800" data-aos-once="true">
@@ -443,7 +440,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
     <!-- Newsletter-area start -->
     <div class="newsletter-l-11">
       <div class="container">
@@ -466,7 +463,7 @@
     </div>
     <!-- Footer Area -->
     <footer class="footer-l-11 text-center text-md-start">
-      <div class="container">
+  {% comment %}     <div class="container">
         <div class="row">
           <div class="col-md-3">
             <div class="footer-logo-l-11">
@@ -497,14 +494,14 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
     </footer>
     <div class="copyright-area-l-11">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
             <div class="text-center">
-              <p>© Grayic 2021 All right reserved. </p>
+              <p>Norman México Company Limited S.A. de C.V. All rights reserved.</p>
             </div>
           </div>
         </div>
