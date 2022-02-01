@@ -175,14 +175,16 @@
                     data.forEach(function(item) {
                         console.log(item);
                         var a=item.id ;
-                        var link ='{% url 'detail' %}'
+                        var link ='{% url 'detail' %}';
+                        var data2 ='{{product.id}}';
+                        console.log(`EL VALOR ES ${a}`)
                         div.insertAdjacentHTML('beforeend', `<div  class="col-lg-3">
                             <div class="item">
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
                                             <li><a href="${link}?id=${a}"><i class="fa fa-eye"></i></a></li>
-                                            
+                                            <li><a href="#" name="send_to_cart" data-id="${a}" ><i class="fa fa-shopping-cart"></i></a></li> 
                                             
                                         </ul>
                                     </div>
@@ -195,9 +197,37 @@
                                 </div>
                             </div>
                         </div>`);
-                       
+                        product_unit = document.getElementsByName("send_to_cart");
+                    console.log("BADDEST DO")
+         
+                        for (let i = 0, l = product_unit.length; i < l; i++) {
+                            console.log("-----------------------------------------------------------------");
+                            product_unit[i].replaceWith(product_unit[i].cloneNode(true));
+                            product_unit[i].addEventListener("click", function(evt) {
+                                $.ajax({
+                                    url: "{% url 'insert_to_cart' %}?id="+product_unit[i].getAttribute('data-id')+"&user="+"{{request.user}}",
+                                    type: 'get',
+                                    success: function(data) {
+                                        Swal.fire(
+                                            'Bien hecho!',
+                                            'El producto ha sido guardado',
+                                            'success'
+                                        )
+                                    },
+                                    failure: function(response) { 
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: 'El producto no ha sido guardado',
+                                            })
+                                    }
+                                }); 
+                            });
+                        }
                     });
+                    
                     return true;
+                   
                     }
                 ,
                 failure: function(response) { 

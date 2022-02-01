@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_content %}
+    <title>NormanMexico - Foto </title>
+    <!--<style>
+        .gallery img{height:150px;width:150px;}
+    </style>-->
+    <style>
+        th, td {
+            padding: 15px!important;
+        }
+        input[type='file'] {
+        opacity:0    
+        }
+        .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        img {
+        border-radius: 10%;
+        }
+    </style>
+{% endblock%}
+
+{% block container %}
+    <div>
+        <div id="content">
+            <div>
+                <div>
+                    <!-- CUSTOM CHECKBOXES -->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Fotografia de Empleado</span>
+                        </div>
+                        <div class="panel-body bg-light pt20 pbn pl30">
+                            <div class="row">
+                                <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="col-lg-2">
+                                            <input type="file" id="photos" name="photos" class="inputfile" multiple>
+                                            <span id='button_pho' class="btn btn-lg btn-info btn-block">Cargar Fotos</span>
+                                        </div>
+                                    
+                                        <div class="col-lg-2">
+                                            <button type="submit" class="btn btn-lg btn-success btn-block">Guardar</button>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <button type="submit" class="btn btn-lg btn-danger btn-block">Borrar</button>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <span class="text-dark fs12">Formato de fotografia: Cuadrado.<br>Nombre del archivo: Nombre(s) y Apellidos</span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="panel-body pl30 pb5">
+                            <div class="row">
+                                <div class="form-group">
+                                    <span> Lista de fotografias a subir:</span>
+                                    <div id='gallery'>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block 'js' %}
+    <script type="text/javascript">
+        $(function() {
+            // Multiple images preview in browser
+            var imagesPreview = function(input) {
+                document.getElementById("gallery").innerHTML = "";
+
+                if (input.files) {
+                    var filesAmount = input.files.length;
+                    var strhtml = "<table id='imgtable'>";
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var url_img = URL.createObjectURL(input.files[i]);
+                        strhtml += "<tr>";
+                        strhtml += "<td> <img height='100' width='100' src='" + url_img + "'></td>";
+                        strhtml += "<td><b>" + input.files.item(i).name.substring(0,input.files.item(i).name.length-4) + "</b></td>";
+                        strhtml += "<tr>";
+                    }
+
+                    document.getElementById("gallery").innerHTML = strhtml;
+                }
+
+            };
+
+            $('#photos').on('change', function() {
+                imagesPreview(this);
+            });
+
+            this.files=null;
+        });
+
+        $('#button_pho').click(function(){
+        $("input[type='file']").trigger('click');
+        });
+
+        $("input[type='file']").change(function(){
+        $('#val').text(this.value.replace(/C:\\fakepath\\/i, ''))
+        });
+    </script>
+{% endblock %}

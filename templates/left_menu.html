@@ -53,6 +53,25 @@
                         </ul>
                     </li>
                     {% endif %}
+                    {% if request.user.profile_user.area == "Admin" %}
+                    <li>
+                        <a class="accordion-toggle" href="#">
+                            <span class="glyphicons glyphicons-user"></span>
+                            <span class="sidebar-title">Badge </span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav" style="">
+                            <li>
+                                <a href="{% url 'badge_main' %}">
+                                <span class="glyphicons glyphicons-user"></span>Badge</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'upload_photo' %}">
+                                <span class="glyphicons glyphicons-user"></span>Fotografia</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     {% comment %} <li class="sidebar-label pt20">Menu1</li>
                     <li>
                         <a href="pages_calendar.html">
