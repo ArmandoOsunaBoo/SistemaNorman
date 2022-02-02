@@ -39,6 +39,10 @@
                                 <div class="col-lg-2">
                                     <button id="generar_btn" name="generar_btn" type="submit" class="btn btn-lg btn-success btn-block">Generar</button>
                                 </div>
+                                <div class="col-lg-2">
+                                    <input type="hidden" id="msg" name="msg" value="{{msg.0}}">
+                                    <button id="descargar_btn" name="descargar_btn" type="submit" class="btn btn-lg btn-warning btn-block" >Descargar</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -82,6 +86,13 @@
                 }
             });
         });
+
+        if(document.getElementById("msg").value==="enabled"){
+            document.getElementById("descargar_btn").disabled = false;
+        }
+        else{
+            document.getElementById("descargar_btn").disabled = true;
+        }
 
     </script>
 {% endblock %}

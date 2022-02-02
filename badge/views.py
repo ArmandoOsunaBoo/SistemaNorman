@@ -3,6 +3,7 @@ from xml.dom import EMPTY_NAMESPACE
 from django.shortcuts import render
 from reportlab.pdfgen import canvas
 from django.http import JsonResponse
+from django.http import HttpResponse
 from employees.models import Employees
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.utils import ImageReader
@@ -15,7 +16,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Create your views here.
 def badge_main(request):
+    msg = "disabled",
     if request.method == 'POST':
+        if 'descargar_btn' in request.POST:
+                file_path = 'clothe_badge.pdf'
+                if os.path.exists(file_path):
+                    with open(file_path, 'rb') as fh:
+                        response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                        return response
         nums = request.POST['numeros']
         employees = nums.split(",")
         global_offset = 580
@@ -32,7 +41,8 @@ def badge_main(request):
                 c.showPage()
         c.showPage()
         c.save()
-    return render(request, 'badge/badge_main.html')
+        msg = "enabled",
+    return render(request, 'badge/badge_main.html',{"msg":msg})
 
 def robot(request):
     if request.method == 'GET':

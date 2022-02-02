@@ -202,7 +202,7 @@
          
                         for (let i = 0, l = product_unit.length; i < l; i++) {
                             console.log("-----------------------------------------------------------------");
-                            product_unit[i].replaceWith(product_unit[i].cloneNode(true));
+                            product_unit[i].replaceWith(product_unit[i].cloneNode(true)); 
                             product_unit[i].addEventListener("click", function(evt) {
                                 $.ajax({
                                     url: "{% url 'insert_to_cart' %}?id="+product_unit[i].getAttribute('data-id')+"&user="+"{{request.user}}",
