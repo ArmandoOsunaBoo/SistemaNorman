@@ -10,6 +10,7 @@ class Profile(models.Model):
         ('Recursos Humanos', 'Recursos Humanos'),
         ('Finanzas', 'Finanzas'),
         ('Admin', 'Admin'),
+        ('Gerencia', 'Gerencia'),
         ('Comun', 'Comun'),
     )
     area = models.CharField(max_length=20,blank=True,choices=AREA_LIST)

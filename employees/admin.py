@@ -1,5 +1,5 @@
 from django.contrib import admin
-from employees.models import Employees
+from employees.models import Employees, Attendance,Incidences
 # Register your models here.
 
 @admin.register(Employees)
@@ -18,3 +18,15 @@ class EmployeesAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created','modified')
 
+@admin.register(Incidences)
+class IncidencesAdmin(admin.ModelAdmin):
+    pass 
+    list_display = ('incidence','number','date',
+    'name','hours','minutes','day')
+    list_display_links = ('number',)
+    list_editable = ('name','date')
+    list_filter = (
+        'created',
+        'modified'
+    )
+    readonly_fields = ('created','modified')
