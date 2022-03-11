@@ -27,7 +27,10 @@ urlpatterns = [
     path('employees/', include('employees.urls')),
     path('grocery_shop/', include('grocery_shop.urls')),
     path('badge/', include('badge.urls')),
+    path('misscheck/', include('misscheck.urls')),
+    path('punctuality/', include('punctuality.urls')),
     path('users/', include('users.urls')),
+    path('nursing/',include('nursing.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

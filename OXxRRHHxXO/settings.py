@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'employees',
     'grocery_shop',
     'badge',
+    'misscheck',
+    'nursing',
 ]
 
 MIDDLEWARE = [

@@ -6,32 +6,34 @@ from django import template
 #imports propios
 from django.contrib.auth import authenticate,login, logout
 from django.shortcuts import redirect,render
-from grocery_shop.library.db_manager import insert_order_ajax,upload_products_by_excel,insert_order,get_cart,update_cart,generate_individual_reports,generate_group_reports
+from grocery_shop.library.db_manager import insert_order_ajax,upload_products_by_excel,insert_order,get_cart,generate_meat_report,update_cart,generate_individual_reports,generate_group_reports
 from django.contrib.auth.decorators import login_required
-from grocery_shop.models import Product,Unit,Order
+from grocery_shop.models import Category, Product,Unit,Order,Shop
 from users.models import User
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from datetime import date
-import datetime
+from datetime import date,datetime
 
 
+
+def out_service(request):
+    pass
+    return render(request,'grocery_store/out_service.html')
 
 
 
 @login_required
 def insert_to_cart(request):
-   
-    
     try: 
         order_id = request.GET['id']
         user = request.GET['user']
+        ammount = request.GET['ammount']
         user = User.objects.get(username=user)
         product = Product.objects.get(id=int(order_id))
         print("H---------------------------")
-        message,unit,product = insert_order_ajax(request,order_id,user,product)
+        message,unit,product = insert_order_ajax(request,order_id,user,product,ammount)
     
         response = {
             'status': 'True',
@@ -113,7 +115,8 @@ def cart(request):
         pass
     else:
         orders = get_cart(request.user.id)
-        return render(request,'grocery_store/cart.html',{"orders":orders})
+        shops = Shop.objects.all()
+        return render(request,'grocery_store/cart.html',{"orders":orders,"shops":shops})
 
 @login_required
 def detalles(request):
@@ -133,10 +136,34 @@ def detalles(request):
 @login_required
 def ajax(request):
     cont=int(request.GET['page'])
-    products_list = Product.objects.all().order_by("id_master")
+    print("40 solicitudes")
+    print(cont)
+    id_shop = request.GET['shop']
+    print("***************************************")
+    print(id_shop)
+    if id_shop=="0":
+        print("Son todos")
+        products_list = Product.objects.filter(active=True)
+    else:
+        print("Se busca por tienda")
+        products_list = Product.objects.filter(active=True,shop_name=id_shop)
     peg = Paginator(products_list, 4)
     products = peg.page(cont).object_list
     serialized_q = json.dumps(list(products.values()),  ensure_ascii=True)
+    return JsonResponse(serialized_q,status=200,safe=False)
+
+@login_required
+def get_item(request):
+    pass
+    id_m=int(request.GET['id'])
+    product = Product.objects.filter(id=id_m)
+    product2 = Product.objects.get(id=id_m)
+    d = list(product.values_list('id','name','price')) 
+    b =str(product2.unit_name)
+    new_ = d[0] + (b,)
+    my_list = []
+    my_list.append(new_)
+    serialized_q = json.dumps(my_list,  ensure_ascii=True)
     return JsonResponse(serialized_q,status=200,safe=False)
 
 
@@ -148,46 +175,69 @@ def logout_view(request):
     
 @login_required
 def menu(request):
-    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
     if request.method == 'POST':
-        bsq = request.POST.get('search_bar')
-        products_list = Product.objects.filter(name__icontains=bsq)
-        page = request.GET.get('page', 1)
-        peg = Paginator(products_list, 4)
-        products = peg.page(page)
-        return render(request,'grocery_store/menu.html',{'products_list': products_list,'products': products})
+        if 'search_bar' in request.POST:
+            bsq = request.POST.get('search_bar')
+            products_list = Product.objects.filter(name__icontains=bsq)
+            shops = Shop.objects.all()
+            page = request.GET.get('page', 1)
+            peg = Paginator(products_list, 10)
+            products = peg.page(page)
+            return render(request,'grocery_store/menu.html',{'products_list': products_list,'products': products,'shops':shops,'page':1})
+        if 'group_report' in request.POST:
+            pass
 
     else:
-        products_list = Product.objects.filter(active=True)
-        page = request.GET.get('page', 1) 
-        print(page)
-        peg = Paginator(products_list, 4)
-        products = peg.page(page)
-        return render(request,'grocery_store/menu.html',{'products_list': products_list,'products': products})
+        if 'shop' in request.GET:
+            id_shop = request.GET['shop']
+            products_list = Product.objects.filter(active=True,shop_name=id_shop)
+            page = request.GET.get('page', 1)
+            shops = Shop.objects.all()
+            peg = Paginator(products_list, 4)
+            products = peg.page(page)
+            return render(request,'grocery_store/menu.html',{"id_shop":id_shop,'products_list': products_list,'page':1,'products': products,'shops':shops})
+        
+        else:
+            id_shop = 0
+            products_list = Product.objects.filter(active=True)
+            page = request.GET.get('page', 1) 
+            shops = Shop.objects.all()
+            peg = Paginator(products_list, 4)
+            page = request.GET.get('page', 1)
+            products = peg.page(page)
+            return render(request,'grocery_store/menu.html',{"id_shop":id_shop,'products_list': products_list,'products': products,'shops':shops,'page':page})
 
 def index(request):
     if request.method == 'POST':
-        print("lol")
         pass
         username = request.POST['username']
         password = request.POST['password']
-        print(username,':',password)
         user = authenticate(request,username=username,password=password)
         if user:
-            if "Comun" == user.profile_user.area and "Activo" == user.profile_user.active:
+            if ("Comun" == user.profile_user.area or user.profile_user.area == "Admin") and "Activo" == user.profile_user.active:
                 pass
-                print("eso tiliin")
                 login(request,user)
                 return redirect('menu')
             else:
-                print("weyy nooooo")
                 return render(request,'grocery_store/index.html',{'error':'No tienes permisos para entrar'})
             
         else:
-            print("neeembre")
             return render(request,'grocery_store/index.html',{'error':'Usuario o contraseña invalidos'})
     
-    return render(request,'grocery_store/index.html')
+    
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    day =["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    actual_date  = datetime.now()
+    x=actual_date
+    print(day[x.weekday()])
+    if (current_time>"12:00:00" and day[x.weekday()]=="Tuesday"):
+        pass
+        print("filtro")
+        return redirect('out_service')
+    else:
+        print("manitas")
+        return render(request,'grocery_store/index.html')
 
 
 
@@ -208,11 +258,7 @@ def manage(request):
     else:
         return render(request,'grocery_store/manage.html')
 
-
-
-
-
-
+ 
 
 
 @login_required
@@ -230,7 +276,11 @@ def reports(request):
             week = request.POST['group_report']
             week = str(week)
             return generate_group_reports(week)
-            #return render(request,'grocery_store/store_reports.html')
+        if 'meat_report' in request.POST:
+            pass 
+            week = request.POST['meat_report']
+            week = str(week)
+            return generate_meat_report(week)
         else:
             return render(request,'grocery_store/store_reports.html')
     else:

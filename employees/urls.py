@@ -10,4 +10,6 @@ urlpatterns = [
     path(route='index/',view=views.employee_index,name='employees'),
     path(route='payroll/',view=views.employee_payroll,name='payroll'),
     path(route='attendance/',view=views.employee_attendance,name='attendance'),
+    path(route='get_names/',view=views.get_names,name='get_names'),
+    path(route='get_employee/',view=views.get_employee,name='get_employee'),
 ]  

@@ -16,8 +16,11 @@ urlpatterns = [
     path(route="cart_delete/", view=views.delete_cart_item,name="cart_delete"),
     path(route="insert_to_cart/", view=views.insert_to_cart,name="insert_to_cart"),
 
+    path(route="get_item/", view=views.get_item,name="get_item"),
 
 
     path(route='manage/',view=views.manage,name='manage'),
-    path(route='reports/',view=views.reports,name='reports')
+    path(route='reports/',view=views.reports,name='reports'),
+    
+    path(route='out_service/',view=views.out_service,name='out_service')
 ]

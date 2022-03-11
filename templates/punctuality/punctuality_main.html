@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_content %}
+    <title>NormanMexico - Puntualidad </title>
+    <style>
+      .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
+{% endblock %}
+
+{% block container %}
+<div>
+  <div id="content">
+      <div class="panel">
+          <div class="panel-heading">
+              <span class="panel-title">Generar Reporte de Puntualidad</span>
+          </div>
+          <div class="panel-body bg-light pt20 pbn pl30">
+            <div class="row">
+              <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="col-lg-2">
+                        <input type="file" id="archivo" name="archivo" class="inputfile">
+                        <span id='upload_file' class="btn btn-lg btn-info btn-block">Cargar Archvio</span>
+                    </div>
+                
+                    <div class="col-lg-2">
+                        <button id="generar_btn" name="generar_btn" type="submit" class="btn btn-lg btn-success btn-block">Generar</button>
+                    </div>
+                    
+                    <div class="col-lg-2">
+                        <input type="hidden" id="msg" name="msg" value="{{msg.0}}">
+                        <button id="descargar" name="descargar" type="submit" class="btn btn-lg btn-warning btn-block" >Descargar</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+      <img src="/static/home/image/puntualidad_img.png">
+  </div>
+</div>
+{% endblock %}
+
+{% block 'js' %}
+  <script>
+    $('#upload_file').click(function(){
+      $("input[type='file']").trigger('click');
+    });
+
+    $("input[type='file']").change(function(){
+      $('#val').text(this.value.replace(/C:\\fakepath\\/i, ''))
+    });
+  
+  
+     if(document.getElementById("msg").value==="enabled"){
+      document.getElementById("descargar").disabled = false;
+    }
+    else{
+      document.getElementById("descargar").disabled = true;
+    }
+  </script>
+{% endblock %}

@@ -43,7 +43,7 @@
 .cart_information {
     margin-top: 25px;
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     justify-content: space-around;
 }
 

@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 from django.contrib.auth.models import User
 # Create your models here.
 
@@ -88,5 +88,28 @@ class Employees(models.Model):
     created = models.DateTimeField(auto_now_add=True,verbose_name='Fecha Creación')
     modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
 
+    @property
+    def age(self):
+        a=self.birth_date[0:10]
+        """ 
+        print(a[0:4])
+        print(a[5:7])
+        print(a[8:10])
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$") 
+        """
+        da=(datetime.date.today() - datetime.date(int(a[0:4]), int(a[5:7]), int(a[8:10]))   ).days
+        a = ( int(da / 365.25))
+        return a
+
+    @property
+    def antiquity_time(self):
+        a=self.admission_date[0:10]
+        print(self.name)
+        print(a)
+        da=(datetime.date.today() - datetime.date(int(a[0:4]), int(a[5:7]), int(a[8:10]))).days
+        a = ( (da / 31.4))
+        return "{:.2f}".format(a)
+
     def __str__(self):
         return self.name
+        

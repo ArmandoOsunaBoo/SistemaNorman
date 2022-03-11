@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     {% load static %}
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Armando Osuna">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{% static 'images/ilustraciones/norman.ico' %}"/>
+    <link rel="icon" type="image/png" href="{% static 'images/ilustraciones/norman.ico' %}" />
     <title>Tiendita Norman - Listita de Productitos chiquitos</title>
 
     <!-- Additional CSS Files -->
@@ -21,10 +21,14 @@
     <link rel="stylesheet" href="{% static 'grocery_store/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/sweetalertv11.3.0/dist/sweetalert2.min.css' %}">
 
-    </head>
-    
-    <body>
-    
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+</head>
+
+<body style="background-color: #ededed;">
+
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
         <div class="jumper">
@@ -32,11 +36,11 @@
             <div></div>
             <div></div>
         </div>
-    </div>  
+    </div>
     <!-- ***** Preloader End ***** -->
-    
-    
-    
+
+
+
     <!-- Start: Header -->
     {% include 'grocery_store/top_menu.html' %}
     <!-- End: Header -->
@@ -50,13 +54,14 @@
     <!-- ***** Products Area Starts ***** -->
     {% block container %} {% endblock%}
     <!-- ***** Products Area Ends ***** -->
-    
+
     <!-- ***** Footer Start ***** -->
     {% if request.path != "/grocery_shop/menu/" %}
     <footer>
         <div class="container">
             <div class="row">
-                {% comment %} <div class="col-lg-3">
+                {% comment %}
+                <div class="col-lg-3">
                     <div class="first-item">
                         <div class="logo">
                             <img src="{% static 'grocery_store/images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
@@ -97,7 +102,7 @@
                 <div class="col-lg-12">
                     <div class="under-footer">
                         <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved.
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                            <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                         <ul>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -128,32 +133,30 @@
     <script src="{% static 'grocery_store/js/scrollreveal.min.js' %}"></script>
     <script src="{% static 'grocery_store/js/waypoints.min.js' %}"></script>
     <script src="{% static 'grocery_store/js/jquery.counterup.min.js' %}"></script>
-    <script src="{% static 'grocery_store/js/imgfix.min.js' %}"></script> 
-    <script src="{% static 'grocery_store/js/slick.js' %}"></script> 
-    <script src="{% static 'grocery_store/js/lightbox.js' %}"></script> 
-    <script src="{% static 'grocery_store/js/isotope.js' %}"></script> 
-    
+    <script src="{% static 'grocery_store/js/imgfix.min.js' %}"></script>
+    <script src="{% static 'grocery_store/js/slick.js' %}"></script>
+    <script src="{% static 'grocery_store/js/lightbox.js' %}"></script>
+    <script src="{% static 'grocery_store/js/isotope.js' %}"></script>
+
     <!-- Global Init -->
     <script src="{% static 'grocery_store/js/custom.js' %}"></script>
 
     <script>
-
         $(function() {
             var selectedClass = "";
-            $("p").click(function(){
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-                $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-              $("."+selectedClass).fadeIn();
-              $("#portfolio").fadeTo(50, 1);
-            }, 500);
-                
+            $("p").click(function() {
+                selectedClass = $(this).attr("data-rel");
+                $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("." + selectedClass).fadeOut();
+                setTimeout(function() {
+                    $("." + selectedClass).fadeIn();
+                    $("#portfolio").fadeTo(50, 1);
+                }, 500);
+
             });
         });
-
     </script>
-    {% block js %} {% endblock %}
-  </body>
+    {% block js %} {% endblock %} {% block top-js %} {% endblock %}
+</body>
 
 </html>

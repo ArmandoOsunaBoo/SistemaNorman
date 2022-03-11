@@ -1,6 +1,10 @@
 #Django imports
+from ast import Return
+from email.policy import default
+from unicodedata import name
 from django.shortcuts import render,redirect
 from django.http.response import HttpResponse
+from django.http.response import JsonResponse
 
 #Personal imports
 from employees.library.db_manager import upload_incidences,merge_payroll,upload_employees,create_employee_excel,upload_assistances,download_week_atendance,generate_payroll
@@ -9,9 +13,33 @@ import os
 from openpyxl import Workbook
 import datetime
 from django.contrib.auth.decorators import login_required
-from employees.models import Incidences
+from employees.models import Employees, Incidences
 from django.core.paginator import Paginator
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http.response import JsonResponse
+import json
+from django.core import serializers
+from django.http import JsonResponse
+
+@login_required
+def get_names(request):
+    pass
+    print()
+    
+    text=(request.GET['text'])
+    employees_list = Employees.objects.filter(status="Activo",name__icontains=text)
+    peg = Paginator(employees_list, 10)
+    employees = peg.page(1).object_list
+    print("%%%%%%%%%%%%%%")
+    
+    lista = list(employees.values())
+    print("***************************")
+    print(type(lista))
+    print(type(lista[0]))
+    print(lista[0])
+    jeison = json.dumps(lista,  ensure_ascii=True,default=str)
+    print(type(jeison))
+    return JsonResponse(jeison,status=200,safe=False)
 
 @login_required
 def get_incidences(request):
@@ -110,9 +138,27 @@ def employee_index(request):
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename('Reporte_Empleados.xlsx')
             return response
-            
+        
+        page = request.GET['page']
+        employees2 = Employees.objects.order_by("-number")
+        
+        peg = Paginator(employees2, 4)
+        employees = peg.page(page)
         return render(request,'employees/index.html')
 
     else:
-        return render(request,'employees/index.html')
+        page = request.GET['page']
+        employees2 = Employees.objects.filter(status="Activo").exclude(number__contains='C00').order_by("-number")
+        print(page)
+        peg = Paginator(employees2, 100)
+        employees = peg.page(page)
+        print(page)
+        return render(request,'employees/index.html',{"page":page,'employees': employees})
 
+@login_required
+def get_employee(request):
+    pass
+    text=(request.GET['id']) 
+    employees_list = Employees.objects.filter(id=text)
+    jeison = json.dumps(list(employees_list.values()),  ensure_ascii=True,default=str)
+    return JsonResponse(jeison,status=200,safe=False)

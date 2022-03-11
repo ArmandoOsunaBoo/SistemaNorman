@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block head_content %}
+<title>Consulta</title>
+{% endblock %}
+
+{% block container %}
+<div>
+  <div id="content">
+    <div class="panel">
+      <div class="panel-heading">
+          <span class="panel-title">Diccionario</span>
+      </div>
+      <div class="panel-body bg-light">
+        <form>
+          {% csrf_token %}
+          <button type="submit" name="buscar" id="buscar" hidden></button>
+          <div class="widget-menu">
+            <div class="col-lg-2">
+              <div class="input-group">
+              <span name="buscar" id="buscar" class="input-group-addon">
+                <i class="glyphicons glyphicons-search"></i>
+              </span>
+              <input type="text" name="table_search" class="form-control" placeholder="Search" autofocus>
+              </div>
+            </div>
+            <div class="col-lg-1">
+              <div class="input-group">
+                <button type="submit" class="btn btn-block btn-warning" name="download" id="download" >Descargar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="panel-body" style="height: 530px;overflow: scroll;!important">
+        <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;!important">
+          <thead>
+            <tr class="info">
+              <th>Cause</th>
+              <th>Diagnosis</th>
+              <th>Therapy</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in datas %}
+              <tr>
+                <td>{{data.cause}}</td>
+                <td>{{data.diagnosis}}</td>
+                <td>{{data.therapy}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block 'js' %}
+  <script>
+
+  </script>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'experimental/out_service.css' %}">
+    <title>Document 123</title>
+</head>
+<body style="    display: flex; justify-content: center;">
+    <div class="error-500" data-text="Oh no! La tienda esta cerrada por el momento. Espera al miércoles para seguir comprando :)!">
+        <spaguetti>
+        <fork></fork>
+        <meat></meat>
+        <pasta></pasta>
+        <plate></plate>
+      </spaguetti>
+    </div>
+<a class="out_btn" href="{% url 'start' %}">Regresar</a>
+</body>
+
+<script>
+    const error = document.querySelector(".error-500");
+let i = 0, data = "", text = error.getAttribute("data-text");
+
+let typing = setInterval(() => {
+  if(i == text.length){
+    clearInterval(typing);
+  }else{
+    data += text[i];
+    document.querySelector(".error-500").setAttribute("data-text", data);
+    i++;
+  }
+}, 100);
+</script>
+</html>

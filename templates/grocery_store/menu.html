@@ -1,290 +1,438 @@
-{% extends "grocery_store/base.html" %} 
-{% load static %}
-{% block head_content %}
-    <title>NormanMexico - Asistencias </title>
-{% endblock%} 
-
-
-{% block header %}
-    <div class="page-heading" id="top" style="background-image:url('/images/ilustraciones/fondo1.jpg');">
-        <div class="black-filter" ></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="inner-content">
-                        <h2>Listado de productos</h2>
-                        <span>Revisa todos los productos navegando hacia abajo</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %} 
-
-
-{% block container %}
-<section class="section" id="products">
-    <input type="hidden" value="2" id="page_counter">
-    <div class="container">
+{% extends "grocery_store/base.html" %} {% load static %} {% block head_content %}
+<title>NormanMexico - Asistencias </title>
+{% endblock%} {% block header %}
+<div class="menu_header" id="top" style="display: flex; justify-content: center;background-image:url('/images/ilustraciones/fondo1.jpg'); display: flex;">
+    <div class="black-filter"></div>
+    <div class="sub_container">
         <div class="row">
-            
             <div class="col-lg-12">
-                <div class="section-heading">
+                <div class="inner-content">
                     <h2>Listado de productos</h2>
                     <span>Revisa todos los productos navegando hacia abajo</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="section">
-        <div class="row">
-            <div class="col-lg-12 ">
-              
-                <form method="POST" class="menu_search">
-                    {% csrf_token %}
-              <fieldset>
-                <input class="search_bar" name="search_bar" type="text" id="name" placeholder="Your Name" required="">
-              </fieldset>
-              
-              <fieldset>
-                <button class="search_button" type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-              </fieldset>
-            </form>
-            </div> 
-          </div>
-    </div>
-    <div class="container">
+</div>
+{% endblock %} {% block container %}
+
+
+
+
+<section style="padding:0px; overflow-y: hidden; min-height: 1000px;" class="section" id="products">
+
+    <div class="container" style="margin-top: 20px; padding: 0px;    background: white; box-shadow: 0px 1px 6px 0px;">
+        <div class="col-lg-12 " style="
+           text-align: center;
+    margin: 0px;
+    padding: 10px;
+    border-bottom: 1px solid rgb(0 0 0 / 29%);
+    ">
+            <h2>Lo mas reciente</h2>
+        </div>
+        
         <div id="" class="row">
-            {% for product in products %}    
-            <div id="" class="col-lg-3">
-                <div class="item">
+            {% for product in products %}
+            <div id="" class="col-lg-3  item-responsive" data-p="{{product.id}}">
+                <div data-p="{{product.id}}" class="item" style="display: flex; padding: 12px;
+                justify-content: space-evenly;">
                     <div class="thumb">
-                        <div class="hover-content">
-                            <ul>
-                                <li><a href="{% url 'detail' %}?id={{product.id}}"><i class="fa fa-eye"></i></a></li>
-                                {% comment %} <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> {% endcomment %}
-                                 <li><a href="#" name="send_to_cart" data-id="{{product.id}}" ><i class="fa fa-shopping-cart"></i></a></li> 
-                            </ul>
-                        </div>
-                        <img src="/images/{{ product.image }}" alt="">
+                        <img name="product_elem" data-p="{{product.id}}" style="width:130px" src="/images/{{ product.image }}" alt="">
                     </div>
-                    <div class="down-content">
-                        <b>{{ product.name }}</b>
-                        <span>${{ product.price }} MXN</span>
-                        {% comment %} <ul class="stars">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                        </ul> {% endcomment %}
+                    <div class="down-content" style="width: 140px;">
+                        <p name="product_elem" name="product_elem" data-p="{{product.id}}">{{ product.name }}</p>
+                        <span style="font-size: 20px;">${{ product.price }} MXN</span>
+                        <div class="buttons_item">
+
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
-            
+        </div>
         <div id="product_li" class="row">
-           
+
         </div>
-         {% comment %}    <div class="col-lg-12">
-                <div class="pagination">
-                    <ul>
-                        <li>
-                            <a href="#">1</a>
-                        </li>
-                        <li class="active">
-                            <a href="#">2</a>
-                        </li>
-                        <li>
-                            <a href="#">3</a>
-                        </li>
-                        <li>
-                            <a href="#">4</a>
-                        </li>
-                        <li>
-                            <a href="#">></a>
-                        </li>
-                    </ul>
+   
+
+        <br> <br> <br>
+    </div>
+    <div class="container" style="margin-top: 20px; padding: 0px;    background: white; box-shadow: 0px 1px 6px 0px;">
+        <div class="col-lg-12 " style="
+           text-align: center;
+    margin: 0px;
+    padding: 10px;
+    border-bottom: 1px solid rgb(0 0 0 / 29%);
+    ">
+            <h2>Lo mas reciente</h2>
+        </div>
+        
+        <div id="" class="row">
+            {% comment %}
+            {% for product in products %}
+            <div id="" class="col-lg-3  item-responsive" data-p="{{product.id}}">
+                <div data-p="{{product.id}}" class="item" style="display: flex; padding: 12px;
+                justify-content: space-evenly;">
+                    <div class="thumb">
+                        <img name="product_elem" data-p="{{product.id}}" style="width:130px" src="/images/{{ product.image }}" alt="">
+                    </div>
+                    <div class="down-content" style="width: 140px;">
+                        <p name="product_elem" name="product_elem" data-p="{{product.id}}">{{ product.name }}</p>
+                        <span style="font-size: 20px;">${{ product.price }} MXN</span>
+                        <div class="buttons_item">
+
+                        </div>
+                    </div>
                 </div>
-            </div> {% endcomment %}
+            </div>
+            {% endfor %}
+            {% endcomment %}
         </div>
+        <div id="product_li" class="row">
+
+        </div>
+   
+
         <br> <br> <br>
     </div>
     <div class="menu_no_products">
-        <span>Ya no hay mas productos en la lista</span>
+        <span style="    padding: 40px; text-align: center;">Ya no hay mas productos en la lista</span>
     </div>
+
 </section>
-{% endblock %} 
+<div id="p_elem_x" class="elem_item">
+    <div class="elem_buttons">
+        <div class="header_elem">¿Qué quieres realizar?</div>
+        <div class="elem_container">
+            <div id="elem_p_name" class="container_desc">Coca cola</div>
+            <div id="elem_p_precio">$-1</div>
+            <input id="elem_p_hprice" type="hidden" value="0" name="product_price" step=".01" min="1">
+            <input id="elem_p_hstaticprice" type="hidden" value="0" name="product_static_price" step=".01" min="1">
+            <input id="elem_p_hid" type="hidden" value="0" name="product_id">
+            <input id="elem_p_hname" type="hidden" value="0" name="product_name" step=".01" min="1">
+            <div class="cont_item">
+                <div id="minus" class="elem_container_btn">-</div>
+                <input value="1" id="item_cont" name="qty_b" type="number" step=".01" min="1" max="" name="quantity" class="input-text qty text cart_qty" size="1" readonly="readonly">
+                <span id="elem_unit" class="elem_unit">KG</span>
+                <div id="plus" class="elem_container_btn">+</div>
+            </div>
+        </div>
+        <div class="button_elem">
+            <button id="b_cancelar" type="button" class="b-shadow p-100 btn btn-gradient b-white ">Cancelar</button>
+            <!-- <a id="b_ver" href="{% url 'detail' %}?id={{product.id}}" type="button" class="b-shadow p-100 btn btn-alert btn-gradient dark b-blue1  ">Ver</a> -->
+            <button id="b_agregar" type="button" class="b-shadow p-100 btn btn-alert btn-gradient dark b-blue2">Agregar</button>
+        </div>
+    </div>
+</div>
+<input id="shop_id" type="hidden" value="{{id_shop}}">
+<input id="page_counter" type="hidden" value="{{page}}" /> {% endblock %} {% block js %}
+
+<script type="text/javascript">
+    
+    var b_cancelar = document.getElementById('b_cancelar');
+    var p_elem = document.getElementsByName("product_elem");
+    var b_ver = document.getElementById('b_ver');
 
 
-{% block js %}
-    <script type="text/javascript">
-        var m = 0;
-        var error = 0;
-        var product_obtainer_promise;
-        
-        console.clear()
-        
-        var Myelement = document.getElementById("page_counter");
-            val = Myelement.value;
-            var div = document.getElementById('product_li');
-            if (m==0){ 
-                m=1;
-                console.log(Myelement.value)
+    b_cancelar.addEventListener("click", function(evt) {
+        document.getElementById("p_elem_x").classList.remove("elem_visible");
+    });
+
+    for (let i = 0, l = p_elem.length; i < l; i++) {
+        p_elem[i].addEventListener("click", function(evt) {
+            document.getElementById("p_elem_x").classList.add("elem_visible");
+        });
+    }
+
+    
+
+    var m = 0;
+    var error = 0;
+    var product_obtainer_promise;
+
+    console.clear()
+
+    var Myelement = document.getElementById("page_counter");
+    val = Myelement.value;
+    val_shop = 0
+    var div = document.getElementById('product_li');
+    if (m == 0) {
+        m = 1;
+        console.log(Myelement.value)
+        p();
+    }
+
+
+    window.onscroll = function() {
+        console.log("deadpool")
+
+        if ((window.innerHeight + Math.ceil(window.pageYOffset)) >= (document.body.offsetHeight - 500)) {
+
+            var p_elem = document.getElementsByName("product_elem");
+            for (let i = 0, l = p_elem.length; i < l; i++) {
+                p_elem[i].removeEventListener("click", function(evt) {
+                    console.log("click en el elemento")
+                    document.getElementById("p_elem_x").classList.add("elem_visible");
+                });
+            }
+
+            for (let i = 0, l = p_elem.length; i < l; i++) {
+                p_elem[i].addEventListener("click", function(evt) {
+                    console.log("click en el elemento")
+                    document.getElementById("p_elem_x").classList.add("elem_visible");
+                });
+            }
+
+            var Myelement = document.getElementById("page_counter");
+            val = parseInt(Myelement.value);
+
+            console.log(Myelement.value)
+            if (m == 0) {
+                m = 1;
                 p();
             }
-            
-        
-        window.onscroll = function() {
-            if ((window.innerHeight + Math.ceil(window.pageYOffset)) >= (document.body.offsetHeight- 100 )) {
-            //alert('At the bottom!')
-            var Myelement = document.getElementById("page_counter");
-            val = Myelement.value;
-            
-            console.log(Myelement.value)
-            if (m==0){
-               m=1;
-               p();
-            }}
-          }
-        
-          function p(){
-            var product_obtainer_promise = new Promise((resolve,reject) => {
-                var a = ajax_product_get();
-                if (a ==true){
-                    resolve('Succes')
-                } else{
-                    reject('Failed')
-                }
-           });
-           product_obtainer_promise.then((message)=> {
-               m=0;
-               val=parseInt(val)+1;
-               Myelement.value=val;
-           }).catch((message)=> {
-               m=0;
-           });
-          }
+        }
+    }
 
-          function ajax_product_get(){
-            $.ajax({
-                url: '{% url 'post_ajax' %}?page='+val,
-                type: 'get', // This is the default though, you don't actually need to always mention it
-                success: function(data) {
-                    data = JSON.parse(data)
-                    data.forEach(function(item) {
-                        console.log(item);
-                        var a=item.id ;
-                        var link ='{% url 'detail' %}';
-                        var data2 ='{{product.id}}';
-                        console.log(`EL VALOR ES ${a}`)
-                        div.insertAdjacentHTML('beforeend', `<div  class="col-lg-3">
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="${link}?id=${a}"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="#" name="send_to_cart" data-id="${a}" ><i class="fa fa-shopping-cart"></i></a></li> 
-                                            
-                                        </ul>
-                                    </div>
-                                    <img src="/images/${item.image}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <b>${ item.name }</b>
-                                    <span>$ ${ item.price } MXN</span>
-                                    
-                                </div>
-                            </div>
-                        </div>`);
-                        product_unit = document.getElementsByName("send_to_cart");
-                    console.log("BADDEST DO")
-         
-                        for (let i = 0, l = product_unit.length; i < l; i++) {
-                            console.log("-----------------------------------------------------------------");
-                            product_unit[i].replaceWith(product_unit[i].cloneNode(true)); 
-                            product_unit[i].addEventListener("click", function(evt) {
-                                $.ajax({
-                                    url: "{% url 'insert_to_cart' %}?id="+product_unit[i].getAttribute('data-id')+"&user="+"{{request.user}}",
-                                    type: 'get',
-                                    success: function(data) {
-                                        Swal.fire(
-                                            'Bien hecho!',
-                                            'El producto ha sido guardado',
-                                            'success'
-                                        )
-                                    },
-                                    failure: function(response) { 
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Oops...',
-                                            text: 'El producto no ha sido guardado',
-                                            })
-                                    }
-                                }); 
-                            });
-                        }
-                    });
-                    
-                    return true;
-                   
-                    }
-                ,
-                failure: function(response) { 
-                    alert('Got an error dude');
-                    return false;
-                }
-            }); 
-            
-                    return true;
+    function p() {
+        var product_obtainer_promise = new Promise((resolve, reject) => {
+            var a = ajax_product_get();
+            if (a == true) {
+                resolve('Succes')
+            } else {
+                reject('Failed')
+            }
+        });
+        product_obtainer_promise.then((message) => {
+            m = 0;
+            val = parseInt(val) + 1;
+            Myelement.value = val;
+        }).catch((message) => {
+            m = 0;
+        });
+    }
 
+    var ignoreClickOnMeElement = document.getElementsByName('product_elem');
+    var plus = document.getElementById('plus');
+    var minus = document.getElementById('minus');
+    var p_counter = 1.0;
+    var increase_val=1;
+    minus.onclick = function(event) {
+        p_counter = p_counter - increase_val;
+        if (p_counter < 0) p_counter = 0;
+        var price_c = parseFloat(document.getElementById("elem_p_hstaticprice").value) * parseFloat(p_counter);
+        console.log(price_c)
+        document.getElementById("item_cont").value = p_counter;
+        document.getElementById("elem_p_precio").innerHTML = "$" + price_c;
+        console.log("$" + price_c)
+    }
 
+    plus.onclick = function(event) {
+        p_counter = p_counter + increase_val;
+        var price_c = parseFloat(document.getElementById("elem_p_hstaticprice").value) * parseFloat(p_counter);
+        console.log(document.getElementById("elem_p_hstaticprice").value)
+        console.log(parseFloat(p_counter))
+        document.getElementById("item_cont").value = p_counter;
+        document.getElementById("elem_p_precio").innerHTML = "$" + price_c;
+        console.log("$" + price_c)
+    }
 
-          }
-
-
-          function ajax_product_succes(){
-            m=0;
-            val=parseInt(val)+1;
-            Myelement.value=val;
-          }
-          
-          function ajax_product_error(){
-            m=0;
-          }
-
-
-          
-        console.clear()
-        product_unit = document.getElementsByName("send_to_cart");
-        
-         
+    document.onclick = function(event) {
+        console.log("click en el dom")
+        product_unit = document.getElementsByName("product_elem");
         for (let i = 0, l = product_unit.length; i < l; i++) {
-            console.log(product_unit[i].getAttribute('data-id'));
-            product_unit[i].addEventListener("click", function(evt) {
+            var isClickInsideElement = event.target.contains(ignoreClickOnMeElement[i]);
+            if (isClickInsideElement) {
+                console.log("amigo")
+                console.log(event.target)
+                console.log(event.target.dataset.p)
+                document.getElementById("p_elem_x").classList.add("elem_visible");
                 $.ajax({
-                    url: "{% url 'insert_to_cart' %}?id="+product_unit[i].getAttribute('data-id')+"&user="+"{{request.user}}",
+                    url: "{% url 'get_item' %}?id=" + event.target.dataset.p,
                     type: 'get',
                     success: function(data) {
-                        Swal.fire(
-                            'Bien hecho!',
-                            'El producto ha sido guardado',
-                            'success'
-                        )
+                        var a = (JSON.parse(data))
+                        id_p = a[0][0]
+                        document.getElementById("elem_p_hid").value = id_p;
+                        document.getElementById("elem_p_name").innerHTML = a[0][1];
+                        document.getElementById("elem_p_hname").value = a[0][1];
+                        var m = a[0][2];
+                        document.getElementById("elem_p_precio").innerHTML = "$" + m;
+                        document.getElementById("elem_p_hstaticprice").value = m;
+                        document.getElementById("elem_p_hprice").value = (m);
+                        document.getElementById("item_cont").value = 1;
+                        p_counter=1;
+                        var unit = a[0][3];
+                        document.getElementById("elem_unit").innerHTML = unit;
+                        if (unit =="PIEZAS"){
+                            increase_val=1
+                        }
+                        else{
+                            increase_val=0.5
+                        }
+ 
+                        link = "{% url 'detail' %}" + "?id=" + id_p;
+                        document.getElementById('b_ver').href = (link);
                     },
-                    failure: function(response) { 
+                    failure: function(response) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'El producto no ha sido guardado',
-                          })
+                        })
                     }
-                }); 
+                });
+            }
+        }
+
+
+
+    };
+
+
+    function ajax_product_get() {
+        var p_elem = document.getElementsByName("product_elem");
+        for (let i = 0, l = p_elem.length; i < l; i++) {
+            p_elem[i].removeEventListener("click", function(evt) {
+                document.getElementById("p_elem_x").classList.add("elem_visible");
             });
         }
-    </script>
+
+        for (let i = 0, l = p_elem.length; i < l; i++) {
+            p_elem[i].addEventListener("click", function(evt) {
+                document.getElementById("p_elem_x").classList.add("elem_visible");
+            });
+        }
+        val_shop = document.getElementById("shop_id").value
+        if (val_shop=="") val_shop = 0;
+        $.ajax({
+            url: "{% url 'post_ajax' %}?page=" + val + "&shop=" + val_shop,
+            type: 'get',
+            success: function(data) {
+                data = JSON.parse(data)
+                data.forEach(function(item) {
+                    var a = item.id;
+                    var link = "{% url 'detail' %}";
+                    var data2 = '{{product.id}}';
+                    div.insertAdjacentHTML('beforeend', `
+                    <div id="" class="col-lg-3 item-responsive" data-p="${item.id}">
+                        <div data-p="${item.id}" class="item" style="display: flex; padding: 12px;
+                            justify-content: space-evenly;">
+                            <div class="thumb"> 
+                            <img name="product_elem" data-p="${item.id}" style="width:130px" src="/images/${ item.image }" alt="">
+                        </div>
+                        <div class="down-content" style="width: 140px;">
+                            <p name="product_elem" name="product_elem" data-p="${item.id}">${ item.name }</p>
+                            <span style="font-size: 20px;">${ item.price } MXN</span> 
+                        <div class="buttons_item">
+
+                        </div>
+                    </div>
+                </div>
+            </div>`);
+
+                    /* for (let i = 0, l = product_unit.length; i < l; i++) {
+                                console.log("-----------------------------------------------------------------");
+                                product_unit[i].replaceWith(product_unit[i].cloneNode(true));
+                                product_unit[i].addEventListener("click", function(evt) {
+                                    $.ajax({
+                                        url: "{% url 'insert_to_cart' %}?id=" + product_unit[i].getAttribute('data-id') + "&user=" + "{{request.user}}",
+                                        type: 'get',
+                                        success: function(data) {
+                                            Swal.fire(
+                                                'Bien hecho!123',
+                                                'El producto ha sido guardado',
+                                                'success'
+                                            )
+                                        },
+                                        failure: function(response) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops...',
+                                                text: 'El producto no ha sido guardado',
+                                            })
+                                        }
+                                    });
+                                });
+                            } */
+
+                });
+
+                return true;
+
+            },
+            failure: function(response) {
+                alert('Got an error dude');
+                return false;
+            }
+        });
+
+        return true;
+
+
+
+    }
+
+
+    function ajax_product_succes() {
+        m = 0;
+        val = parseInt(val) + 1;
+        Myelement.value = val;
+    }
+
+    function ajax_product_error() {
+        m = 0;
+    }
+
+
+
+    console.clear()
+    product_unit = document.getElementsByName("send_to_cart");
+
+
+
+
+    var btn_add = document.getElementById("b_agregar");
+    btn_add.addEventListener("click", function(evt) {
+        product_ammount_ = document.getElementById("item_cont").value;
+        product_id_ = document.getElementById("elem_p_hid").value
+
+
+        $.ajax({
+            url: "{% url 'insert_to_cart' %}?id=" + product_id_ + "&user=" + "{{request.user}}" + "&ammount=" + product_ammount_,
+            type: 'get',
+            success: function(data) {
+                Swal.fire(
+                    'Bien hecho!',
+                    'El producto ha sido guardado',
+                    'success'
+                )
+            },
+            failure: function(response) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El producto no ha sido guardado',
+                })
+            }
+        });
+    });
+
+
+
+
+
+    sub_menu_btn = document.getElementById("sub_menu_btn");
+    sub_menu = document.getElementById("sub_menu");
+    menu_active_btn = document.getElementById("menu_active")
+    menu_active_btn.addEventListener("click", () => {
+        console.log("clik clak 1")
+        sub_menu.classList.toggle("sub_active")
+        sub_menu.classList.remove("active")
+            //sub_menu.classList.contains("active") ? sub_menu.classList.remove("active") : sub_menu.classList.add("active");
+    });
+
+
+    window.scrollBy(0,10)
+</script>
 {% endblock %}
-
-
-
-

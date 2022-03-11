@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block head_content %}
+  <title>Consulta</title>
+{% endblock %}
+
+{% block container %}
+<div>
+  <div id="content">
+      <div class="panel">
+          <div class="panel-heading">
+              <span class="panel-title">Consulta</span>
+          </div>
+          <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+          <div class="panel-body bg-light pt20 pbn pl30">
+              <div class="row">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="col-lg-2">
+                      <div class="input-group">
+                        <span name="search" id="search" class="input-group-addon">
+                          <i class="glyphicons glyphicons-search"></i>
+                        </span>
+                        <input type="text" name="number" id="number" class="form-control" placeholder="Buscar por Número" autofocus value="{{ data.0 }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="{{ data.1 }}" >
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" name="area" id="area" class="form-control" placeholder="Area" value="{{ data.2 }}" >
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group">
+                  <div class="col-lg-4">
+                    <label>Cause</label>
+                    <div id="autocomplete">
+                        <button type="submit" id="search_cause" name="search_cause" hidden></button>
+                        <input type="text" name="cause" id="cause" class="form-control float-right" placeholder="Name" value="{{ fallo }}"/>
+                        <ul class="autocomplete-result-list"></ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <label>Key</label>
+                    <input class="form-control"  id="key" name="key" value="{{ cause_key }}">
+                  </div>
+                  <div class="col-lg-4">
+                    <label>Extra</label>
+                    <select class="form-control float-right" id="extra" name="extra">
+                      <option value="Otro">Otro</option>
+                      <option value="IMSS">IMSS</option>
+                      <option value="Casa">Casa</option>
+                      <option value="Embarazada">Embarazada</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group">
+                  <div class="col-lg-4">
+                    <label>Diagnosis</label>
+                    <textarea class="form-control" rows="1" placeholder="" id="diagnosis" name="diagnosis">{{ data_cause.1 }}</textarea>
+                  </div>
+                  <div class="col-lg-4">
+                    <label>Therapy</label>
+                    <textarea class="form-control" rows="1" placeholder="" id="therapy" name="therapy">{{ data_cause.2 }}</textarea>
+                  </div>
+                  <div class="col-lg-4">
+                    <label>Notes</label>
+                    <textarea class="form-control" rows="1" placeholder="" id="notes" name="notes"></textarea>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="panel-body bg-light">
+            <div class="row">
+              <div class="">
+                <div class="col-lg-2">
+                  <button type="submit" class="btn btn-lg btn-info btn-block" id="save" name="save">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>  
+
+<script>
+  new Autocomplete('#autocomplete', {
+    search: input => {
+      //console.log(input)
+      const url = `/search/?cause=${(input)}`
+      return new Promise(resolve => {
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          resolve(data.data)
+          //console.log(data.data)
+        })
+      })
+    },      
+  })
+
+</script>
+
+{% endblock %}
+
+{% block 'js' %}
+{% endblock %}

@@ -1,46 +1,483 @@
 {% extends "base.html" %} {% load static %} {% block head_content %}
-<title>NormanMexico - Empleados </title>
+<title>NormanMexico - Empleados</title>
 {% endblock%} {% block container %}
 <div>
-    <div id="content">
-        <div class="row">
-
-            <div class="col-md-3">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <span class="panel-title">Carga y Descarga de Empleados</span>
-                    </div>
-                    <div class="panel-body">
-                        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    <label class="control-label mb15">Carga de empleados en excel</label>
-                                    <input type="file" id="upload_empleados" class="form-control" name="upload_employees">
-                                </div>
-                            </div>
-                            <div class='border-bot'>
-                                <input type='submit' class=' border-bot btn btn-default btn-gradient dark btn-block' value="Cargar documento">
-                            </div>
-                        </form>
-                        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action=""> {% csrf_token %}
-                            <div class="form-group panel_header">
-                                <label class="control-label mb15">Descarga de empleados en excel</label>
-                                <input type="hidden" id="download_employees" class="form-control" name="download_employees">
-                            </div>
-                            <div class='border-bot'>
-                                <input type='submit' class='border-bot btn btn-default btn-gradient dark btn-block' value="Descargar Archivo Excel">
-                            </div>
-                        </form>
-                    </div>
+  <div id="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-visible">
+          <div class="panel-body pn">
+            <div
+              id="datatable3_wrapper"
+              class="dataTables_wrapper form-inline dt-bootstrap"
+            >
+              <div class="panel" id="spy4">
+                <div class="panel-heading">
+                  <span class="panel-title">
+                    <span class="glyphicons glyphicons-table"></span>Información
+                    de empleados</span
+                  >
+                  <div class="pull-right">
+                    <code class="mr20">.ft125 .ts .ft150</code>
+                  </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="dt-panelmenu clearfix">
+                  <div
+                    style="width: 100%"
+                    class="dataTables_length"
+                    id="datatable3_length"
+                  >
+                    <label>Busqueda por:</label>
+                  </div>
+                  <div
+                    style="width: 100%"
+                    id="datatable3_filter"
+                    class="dataTables_filter"
+                  >
+                    <div class="search_ajax">
+                      <div class="search_container">
+                        <label
+                        >Nombre
+                        <input
+                          id="name_search"
+                          type="search"
+                          class="form-control input-sm"
+                          placeholder="Ejem: Juan Peréz..."
+                          aria-controls="datatable3"
+                        />
+                      </label>
+                      </div>
+                      <div class="search_line"></div>
+                      <div class="search_container">
 
+                        <label
+                        >Search:
+                        <input
+                          id="s_bar_focused"
+                          type="search"
+                          class="form-control input-sm s_bar_focused"
+                          placeholder="Enter Filter Terms Here...."
+                          aria-controls="datatable3"
+                        />
+                      </label>
+                      </div>
+                    </div>
+                    <div class="search_input" style="z-index: 9">
+                      <div
+                        id="item-handler"
+                        class="options_search search_input"
+                      >
+                        <div class="search_options">Juan Perez 1</div>
+                        <div class="search_options">Juan Perez 2</div>
+                        <div class="search_options">Juan Perez 3</div>
+                        <div class="search_options">Juan Perez 4</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body pn">
+                  <div class="table-responsive">
+                    <table style="max-height: 600px;display: inline-block;                    overflow-y: auto;" class="table table-bordered mbn">
+                      <thead>
+                        <tr>
+                          <th
+                            class="sorting_asc"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-sort="ascending"
+                            aria-label="Name: activate to sort column descending"
+                            style="width: 134px"
+                          >
+                            Número
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Position: activate to sort column ascending"
+                            style="width: 213px"
+                          >
+                            Nombre
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Office: activate to sort column ascending"
+                            style="width: 69px"
+                          >
+                            Edad
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Start date: activate to sort column ascending"
+                            style="width: 93px"
+                          >
+                            Grupo
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Age: activate to sort column ascending"
+                            style="width: 46px"
+                          >
+                            Antiguedad (meses)
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Start date: activate to sort column ascending"
+                            style="width: 93px"
+                          >
+                            Tipo
+                          </th>
+                          <th
+                            class="sorting"
+                            tabindex="0"
+                            aria-controls="datatable3"
+                            rowspan="1"
+                            colspan="1"
+                            aria-label="Start date: activate to sort column ascending"
+                            style="width: 93px"
+                          >
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for employee in employees %}
+                        <tr role="row" class="odd">
+                          <td class="sorting_1">{{employee.number}} 
+                            <img src="{% static 'icons/search.svg' %}" alt="">
+                          </td>
+                          <td>{{employee.name}}</td>
+                          <td>{{employee.age}}</td>
+                          <td>{{employee.group}}</td>
+                          <td>{{employee.antiquity_time}}</td>
+                          <td>{{employee.relation}}</td>
+                          <td>{{employee.status}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dt-panelfooter clearfix">
+                <div
+                  class="dataTables_paginate paging_simple_numbers"
+                  id="datatable3_paginate"
+                >
+                  {% if employees.has_previous %}
+                  <a href="?page={{ employees.previous_page_number }}"
+                    >« Previous page</a
+                  >
+                  {% if employees.number > 3 %} <a href="?page=1">1</a> {% if employees.number > 4 %} <span>...</span> {% endif %} {% endif %} {% endif %} {% for num in employees.paginator.page_range %}
+                  <a href="?page={{ num }}">{{ num }}</a> {% endfor %} {% if employees.has_next %}
+                  <span>...</span>
+                  <a href="?page={{ employees.paginator.num_pages }}"
+                    >{{ employees.paginator.num_pages }}</a
+                  >
+                  <a href="?page={{ employees.next_page_number }}"
+                    >Next Page »</a
+                  >
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="panel">
+          <div class="panel-heading">
+            <span class="panel-title">Carga y Descarga de Empleados</span>
+          </div>
+          <div class="panel-body">
+            <form
+              class="form-horizontal"
+              method="POST"
+              enctype="multipart/form-data"
+              action=""
+            >
+              {% csrf_token %}
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <label class="control-label mb15"
+                    >Carga de empleados en excel</label
+                  >
+                  <input
+                    type="file"
+                    id="upload_empleados"
+                    class="form-control"
+                    name="upload_employees"
+                  />
+                </div>
+              </div>
+              <div class="border-bot">
+                <input
+                  type="submit"
+                  class="border-bot btn btn-default btn-gradient dark btn-block"
+                  value="Cargar documento"
+                />
+              </div>
+            </form>
+            <form
+              class="form-horizontal"
+              method="POST"
+              enctype="multipart/form-data"
+              action=""
+            >
+              {% csrf_token %}
+              <div class="form-group panel_header">
+                <label class="control-label mb15"
+                  >Descarga de empleados en excel</label
+                >
+                <input
+                  type="hidden"
+                  id="download_employees"
+                  class="form-control"
+                  name="download_employees"
+                />
+              </div>
+              <div class="border-bot">
+                <input
+                  type="submit"
+                  class="border-bot btn btn-default btn-gradient dark btn-block"
+                  value="Descargar Archivo Excel"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %} {% block 'js' %}
 <script type="text/javascript">
+  modal_div = document.getElementById("modal-div");
+  window.onclick = (e) => {
+    console.log(e.target); // to get the element
+    console.log(e.target.tagName); // to get the element tag name alone
+    res = e.target.hasAttribute("data-id");
+    if (res) {
+      console.log("2");
+      modal_div.classList.remove("modal-div-none");
+      modal_div.classList.add("modal-div");
+      search_employee(e.target.getAttribute('data-id'))
+    }
+  };
+  var div = document.getElementById("item-handler");
+
+  document.getElementById("name_search").addEventListener("keyup", function () {
+    text = document.getElementById("name_search").value;
+    console.log(text);
+    div.innerHTML = "";
+    $.ajax({
+      url: "{% url 'get_names' %}?text=" + text,
+      type: "get",
+      success: function (data) {
+        console.log(data);
+        data = JSON.parse(data);
+        console.log(data);
+
+        data.forEach(function (item) {
+          var employee = item;
+          console.log(employee);
+          div.insertAdjacentHTML(
+            "beforeend",
+            `
+                    <div class="search_options" name="search_n" data-id="${employee.id}">${employee.name}</div>
+                    `
+          );
+          console.log("aver");
+        });
+      },
+      failure: function (response) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "El producto no ha sido guardado",
+        });
+      },
+    });
+  });
+
+  function activate(opc) {
+    inputs = document.getElementsByClassName("search_n");
+    for (let i = 0, l = inputs.length; i < l; i++) {
+      inputs[i].removeEventListener("click", function (evt) {
+        document.getElementById("p_elem_x").classList.add("elem_visible");
+        
+      });
+    }
+
+    for (let i = 0, l = inputs.length; i < l; i++) {
+      inputs[i].addEventListener("click", function (evt) {
+        modal_div = document.getElementById("modal-div");
+        document.getElementById("p_elem_x").classList.add("elem_visible");
+
+        modal_div.classList.remove("modal-div-none");
+        modal_div.classList.add("modal-div");
+       
+      });
+    }
+
+    if (opc==1){
+      search_employee()
+    }
+  }
+  function removeOptions(selectElement) {
+    var i,
+      L = selectElement.options.length - 1;
+    for (i = L; i >= 0; i--) {
+      selectElement.remove(i);
+    }
+  }
+
+  // using the function:
+  var dummyEl = document.getElementById("name_search");
+  var items_s = document.getElementById("item-handler");
+  document.addEventListener("click", function (event) {
+    var isClickInsideElement = dummyEl.contains(event.target);
+    if (isClickInsideElement) {
+      items_s.classList.remove("search_input");
+      items_s.classList.add("search_input_active");
+    } else {
+      items_s.classList.add("search_input");
+      items_s.classList.remove("search_input_active");
+    }
+  });
+
+
+  modal_div = document.getElementById("modal-div")
+
+
+        modal_cancel.addEventListener("click",function () {
+            modal_div.classList.remove("modal-div")
+            modal_div.classList.add("modal-div-none")
+        });
+
+
+
+  removeOptions(document.getElementById("search_name"));
+
+
+
+  function search_employee(res){
+    console.log("okeyy letsgooo")
+    $.ajax({
+      url: "{% url 'get_employee' %}?id=" + res,
+      type: "get",
+      success: function (data) {
+        data = JSON.parse(data);
+        document.getElementById("emp_id").value = data[0].id
+        document.getElementById("emp_oldnumber").value = data[0].old_number
+        document.getElementById("emp_number").value = data[0].number
+        document.getElementById("emp_name").value = data[0].name
+        document.getElementById('emp_group').value=String(data[0].group);
+        console.log(document.getElementById('emp_group').value)
+        
+        document.getElementById('emp_team').value=String(data[0].team); 
+
+
+        
+        document.getElementById('emp_personal').value=String(data[0].personal);
+        console.log(document.getElementById('emp_personal').value)
+
+        document.getElementById("emp_departament_rp").value = data[0].id
+        document.getElementById('emp_departament_rp').value=String(data[0].department_rp);
+
+        document.getElementById("emp_area_rp").value = data[0].id
+        document.getElementById("emp_position_rp").value = data[0].id
+        document.getElementById("emp_payroll").value = data[0].id
+        document.getElementById("emp_admission_date").value = data[0].id
+        document.getElementById("emp_antiquity").value = data[0].id
+        document.getElementById("emp_status").value = data[0].id
+        document.getElementById("emp_leaving_date").value = data[0].id
+        document.getElementById("emp_reason_of_leaving").value = data[0].id
+        document.getElementById("emp_curp").value = data[0].id
+        document.getElementById("emp_rfc").value = data[0].id
+        document.getElementById("emp_nss").value = data[0].id
+        document.getElementById("emp_age").value = data[0].id
+        document.getElementById("emp_gender").value = data[0].id
+        document.getElementById("emp_department").value = data[0].id
+        document.getElementById("emp_position").value = data[0].id
+        document.getElementById("emp_jacket").value = data[0].id
+        document.getElementById("emp_aplication").value = data[0].id
+        document.getElementById("emp_performance").value = data[0].id
+        document.getElementById("emp_birth_date").value = data[0].id
+        document.getElementById("emp_nationality").value = data[0].id
+        document.getElementById("emp_place_of_birth").value = data[0].id
+        
+        document.getElementById("emp_municipality").value = data[0].id
+        document.getElementById("emp_location").value = data[0].id
+        document.getElementById("emp_division").value = data[0].id
+        document.getElementById("emp_suburb").value = data[0].id
+        document.getElementById("emp_street").value = data[0].id
+        document.getElementById("emp_house_number").value = data[0].id
+        document.getElementById("emp_studies").value = data[0].id
+        document.getElementById("emp_email").value = data[0].id
+        document.getElementById("emp_phone").value = data[0].id
+        document.getElementById("emp_blood_type").value = data[0].id
+        document.getElementById("emp_allergies").value = data[0].id
+        document.getElementById("emp_marital_status").value = data[0].id
+        document.getElementById("emp_route").value = data[0].id
+        document.getElementById("emp_bus_stop").value = data[0].id
+        document.getElementById("emp_emergency_phone1").value = data[0].id
+        document.getElementById("emp_emergency_phone2").value = data[0].id
+        document.getElementById("emp_emergency_phone3").value = data[0].id
+        document.getElementById("emp_schedule").value = data[0].id
+        document.getElementById("emp_number_of_children").value = data[0].id
+        document.getElementById("emp_kid1").value = data[0].id
+        document.getElementById("emp_kid2").value = data[0].id
+        document.getElementById("emp_kid3").value = data[0].id
+        document.getElementById("emp_kid4").value = data[0].id
+        document.getElementById("emp_kid5").value = data[0].id
+        document.getElementById("emp_id_noi").value = data[0].id
+        document.getElementById("emp_boss_support").value = data[0].id
+        document.getElementById("emp_relation").value = data[0].id
+        document.getElementById("emp_picture").value = data[0].id
+        img = document.getElementById("employee_img");
+        name = data[0].name
+        xd = "/static/images/employees/" + name +".jpeg"
+        $.get(xd)
+        .done(function() { 
+          img.src =  "/static/images/employees/" + name +".jpeg"
+        }).fail(function() { 
+          img.src =  "/static/images/employees/tom.jpg"
+        })
+       
+        
+      },
+      failure: function (response) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "El producto no ha sido guardado",
+        });
+      },
+    });
+  }
 </script>
 {% endblock %}

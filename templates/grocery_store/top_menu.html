@@ -1,49 +1,54 @@
 {% load static %}
 <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="{% url 'menu' %}" class="logo">
-                            <img style="width:232px;" src="{% static '/images/utility/Logo_Norman.png' %}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="{% url 'menu' %}" class="">Inicio</a></li>
-                            {% comment %} <li class="scroll-to-section"><a href="index.html">Carito</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Women's</a></li>
-                            <li class="scroll-to-section"><a href="index.html">Kid's</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </li> {% endcomment %}
-                            {% comment %} <li class="submenu">
-                                <a href="javascript:;">Features</a>
-                                <ul>
-                                    <li><a href="#">Features Page 1</a></li>
-                                    <li><a href="#">Features Page 2</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li> {% endcomment %}
-                            <li class="scroll-to-section"><a href="{% url 'cart' %}">Carrito</a></li>
-                            <li class="scroll-to-section"><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
-                        </ul>        
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
+<div style="position: fixed; height: 54px!important;   background-color: #fff159;" class="header-area ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{% url 'menu' %}" class="logo" style="top:-26px">
+                        <img style="width:100%;" src="{% static '/images/utility/Logo_Norman.png' %}">
+                    </a>
+                    <a href="{% url 'menu' %}" class="logo2">
+                        <img style="width:100%;" src="{% static '/images/utility/Logo_Norman_Sencillo.png' %}">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+
+                    <div class="search_bar">
+                        <form method="POST" class="menu_search">
+                            {% csrf_token %}
+                            <input class="search_bar_m " name="search_bar" type="text " id="name " placeholder="Buscar... " required=" ">
+                            <button class="btn_search " type="submit" id="form-submit " class="main-dark-button ">
+                                <i class="fa fa-search " title="Edit "></i>
+                            </button>
+                        </form>
+                    </div>
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav navi">
+                        <li class="scroll-to-section li_item">
+                            <a href="{% url 'menu' %}" class="">Inicio</a>
+                        </li>
+                        <li id="menu_active" class="submenu li_item">
+                            <a id="sub_menu_btn">Categorias
+                            </a>
+                            <ul id="sub_menu" class="submenu_list " style="overflow-y: auto; ">
+                                {% for shop in shops %}
+                                <li class="category_item ">
+                                    <a class="link_menu " href="{% url 'menu' %}?shop={{shop.id}} "> {{ shop.name }} </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="scroll-to-section li_item"><a href="{% url 'cart' %} ">Carrito</a></li>
+                        <li class="scroll-to-section li_item"><a href="{% url 'logout' %} ">Cerrar Sesión</a></li>
+                    </ul>
+                    <a style="right: 13px; top: 10px; z-index: 3; " class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
             </div>
         </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
+    </div>
+</div>
+<!-- ***** Header Area End ***** -->

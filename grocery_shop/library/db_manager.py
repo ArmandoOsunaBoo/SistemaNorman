@@ -28,6 +28,9 @@ def update_cart():
 
 def get_cart(user_id):
     first_date,seccond_date = dates_range()
+    print("selena")
+    print(first_date)
+    print(seccond_date)
     products = Order.objects.filter(date__range=(first_date,seccond_date),id_user=user_id)
     return products
 
@@ -51,6 +54,7 @@ def insert_order(request):
         if Order.objects.filter(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name).exists():
             order = Order.objects.get(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name)
             quantity = float(quantity) + float(order.amount)
+            
             save_order(order,actual_date,quantity,product_unit,product_name,user_name,product_price,user_id,id_product)
             message = "¡Compra Actualizada Correctamente!"
             return message,unit,product
@@ -155,7 +159,7 @@ def dates_range():
         else:
             print("Hoy NO es lunes")
             first_day = x - timedelta(days=offset)
-            seccond_day = x 
+            seccond_day = x
     return first_day,seccond_day
 
 
@@ -173,7 +177,44 @@ def save_order(order,actual_date,quantity,product_unit,product_name,user_name,pr
     order.product_ref = product
     order.save()
 
+def generate_meat_report(week):
+    week2=str(week)
+    week2=week2[-2:]
+    week2=int(week2)
+    start_thuesday = datetime.datetime.strptime(week + '-2', "%Y-W%W-%w")
+    start_thuesday= str(start_thuesday)
+    today = datetime.datetime(int(start_thuesday[0:4]), int(start_thuesday[5:7]), int(start_thuesday[8:10]))
+    next_monday = today + datetime.timedelta( (7-today.weekday()) % 7 )
+    orders = Order.objects.filter(date__range=(today, next_monday),product_ref__shop_name=9).order_by('-id_user')
+    names_dict = {}
+    products_dict={}
+    cont=0
+    cont2=0
+    row=0
+    col=0
+    wb = Workbook()
+    ws = wb.active
+    for order in orders.iterator():
+        print("Las ordenes son: "+ order.user_name)
+        if not order.user_name in names_dict:
+            names_dict[order.user_name] = cont
+            ws.cell(1,2+cont).value = order.user_name
+            cont+=1
+        if not order.product_name in products_dict:
+            products_dict[order.product_name]= cont2
+            ws.cell(2,0+cont).value = order.product_name
+            cont2+=1
+    
+    for order in orders.iterator():
+        ws.cell(names_dict[order.user_name]+2,products_dict[order.product_name]+2).value = order.amount +" "+ order.unit
 
+    wb.save("ListadoCarne.xlsx")
+    fh = open("ListadoCarne.xlsx", 'rb')
+    response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+    response['Content-Disposition'] = 'inline; filename=' + os.path.basename('ListadoCarne.xlsx')
+    return response
+
+        
 
 
 
@@ -191,7 +232,7 @@ def generate_individual_reports(week):
         ws = wb.active
         row=1
         column=1
-        p_row=4
+        p_row=3
         p_column=1
         actual_total=0.0
         old_user=""
@@ -199,29 +240,35 @@ def generate_individual_reports(week):
             actual_user=order.id_user
 
             if actual_user !=old_user and old_user!="":
-                ws.cell(p_row,p_column).value = "TOTAL"
-                ws.cell(p_row,p_column+1).value = "$ "+str(actual_total)
+                #ws.cell(p_row,p_column).value = "TOTAL"
+                ws.cell(row,column+1).value = "$ "+str(actual_total)
                 actual_total=0
-                p_row=4
+                p_row=3
                 p_column=p_column+4
                 row=1
                 column=column+4
             old_user=actual_user
-            ws.cell(row,column).value = "Nombre"
+            ws.cell(row,column).value = order.id_user.username
             ws.cell(row,column+1).value = order.id_user.username
             ws.cell(row+1,column).value = "PRODUCTO"
-            ws.cell(row+1,column+1).value = "CANTIDAD"
+            ws.cell(row+1,column+2).value = "CANTIDAD"
+            ws.cell(row+1,column+3).value = "" #Unidad de medida
+            ws.cell(row+1,column+4).value = "SUBTOTAL"
 
 
             ws.cell(p_row,p_column).value = order.product_name
-            ws.cell(p_row,p_column+1).value = order.amount
-            ws.cell(p_row,p_column+2).value = order.unit
+            ws.cell(p_row,p_column+2).value = order.amount
+            
+            
+            ws.cell(p_row,column+1).value = order.unit_price #Precio Unitario
+            ws.cell(p_row,p_column+3).value = order.unit
+            ws.cell(p_row,p_column+4).value = float(order.amount) * float(order.unit_price)
             actual_total = actual_total + (float(order.unit_price)*float(order.amount))
 
             p_row=p_row+1
 
-        ws.cell(p_row,p_column).value = "TOTAL"
-        ws.cell(p_row,p_column+1).value = "$ "+str(actual_total)
+        #ws.cell(p_row,p_column).value = "TOTAL"
+        ws.cell(row,column+1).value = "$ "+str(actual_total)
 
         wb.save("ListadoCompleto.xlsx")
         fh = open("ListadoCompleto.xlsx", 'rb')
@@ -372,8 +419,9 @@ def generate_reports2(week):
 
 
 
-def insert_order_ajax(request,order_id,user,product):
+def insert_order_ajax(request,order_id,user,product,ammount):
     pass
+    am = ammount
     product_name = product.name
     print(product_name)
     id_product = product.id
@@ -386,15 +434,21 @@ def insert_order_ajax(request,order_id,user,product):
     today = date.today()
     actual_date = today.strftime("%Y-%m-%d")
     try:
+        print("Se entra al try")
         if Order.objects.filter(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name).exists():
+            print("primer if")
             order = Order.objects.get(date__range=(first_day,seccond_day),id_user=user.id,product_name=product_name)
-            quantity = float(order.amount) + 1
+            print("000000000000")
+            quantity = float(order.amount) + float(am)
+           
+            print("jeje "+str(quantity))
             save_order(order,actual_date,quantity,product_unit,product_name,user_name,product_price,user_id,id_product)
             message = "¡Compra Actualizada Correctamente!"
             return message,unit,product
         else:
+            print(" primer else")
             order = Order()
-            save_order(order,actual_date,1,product_unit,product_name,user_name,product_price,user_id,id_product)    
+            save_order(order,actual_date,ammount,product_unit,product_name,user_name,product_price,user_id,id_product)    
             message = "¡Producto Guardado Correctamente!"
     except Exception as e:
         pass

@@ -2,9 +2,9 @@
 <html>
 
 <head>
-      {% block head_content %}{% endblock %} {% load static %}
+    {% block head_content %}{% endblock %} {% load static %}
 
-       <!-- Meta, title, CSS, favicons, etc. -->
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta name="keywords" content="HTML5 Bootstrap 3 Admin Template UI Theme" />
     <meta name="description" content="AdminDesigns - A Responsive HTML5 Admin UI Framework">
@@ -26,13 +26,14 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'assets/img/favicon.ico' %}">
-    
+
     <link rel="stylesheet" type="text/css" href="{% static 'experimental/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'experimental/admin_styles.css' %}">
 
 
 </head>
 
-<body class="dashboard-page sb-l-o sb-r-c">
+<body style="background-color: #ededed;" class="dashboard-page sb-l-o sb-r-c">
 
     <!-- Start: Theme Preview Pane -->
     <div id="skin-toolbox">
@@ -228,7 +229,7 @@
 
                 <!-- sidebar menu -->
                 {% include "left_menu.html" %}
-                 <!-- END of sidebar menu -->
+                <!-- END of sidebar menu -->
                 <div class="sidebar-toggle-mini">
                     <a href="#">
                         <span class="fa fa-sign-out"></span>
@@ -239,7 +240,7 @@
 
         <!-- Start: Content -->
         <section id="content_wrapper">
-              {% block container %} {% endblock%}
+            {% block container %} {% endblock%}
             <!-- Start: Topbar-Dropdown -->
             {% comment %}
             <div id="topbar-dropmenu">
@@ -325,7 +326,7 @@
             <!-- End: Topbar -->
 
             <!-- Begin: Content -->
-            {% comment %} 
+            {% comment %}
             <section id="content">
 
                 <!-- Dashboard Tiles -->
@@ -1413,7 +1414,7 @@
                                         </a>
                                         <div class="media-body">
                                             <h5 class="media-heading p4"> Simon Rivers <br/>
-                      <small>What's up, buddy</small> </h5>
+                                                <small>What's up, buddy</small> </h5>
                                         </div>
                                     </div>
                                     <div class="media">
@@ -1424,7 +1425,7 @@
                                         </a>
                                         <div class="media-body">
                                             <h5 class="media-heading p4"> Tracy Faught <br/>
-                      <small>What's up, buddy</small> </h5>
+                                                <small>What's up, buddy</small> </h5>
                                         </div>
                                     </div>
                                     <div class="media">
@@ -1435,7 +1436,7 @@
                                         </a>
                                         <div class="media-body">
                                             <h5 class="media-heading p4"> Kevin Smith <br/>
-                      <small>What's up, buddy</small> </h5>
+                                                <small>What's up, buddy</small> </h5>
                                         </div>
                                     </div>
                                     <div class="media">
@@ -1446,7 +1447,7 @@
                                         </a>
                                         <div class="media-body">
                                             <h5 class="media-heading p4"> Courtney Sullivan <br/>
-                      <small>What's up, buddy</small> </h5>
+                                                <small>What's up, buddy</small> </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -1616,10 +1617,334 @@
     </div>
     <!-- End: Main -->
 
+    <div id="modal-div" class="modal-div-none">
+        <div class="modal-panel">
+            <div class="controls">
+                <button id="modal_save" class="modal_save">Guardar</button>
+                <button id="modal_close" class="modal_close">Cancelar</button>
+                <input type="hidden" id="modal_action">
+            </div>
+            <div class="modal-information ">
+                <div class="element-modal " >
+                    ID Empleado
+                  <input type="text" id="emp_id" style="background-color: #ededed;" readonly>
+                </div>
+                <div class="element-modal ">
+                    Numero antiguo
+                  <input type="number" id="emp_oldnumber" class="number_input" maxlength="5">
+                </div>
+                <div class="element-modal">
+                    Número Empleado
+                  <input type="number" id="emp_number" class="number_input" maxlength="5">
+                </div>
+                <div class="element-modal">
+                    Nombre
+                  <input type="text" id="emp_name">
+                </div>
+                <div class="element-modal">
+                    Grupo 
+                  <select  id="emp_group">
+                    <option value=""></option>
+                    <option value="ADMINISTRACION">ADMINISTRACION</option>
+                    <option value="DIRECCION" >DIRECCION</option>
+                    <option value="ADMINISTRACION DE PRODUCCION">ADMINISTRACION DE PRODUCCION</option>
+                    <option value="TRADUCCION">TRADUCCION</option>
+                    <option value="RECURSOS HUMANOS">RECURSOS HUMANOS</option>
+                    <option value="COMPRAS">COMPRAS</option>
+                    <option value="ASUNTOS GENERALES">ASUNTOS GENERALES</option>
+                    <option value="INVESTIGACION DE PRODUCCION">INVESTIGACION DE PRODUCCION</option>
+                    <option value="INGENIERIA">INGENIERIA</option>
+                    <option value="GRUPO DE PREPARACION I.M.">GRUPO DE PREPARACION I.M.</option>
+                    <option value="GRUPO DE EXTRUSION">GRUPO DE EXTRUSION</option>
+                    <option value="C MDF">C MDF</option>
+                    <option value="SISTEMAS">SISTEMAS</option>
+                    <option value="DEPARTAMENTO MEDICO">DEPARTAMENTO MEDICO</option>
+                    <option value="B MDF">B MDF</option>
+                    <option value="CONTROL DE PRODUCCION">CONTROL DE PRODUCCION</option>
+                    <option value="A MDF">A MDF</option>
+                    <option value="GRUPO ENSAMBLE I.M.">GRUPO ENSAMBLE I.M.</option>
+                    <option value="FINANZAS">FINANZAS</option>
+                    <option value="HIGIENE Y SEGURIDAD">HIGIENE Y SEGURIDAD</option>
+                    <option value="D MDF">D MDF</option>
+                    <option value="CHOFER">CHOFER</option>
+                    <option value="LIMPIEZA">LIMPIEZA</option>
+                    <option value="GRUPO CARTON">GRUPO CARTON</option>
+                    <option value="GRUPO DE PREPARACION MDF">GRUPO DE PREPARACION MDF</option>
+                    <option value="CARGADOR">CARGADOR</option>
+                    <option value="DIRECCION">DIRECCION</option>
+                    <option value="COCINA">COCINA</option>
+                    <option value="MATERIALES">MATERIALES</option>
+                    <option value="PROGRAMACION DIARIA">PROGRAMACION DIARIA</option>
+                    <option value="IMPO / EXPO">IMPO / EXPO</option>
+                  </select>
+                </div>
+                <div class="element-modal">
+                    Equipo
+                  <select  id="emp_team">
+                    <option value=""></option>
+                    <option value="Calidad">Calidad</option>
+                    <option value="Carpintero">Carpintero</option>
+                    <option value="Empaque">Empaque</option>
+                    <option value="Ensamble 1">Ensamble 1</option>
+                    <option value="Ensamble 2">Ensamble 2</option>
+                    <option value="Ensamble 3">Ensamble 3</option>
+                    <option value="Ensamble 4">Ensamble 4</option>
+                    <option value="Ensamble 5">Ensamble 5</option>
+                    <option value="Ensamble 6">Ensamble 6</option>
+                    <option value="Ensamble 7">Ensamble 7</option>
+                    <option value="Limpieza Exterior">Limpieza Exterior</option>
+                    <option value="Grupo Mantenimiento">Grupo Mantenimiento</option>
+                    <option value="Grupo Mejora e Instalacion">Grupo Mejora e Instalacion</option>
+                    <option value="Lamina">Lamina</option>
+                    <option value="Marco">Marco</option>
+                    <option value="Riel Inferior">Riel Inferior</option>
+                    <option value="Riel Superior">Riel Superior</option>
+                    <option value="Cocina">Cocina</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Equipo 1">Equipo 1</option>
+                    <option value="Equipo 2">Equipo 2</option>
+                  </select>
+                </div>
+                <div class="element-modal">
+                    Personal
+                  <select  id="emp_personal">
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Personal indirecto">Personal indirecto</option>
+                    <option value="Personal semidirecto">Personal semidirecto</option>
+                    <option value="Personal directo">Personal directo</option>
+                  </select>
+                </div>
+                <div class="element-modal">
+                    Departamento
+                  <input type="text" id="emp_departament_rp">
+                  <select  id="emp_personal">
+                    <option value="Administracion">Administracion</option>
+                    <option value="Control de calidad">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                    <option value="Administrativos">Administrativos</option>
+                  </select>
+                </div>
+                <div class="element-modal">
+                    Area
+                  <input type="text" id="emp_area_rp">
+                </div>
+                <div class="element-modal">
+                    Puesto RP
+                  <input type="text" id="emp_position_rp">
+                </div>
+                <div class="element-modal">
+                    Nómina
+                  <input type="text" id="emp_payroll">
+                </div>
+                <div class="element-modal">
+                    Fecha de Admisión
+                  <input type="text" id="emp_admission_date">
+                </div>
+                <div class="element-modal">
+                    Antiguedad
+                  <input type="text" id="emp_antiquity">
+                </div>
+                <div class="element-modal">
+                    Status
+                  <input type="text" id="emp_status">
+                </div>
+                <div class="element-modal">
+                    Fecha de baja
+                  <input type="text" id="emp_leaving_date">
+                </div>
+                <div class="element-modal">
+                    Razón de renuncia
+                  <input type="text" id="emp_reason_of_leaving">
+                </div>
+                <div class="element-modal">
+                    CURP
+                  <input type="text" id="emp_curp">
+                </div>
+                <div class="element-modal">
+                    RFC
+                  <input type="text" id="emp_rfc">
+                </div>
+                <div class="element-modal">
+                    NSS
+                  <input type="text" id="emp_nss">
+                </div>
+                <div class="element-modal">
+                    EDAD
+                  <input type="text" id="emp_age">
+                </div>
+                <div class="element-modal">
+                    Género
+                  <input type="text" id="emp_gender">
+                </div>
+                <div class="element-modal">
+                    Departamento
+                  <input type="text" id="emp_department">
+                </div>
+                <div class="element-modal">
+                    Puesto
+                  <input type="text" id="emp_position">
+                </div>
+
+                <div class="element-modal">
+                    Chaleco
+                  <input type="text" id="emp_jacket">
+                </div>
+                
+                <div class="element-modal">
+                    Aplicación
+                  <input type="text" id="emp_aplication">
+                </div>
+                <div class="element-modal">
+                    Rendimiento
+                  <input type="text" id="emp_performance">
+                </div>
+                <div class="element-modal">
+                    Fecha de nacimiento
+                  <input type="text" id="emp_birth_date">
+                </div>
+                
+                <div class="element-modal">
+                    Nacionalidad
+                  <input type="text" id="emp_nationality">
+                </div>
+                <div class="element-modal">
+                    Lugar de nacimiento
+                  <input type="text" id="emp_place_of_birth">
+                </div>
+                
+                
+                <div class="element-modal">
+                    Municipio
+                  <input type="text" id="emp_municipality">
+                </div>
+                <div class="element-modal">
+                    Localidad
+                  <input type="text" id="emp_location">
+                </div>
+                <div class="element-modal">
+                    Fraccionamiento
+                  <input type="text" id="emp_division">
+                </div>
+                <div class="element-modal">
+                    Colonia
+                  <input type="text" id="emp_suburb">
+                </div>
+                <div class="element-modal">
+                    Calle
+                  <input type="text" id="emp_street">
+                </div>
+                <div class="element-modal">
+                    Número de casa
+                  <input type="text" id="emp_house_number">
+                </div>
+                <div class="element-modal">
+                    Estudios
+                  <input type="text" id="emp_studies">
+                </div>
+                <div class="element-modal">
+                    Correo
+                  <input type="text" id="emp_email">
+                </div>
+                <div class="element-modal">
+                    Télefono
+                  <input type="text" id="emp_phone">
+                </div>
+                <div class="element-modal">
+                    Tipo de sangre
+                  <input type="text" id="emp_blood_type">
+                </div>
+                <div class="element-modal">
+                    Alergias
+                  <input type="text" id="emp_allergies">
+                </div>
+                <div class="element-modal">
+                    Razón Social
+                  <input type="text" id="emp_marital_status">
+                </div>
+                <div class="element-modal">
+                    Ruta
+                  <input type="text" id="emp_route" >
+                </div>
+                <div class="element-modal">
+                    Parada del Bus
+                  <input type="text" id="emp_bus_stop">
+                </div>
+                <div class="element-modal">
+                    Télefono Emergencia 1
+                  <input type="text" id="emp_emergency_phone1">
+                </div>
+                <div class="element-modal">
+                    Télefono Emergencia 2
+                  <input type="text" id="emp_emergency_phone2">
+                </div>
+                <div class="element-modal">
+                    Télefono Emergencia 3
+                  <input type="text" id="emp_emergency_phone3">
+                </div>
+                <div class="element-modal">
+                    Horario
+                  <input type="text" id="emp_schedule">
+                </div>
+                <div class="element-modal">
+                    Número de Hijos
+                  <input type="text" id="emp_number_of_children">
+                </div>
+                <div class="element-modal">
+                    Hijo 1
+                  <input type="text" id="emp_kid1">
+                </div>
+                <div class="element-modal">
+                    Hijo 2
+                  <input type="text" id="emp_kid2">
+                </div>
+                <div class="element-modal">
+                    Hijo 3
+                  <input type="text" id="emp_kid3">
+                </div>
+                <div class="element-modal">
+                    Hijo 4
+                  <input type="text" id="emp_kid4">
+                </div>
+                <div class="element-modal">
+                    Hijo 5
+                  <input type="text" id="emp_kid5">
+                </div>
+                <div class="element-modal">
+                    ID NOI
+                  <input type="text" id="emp_id_noi">
+                </div>
+                <div class="element-modal">
+                    Apoyo Jefe
+                  <input type="text" id="emp_boss_support">
+                </div>
+                <div class="element-modal">
+                    Relación
+                  <input type="text" id="emp_relation">
+                </div>
+                <div class="element-modal">
+                    Imagen
+                  <input type="text" id="emp_picture">
+                </div>
+                <div class="element-modal">
+                    Visualización
+                    <div class="modal-image">
+                        <img class="background_img" id="employee_img" src="{% static 'images/employees/' %}" alt="">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
     <!-- BEGIN: PAGE SCRIPTS -->
 
     <!-- Google Map API -->
-    {% comment %} <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> {% endcomment %}
+    {% comment %}
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> {% endcomment %}
 
     <!-- jQuery -->
     <script type="text/javascript" src="{% static 'vendor/jquery/jquery-1.11.1.min.js' %}"></script>
@@ -1653,11 +1978,23 @@
     <script type="text/javascript" src="{% static 'assets/js/pages/widgets.js' %}"></script>
 
 
-    
+
 
 
 
     <script type="text/javascript">
+
+        modal_cancel = document.getElementById("modal_close")
+        modal_save = document.getElementById("modal_save")
+        modal_div = document.getElementById("modal-div")
+
+
+        modal_cancel.addEventListener("click",function () {
+            modal_div.classList.remove("modal-div")
+            modal_div.classList.add("modal-div-none")
+        });
+
+
         jQuery(document).ready(function() {
 
             "use strict";
@@ -1793,13 +2130,12 @@
                     runJvectorMap();
                 }
             }
-            
+
         });
     </script>
 
     <!-- END: PAGE SCRIPTS -->
-    {% block 'js' %}
-    {% endblock %}
+    {% block 'js' %} {% endblock %}
 </body>
 
 </html>
