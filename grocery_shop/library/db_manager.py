@@ -196,17 +196,18 @@ def generate_meat_report(week):
     ws = wb.active
     for order in orders.iterator():
         print("Las ordenes son: "+ order.user_name)
+        print("Las ordenes son: "+ order.product_name)
         if not order.user_name in names_dict:
             names_dict[order.user_name] = cont
             ws.cell(1,2+cont).value = order.user_name
             cont+=1
         if not order.product_name in products_dict:
             products_dict[order.product_name]= cont2
-            ws.cell(2,0+cont).value = order.product_name
+            ws.cell(2+cont2,1).value = order.product_name
             cont2+=1
     
     for order in orders.iterator():
-        ws.cell(names_dict[order.user_name]+2,products_dict[order.product_name]+2).value = order.amount +" "+ order.unit
+        ws.cell(products_dict[order.product_name]+2,names_dict[order.user_name]+2).value = order.amount +" "+ order.unit
 
     wb.save("ListadoCarne.xlsx")
     fh = open("ListadoCarne.xlsx", 'rb')
@@ -244,9 +245,10 @@ def generate_individual_reports(week):
                 ws.cell(row,column+1).value = "$ "+str(actual_total)
                 actual_total=0
                 p_row=3
-                p_column=p_column+4
+                p_column=p_column+6
                 row=1
-                column=column+4
+                column=column+6
+
             old_user=actual_user
             ws.cell(row,column).value = order.id_user.username
             ws.cell(row,column+1).value = order.id_user.username
