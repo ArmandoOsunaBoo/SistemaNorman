@@ -4,7 +4,7 @@
 <div>
   <div id="content">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <div class="panel panel-visible">
           <div class="panel-body pn">
             <div
@@ -22,6 +22,11 @@
                   </div>
                 </div>
                 <div class="dt-panelmenu clearfix">
+                  <div style="width:170px;" >
+                  <button id="btn_create" type="button" class="border-bot btn btn-default btn-gradient dark btn-block">
+                    Crear nuevo empleado
+                  </button>
+                  </div>
                   <div
                     style="width: 100%"
                     class="dataTables_length"
@@ -48,7 +53,7 @@
                       </label>
                       </div>
                       <div class="search_line"></div>
-                      <div class="search_container">
+                    {% comment %}   <div class="search_container">
 
                         <label
                         >Search:
@@ -60,7 +65,7 @@
                           aria-controls="datatable3"
                         />
                       </label>
-                      </div>
+                      </div> {% endcomment %}
                     </div>
                     <div class="search_input" style="z-index: 9">
                       <div
@@ -76,8 +81,8 @@
                   </div>
                 </div>
                 <div class="panel-body pn">
-                  <div class="table-responsive">
-                    <table style="max-height: 600px;display: inline-block;                    overflow-y: auto;" class="table table-bordered mbn">
+                  <div class="table-responsive" style="display:grid;">
+                    <table style="width: fit-content; margin: 10px auto; max-height: 600px;display: inline-block; overflow-y: auto;" class="table table-bordered mbn">
                       <thead>
                         <tr>
                           <th
@@ -164,7 +169,7 @@
                         {% for employee in employees %}
                         <tr role="row" class="odd">
                           <td class="sorting_1">{{employee.number}} 
-                            <img src="{% static 'icons/search.svg' %}" alt="">
+                            <img name="search_glass" src="{% static 'icons/search.svg' %}" alt="" data-id="{{employee.id}}">
                           </td>
                           <td>{{employee.name}}</td>
                           <td>{{employee.age}}</td>
@@ -269,19 +274,107 @@
           </div>
         </div>
       </div>
+ 
     </div>
   </div>
 </div>
 
 {% endblock %} {% block 'js' %}
 <script type="text/javascript">
+
+  search_glasses = document.getElementsByClassName("search_glass")
+
+
+  for (let i = 0, l = search_glasses.length; i < l; i++) {
+    search_employee(e.target.getAttribute('data-id'))
+    search_glasses[i].addEventListener("click", function (evt) {
+      document.getElementById("p_elem_x").classList.add("elem_visible");
+    });
+  }
+
+
+
+  btn_create = document.getElementById("btn_create")
+  
+  btn_create.addEventListener("click",function () {
+    document.getElementById("modal_form").value=0
+    modal_div.classList.remove("modal-div")
+    modal_div.classList.add("modal-div-none")
+  });
+
+
+
+function clear_all(){
+          document.getElementById("emp_id").value = ""
+          document.getElementById("emp_oldnumber").value =  ""
+          document.getElementById("emp_number").value = ""
+          document.getElementById("emp_name").value =  ""
+          document.getElementById('emp_group').value= ""
+          document.getElementById('emp_team').value= ""
+          document.getElementById('emp_personal').value= ""
+          document.getElementById("emp_departament_rp").value =  ""
+          document.getElementById('emp_departament_rp').value= ""
+          document.getElementById("emp_area_rp").value =  ""
+          document.getElementById("emp_position_rp").value =  ""
+          document.getElementById("emp_payroll").value =  "" 
+          document.getElementById("emp_admission_date").value =  ""
+          document.getElementById("emp_antiquity").value =  ""
+          document.getElementById("emp_status").value =  ""
+          document.getElementById("emp_leaving_date").value =  ""
+          document.getElementById("emp_reason_of_leaving").value =  ""
+          document.getElementById("emp_curp").value =  ""
+          document.getElementById("emp_rfc").value =  ""
+          document.getElementById("emp_nss").value =  ""
+          document.getElementById("emp_age").value =  ""
+          document.getElementById("emp_gender").value =  ""
+          document.getElementById("emp_department").value =  ""
+          document.getElementById("emp_position").value =  ""
+          document.getElementById("emp_jacket").value =  ""
+          document.getElementById("emp_aplication").value =  ""
+          document.getElementById("emp_performance").value =  ""
+          document.getElementById("emp_birth_date").value =  ""
+          document.getElementById("emp_nationality").value =  ""
+          document.getElementById("emp_place_of_birth").value =  ""
+          document.getElementById("emp_municipality").value = ""
+          document.getElementById("emp_location").value =  ""
+          document.getElementById("emp_division").value =  ""
+          document.getElementById("emp_suburb").value =  ""
+          document.getElementById("emp_street").value =  ""
+          document.getElementById("emp_house_number").value =  ""
+          document.getElementById("emp_studies").value =  ""
+          document.getElementById("emp_email").value =  ""
+          document.getElementById("emp_phone").value =  ""
+          document.getElementById("emp_blood_type").value =  ""
+          document.getElementById("emp_allergies").value =  ""
+          document.getElementById("emp_marital_status").value =  ""
+          document.getElementById("emp_route").value =  ""
+          document.getElementById("emp_bus_stop").value =  ""
+          document.getElementById("emp_emergency_phone1").value =  ""
+          document.getElementById("emp_emergency_phone2").value =  ""
+          document.getElementById("emp_emergency_phone3").value = ""
+          document.getElementById("emp_schedule").value =  ""
+          document.getElementById("emp_number_of_children").value =  ""
+          document.getElementById("emp_kid1").value =  ""
+          document.getElementById("emp_kid2").value =  ""
+          document.getElementById("emp_kid3").value =  ""
+          document.getElementById("emp_kid4").value =  ""
+          document.getElementById("emp_kid5").value =  ""
+          document.getElementById("emp_id_noi").value =  ""
+          document.getElementById("emp_boss_support").value =  ""
+          document.getElementById("emp_relation").value =  ""
+          document.getElementById("employee_img").src= "";
+          
+        }
+
+  var polea =0;
+
+
   modal_div = document.getElementById("modal-div");
   window.onclick = (e) => {
     console.log(e.target); // to get the element
     console.log(e.target.tagName); // to get the element tag name alone
     res = e.target.hasAttribute("data-id");
     if (res) {
-      console.log("2");
       modal_div.classList.remove("modal-div-none");
       modal_div.classList.add("modal-div");
       search_employee(e.target.getAttribute('data-id'))
@@ -291,26 +384,21 @@
 
   document.getElementById("name_search").addEventListener("keyup", function () {
     text = document.getElementById("name_search").value;
-    console.log(text);
     div.innerHTML = "";
     $.ajax({
       url: "{% url 'get_names' %}?text=" + text,
       type: "get",
       success: function (data) {
-        console.log(data);
         data = JSON.parse(data);
-        console.log(data);
 
         data.forEach(function (item) {
           var employee = item;
-          console.log(employee);
           div.insertAdjacentHTML(
             "beforeend",
             `
                     <div class="search_options" name="search_n" data-id="${employee.id}">${employee.name}</div>
                     `
           );
-          console.log("aver");
         });
       },
       failure: function (response) {
@@ -323,15 +411,27 @@
     });
   });
 
+
+
+  btn_create.addEventListener("click", function (evt) {
+      modal_div = document.getElementById("modal-div"); 
+      clear_all()
+      modal_div.classList.remove("modal-div-none");
+      modal_div.classList.add("modal-div");
+     
+    });
+
+
   function activate(opc) {
+    polea=1;
     inputs = document.getElementsByClassName("search_n");
+
     for (let i = 0, l = inputs.length; i < l; i++) {
       inputs[i].removeEventListener("click", function (evt) {
         document.getElementById("p_elem_x").classList.add("elem_visible");
-        
       });
     }
-
+    
     for (let i = 0, l = inputs.length; i < l; i++) {
       inputs[i].addEventListener("click", function (evt) {
         modal_div = document.getElementById("modal-div");
@@ -346,7 +446,9 @@
     if (opc==1){
       search_employee()
     }
+
   }
+
   function removeOptions(selectElement) {
     var i,
       L = selectElement.options.length - 1;
@@ -382,10 +484,9 @@
 
   removeOptions(document.getElementById("search_name"));
 
-
-
+        
   function search_employee(res){
-    console.log("okeyy letsgooo")
+    document.getElementById("modal_form").value=1
     $.ajax({
       url: "{% url 'get_employee' %}?id=" + res,
       type: "get",
@@ -396,68 +497,70 @@
         document.getElementById("emp_number").value = data[0].number
         document.getElementById("emp_name").value = data[0].name
         document.getElementById('emp_group').value=String(data[0].group);
-        console.log(document.getElementById('emp_group').value)
         
         document.getElementById('emp_team').value=String(data[0].team); 
 
 
         
         document.getElementById('emp_personal').value=String(data[0].personal);
-        console.log(document.getElementById('emp_personal').value)
 
         document.getElementById("emp_departament_rp").value = data[0].id
         document.getElementById('emp_departament_rp').value=String(data[0].department_rp);
 
-        document.getElementById("emp_area_rp").value = data[0].id
-        document.getElementById("emp_position_rp").value = data[0].id
-        document.getElementById("emp_payroll").value = data[0].id
-        document.getElementById("emp_admission_date").value = data[0].id
-        document.getElementById("emp_antiquity").value = data[0].id
-        document.getElementById("emp_status").value = data[0].id
-        document.getElementById("emp_leaving_date").value = data[0].id
-        document.getElementById("emp_reason_of_leaving").value = data[0].id
-        document.getElementById("emp_curp").value = data[0].id
-        document.getElementById("emp_rfc").value = data[0].id
-        document.getElementById("emp_nss").value = data[0].id
-        document.getElementById("emp_age").value = data[0].id
-        document.getElementById("emp_gender").value = data[0].id
-        document.getElementById("emp_department").value = data[0].id
-        document.getElementById("emp_position").value = data[0].id
-        document.getElementById("emp_jacket").value = data[0].id
-        document.getElementById("emp_aplication").value = data[0].id
-        document.getElementById("emp_performance").value = data[0].id
-        document.getElementById("emp_birth_date").value = data[0].id
-        document.getElementById("emp_nationality").value = data[0].id
-        document.getElementById("emp_place_of_birth").value = data[0].id
+        document.getElementById("emp_area_rp").value =String(data[0].area_rp)
+        document.getElementById("emp_position_rp").value = String(data[0].position_rp)
+        document.getElementById("emp_payroll").value = String(data[0].payroll)
+        fecha =String(data[0].admission_date)
+        document.getElementById("emp_admission_date").value = (fecha.substring(0,10))
+        var today = new Date();
+        var ad_date = new Date(fecha.substring(0,10));
+        document.getElementById("emp_antiquity").value = String(monthDiff(ad_date,today))
+        document.getElementById("emp_status").value = String(data[0].status)
+        document.getElementById("emp_leaving_date").value = String(data[0].leaving_date.substring(0,10))
+        document.getElementById("emp_reason_of_leaving").value = String(data[0].reason_of_leaving)
+        document.getElementById("emp_curp").value = String(data[0].curp)
+        document.getElementById("emp_rfc").value = String(data[0].rfc)
+        document.getElementById("emp_nss").value = String(data[0].nss)
+        document.getElementById("emp_age").value = String(getAge(data[0].birth_date.substring(0,10)))
+
+        document.getElementById("emp_gender").value = String(data[0].gender)
+        document.getElementById("emp_department").value = String(data[0].department)
+        document.getElementById("emp_position").value = String(data[0].position)
+        document.getElementById("emp_jacket").value = String(data[0].jacket)
+        document.getElementById("emp_aplication").value = String(data[0].aplication.substring(0,10))
+        document.getElementById("emp_performance").value = String(data[0].performance)
+        document.getElementById("emp_birth_date").value = String(data[0].birth_date.substring(0,10))
+        document.getElementById("emp_nationality").value = String(data[0].nationality)
+        document.getElementById("emp_place_of_birth").value = String(data[0].place_of_birth)
         
-        document.getElementById("emp_municipality").value = data[0].id
-        document.getElementById("emp_location").value = data[0].id
-        document.getElementById("emp_division").value = data[0].id
-        document.getElementById("emp_suburb").value = data[0].id
-        document.getElementById("emp_street").value = data[0].id
-        document.getElementById("emp_house_number").value = data[0].id
-        document.getElementById("emp_studies").value = data[0].id
-        document.getElementById("emp_email").value = data[0].id
-        document.getElementById("emp_phone").value = data[0].id
-        document.getElementById("emp_blood_type").value = data[0].id
-        document.getElementById("emp_allergies").value = data[0].id
-        document.getElementById("emp_marital_status").value = data[0].id
-        document.getElementById("emp_route").value = data[0].id
-        document.getElementById("emp_bus_stop").value = data[0].id
-        document.getElementById("emp_emergency_phone1").value = data[0].id
-        document.getElementById("emp_emergency_phone2").value = data[0].id
-        document.getElementById("emp_emergency_phone3").value = data[0].id
-        document.getElementById("emp_schedule").value = data[0].id
-        document.getElementById("emp_number_of_children").value = data[0].id
-        document.getElementById("emp_kid1").value = data[0].id
-        document.getElementById("emp_kid2").value = data[0].id
-        document.getElementById("emp_kid3").value = data[0].id
-        document.getElementById("emp_kid4").value = data[0].id
-        document.getElementById("emp_kid5").value = data[0].id
-        document.getElementById("emp_id_noi").value = data[0].id
-        document.getElementById("emp_boss_support").value = data[0].id
-        document.getElementById("emp_relation").value = data[0].id
-        document.getElementById("emp_picture").value = data[0].id
+        document.getElementById("emp_municipality").value =String(data[0].municipality)
+        document.getElementById("emp_location").value = String(data[0].location)
+        document.getElementById("emp_division").value = String(data[0].division)
+        document.getElementById("emp_suburb").value = String(data[0].suburb)
+        document.getElementById("emp_street").value = String(data[0].street)
+        document.getElementById("emp_house_number").value = String(data[0].house_number)
+        document.getElementById("emp_studies").value = String(data[0].studies)
+        document.getElementById("emp_email").value =String(data[0].email)
+        document.getElementById("emp_phone").value =String(data[0].phone)
+        document.getElementById("emp_blood_type").value = String(data[0].blood_type)
+        document.getElementById("emp_allergies").value = String(data[0].allergies)
+        document.getElementById("emp_marital_status").value = String(data[0].marital_status)
+        document.getElementById("emp_route").value = String(data[0].route)
+        document.getElementById("emp_bus_stop").value = String(data[0].bus_stop)
+        document.getElementById("emp_emergency_phone1").value = String(data[0].emergency_phone_1)
+        document.getElementById("emp_emergency_phone2").value = String(data[0].emergency_phone_2)
+        document.getElementById("emp_emergency_phone3").value = String(data[0].emergency_phone_3)
+        document.getElementById("emp_schedule").value = String(data[0].schedule)
+        document.getElementById("emp_number_of_children").value = String(data[0].number_of_children)
+        document.getElementById("emp_kid1").value = String(data[0].age_of_kid_1)
+        document.getElementById("emp_kid2").value = String(data[0].age_of_kid_2)
+        document.getElementById("emp_kid3").value =String(data[0].age_of_kid_3)
+        document.getElementById("emp_kid4").value = String(data[0].age_of_kid_4)
+        document.getElementById("emp_kid5").value = String(data[0].age_of_kid_5)
+        document.getElementById("emp_id_noi").value = String(data[0].id_noi)
+        document.getElementById("emp_boss_support").value = String(data[0].boss_support)
+        document.getElementById("emp_relation").value = String(data[0].relation)
+
         img = document.getElementById("employee_img");
         name = data[0].name
         xd = "/static/images/employees/" + name +".jpeg"
@@ -467,7 +570,7 @@
         }).fail(function() { 
           img.src =  "/static/images/employees/tom.jpg"
         })
-       
+        
         
       },
       failure: function (response) {
@@ -479,5 +582,25 @@
       },
     });
   }
+
+
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+function monthDiff(d1, d2) {
+  var months;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  return months <= 0 ? 0 : months;
+}
 </script>
 {% endblock %}

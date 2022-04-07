@@ -47,7 +47,7 @@ class Employees(models.Model):
     rfc = models.CharField(max_length=30,blank=True,verbose_name='RFC')
     nss = models.CharField(max_length=30,blank=True,verbose_name='NSS')
     birth_date = models.CharField(max_length=20,blank=True,verbose_name='Fecha de Nacimiento')
-    age = models.CharField(max_length=20,blank=True,verbose_name='Edad')
+    age = models.CharField(max_length=20,blank=True,verbose_name='Edad',default=0)
     gender = models.CharField(max_length=20,blank=True,verbose_name='Sexo')
     department = models.CharField(max_length=30,blank=True,verbose_name='Departamento')
     position = models.CharField(max_length=100,blank=True,verbose_name='Puesto')
@@ -100,7 +100,7 @@ class Employees(models.Model):
         da=(datetime.date.today() - datetime.date(int(a[0:4]), int(a[5:7]), int(a[8:10]))   ).days
         a = ( int(da / 365.25))
         return a
-
+ 
     @property
     def antiquity_time(self):
         a=self.admission_date[0:10]

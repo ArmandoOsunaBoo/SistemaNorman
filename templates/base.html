@@ -29,7 +29,9 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'experimental/styles.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'experimental/admin_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/sweetalertv11.3.0/dist/sweetalert2.min.css' %}">
 
+   
 
 </head>
 
@@ -310,6 +312,7 @@
                         <label for="topbar-multiple" class="control-label pr10 fs11 text-muted">Reporting Period</label>
                         <select id="topbar-multiple" multiple="multiple">
                             <optgroup label="Filter By:">
+                                <option value="no">Seleccione uno...</option>
                                 <option value="1-1">Last 30 Days</option>
                                 <option value="1-2" selected="selected">Last 60 Days</option>
                                 <option value="1-3">Last Year</option>
@@ -1618,33 +1621,38 @@
     <!-- End: Main -->
 
     <div id="modal-div" class="modal-div-none">
-        <div class="modal-panel">
+        <form method="post" enctype="multipart/form-data" style="height:100%;">
+            {% csrf_token %}
+        <div class="modal-panel" style="height:90%;">
             <div class="controls">
-                <button id="modal_save" class="modal_save">Guardar</button>
-                <button id="modal_close" class="modal_close">Cancelar</button>
+                <button type="subtmit" id="modal_save" class="modal_save">Guardar</button>
+                <button type="button" id="modal_close" class="modal_close">Cancelar</button>
+                <button type="button" id="modal_delete" class="modal_close">Borrar</button>
                 <input type="hidden" id="modal_action">
             </div>
+            <input id="modal_form" type="hidden" name="modal_form" value="0">
             <div class="modal-information ">
-                <div class="element-modal " >
+                <div class="element-modal ">
                     ID Empleado
-                  <input type="text" id="emp_id" style="background-color: #ededed;" readonly>
+                  <input type="text" id="emp_id" name="emp_id" style="background-color: #ededed;" readonly>
                 </div>
                 <div class="element-modal ">
                     Numero antiguo
-                  <input type="number" id="emp_oldnumber" class="number_input" maxlength="5">
+                  <input type="number" id="emp_oldnumber" name="emp_oldnumber" class="number_input" maxlength="5" required>
                 </div>
                 <div class="element-modal">
                     Número Empleado
-                  <input type="number" id="emp_number" class="number_input" maxlength="5">
+                  <input type="number" id="emp_number" name="emp_number" class="number_input" maxlength="5" required>
                 </div>
                 <div class="element-modal">
                     Nombre
-                  <input type="text" id="emp_name">
+                  <input type="text" id="emp_name" name="emp_name" required>
                 </div>
                 <div class="element-modal">
                     Grupo 
-                  <select  id="emp_group">
-                    <option value=""></option>
+                  <select  id="emp_group" name="emp_group">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="">No Aplica</option>
                     <option value="ADMINISTRACION">ADMINISTRACION</option>
                     <option value="DIRECCION" >DIRECCION</option>
                     <option value="ADMINISTRACION DE PRODUCCION">ADMINISTRACION DE PRODUCCION</option>
@@ -1680,8 +1688,9 @@
                 </div>
                 <div class="element-modal">
                     Equipo
-                  <select  id="emp_team">
-                    <option value=""></option>
+                  <select  id="emp_team" name="emp_team">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="">No Aplica</option>
                     <option value="Calidad">Calidad</option>
                     <option value="Carpintero">Carpintero</option>
                     <option value="Empaque">Empaque</option>
@@ -1707,7 +1716,8 @@
                 </div>
                 <div class="element-modal">
                     Personal
-                  <select  id="emp_personal">
+                  <select  id="emp_personal" name="emp_personal">
+                    <option value="no">Seleccione uno...</option>
                     <option value="Administrativos">Administrativos</option>
                     <option value="Personal indirecto">Personal indirecto</option>
                     <option value="Personal semidirecto">Personal semidirecto</option>
@@ -1715,176 +1725,410 @@
                   </select>
                 </div>
                 <div class="element-modal">
-                    Departamento
-                  <input type="text" id="emp_departament_rp">
-                  <select  id="emp_personal">
+                    Departamento 
+                  <select  id="emp_departament_rp" name="emp_departament_rp">
+                    <option value="no">Seleccione uno...</option>
                     <option value="Administracion">Administracion</option>
-                    <option value="Control de calidad">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
-                    <option value="Administrativos">Administrativos</option>
+                    <option value="Control de calidad">Control de calidad</option>
+                    <option value="Control de produccion">Control de produccion</option>
+                    <option value="Finanzas">Finanzas</option>
+                    <option value="Imitacion madera">Imitacion madera</option>
+                    <option value="Investigacion de produccion">Investigacion de produccion</option>
+                    <option value="MDF">MDF</option>
+                    <option value="Produccion">Produccion</option>
+                    <option value="Tenologia de produccion">Tenologia de produccion</option>
                   </select>
                 </div>
                 <div class="element-modal">
-                    Area
-                  <input type="text" id="emp_area_rp">
+                    Area 
+                    <select    id="emp_area_rp" name="emp_area_rp">
+                        <option value="Administracion">Administracion</option>
+                        <option value="A MDF">A MDF</option>
+                        <option value="Asuntos generales">Asuntos generales</option>
+                        <option value="B MDF">B MDF</option>
+                        <option value="C MDF">C MDF</option>
+                        <option value="Compras">Compras</option>
+                        <option value="D MDF">D MDF</option>
+                        <option value="Departamento">Departamento</option>
+                        <option value="Ensamble de imitacion madera">Ensamble de imitacion madera</option>
+                        <option value="Extrusion">Extrusion</option>
+                        <option value="Finanzas 1">Finanzas 1</option>
+                        <option value="Grupo de carton">Grupo de carton</option>
+                        <option value="Imitacion madera">Imitacion madera</option>
+                        <option value="Impo/Expo">Impo/Expo</option>
+                        <option value="Ingenieria 1">Ingenieria 1</option>
+                        <option value="Investigacion de produccion">Investigacion de produccion</option>
+                        <option value="MDF">MDF</option>
+                        <option value="Preparacion de imitacion madera">Preparacion de imitacion madera</option>
+                        <option value="Producto final">Producto final</option>
+                        <option value="Programacion diaria">Programacion diaria</option>
+                        <option value="Recursos humanos">Recursos humanos</option>
+                        <option value="Sistemas">Sistemas</option>
+                        <option value="Preparacion de MDF">Preparacion de MDF</option>
+                    </select>
+
                 </div>
                 <div class="element-modal">
-                    Puesto RP
-                  <input type="text" id="emp_position_rp">
+                    Puesto RP 
+                  <select id="emp_position_rp"  name="emp_position_rp" >
+                    <option value="no">Seleccione uno...</option>
+                    <option value="Administracion">Administracion</option>
+                    <option value="Asistente">Asistente</option>
+                    <option value="Chofer">Chofer</option>
+                    <option value="Cocinera">Cocinera</option>
+                    <option value="Especialista/ejecutivo">Especialista/ejecutivo</option>
+                    <option value="Jefe de area">Jefe de area</option>
+                    <option value="Jefe de equipo">Jefe de equipo</option>
+                    <option value="Jefe de linea/grupo">Jefe de linea/grupo</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Operadores">Operadores</option>
+                    <option value="Técnicos">Técnicos</option>
+                    <option value="Departamento">Departamento</option>
+                </select>
                 </div>
                 <div class="element-modal">
-                    Nómina
-                  <input type="text" id="emp_payroll">
+                    Nómina 
+                  <select id="emp_payroll" name="emp_payroll">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Fecha de Admisión
-                  <input type="text" id="emp_admission_date">
+                  <input type="date" id="emp_admission_date" name="emp_admission_date">
                 </div>
                 <div class="element-modal">
-                    Antiguedad
-                  <input type="text" id="emp_antiquity">
+                    Antiguedad en meses
+                  <input type="text" id="emp_antiquity" name="emp_antiquity">
                 </div>
                 <div class="element-modal">
-                    Status
-                  <input type="text" id="emp_status">
+                    Status 
+                  <select id="emp_status" name="emp_status">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Baja">Baja</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Fecha de baja
-                  <input type="text" id="emp_leaving_date">
+                  <input type="date" id="emp_leaving_date" name="emp_leaving_date">
                 </div>
                 <div class="element-modal">
                     Razón de renuncia
-                  <input type="text" id="emp_reason_of_leaving">
+                  <input type="text" id="emp_reason_of_leaving" name="emp_reason_of_leaving">
                 </div>
                 <div class="element-modal">
                     CURP
-                  <input type="text" id="emp_curp">
+                  <input type="text" id="emp_curp" name="emp_curp">
                 </div>
                 <div class="element-modal">
                     RFC
-                  <input type="text" id="emp_rfc">
+                  <input type="text" id="emp_rfc" name="emp_rfc">
                 </div>
                 <div class="element-modal">
                     NSS
-                  <input type="text" id="emp_nss">
+                  <input type="text" id="emp_nss" name="emp_nss">
+                </div>
+                
+                <div class="element-modal">
+                    Fecha de nacimiento
+                  <input type="date" id="emp_birth_date" name="emp_birth_date">
                 </div>
                 <div class="element-modal">
                     EDAD
-                  <input type="text" id="emp_age">
+                  <input type="text" id="emp_age" name="emp_age">
                 </div>
                 <div class="element-modal">
                     Género
-                  <input type="text" id="emp_gender">
+                  <input type="text" id="emp_gender" name="emp_gender">
                 </div>
                 <div class="element-modal">
-                    Departamento
-                  <input type="text" id="emp_department">
+                    Departamento 
+                  <select id="emp_department" name="emp_department">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="ADMINISTRACION">ADMINISTRACION</option>
+                    <option value="PRODUCCION">PRODUCCION</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Puesto
-                  <input type="text" id="emp_position">
+                  <input type="text" id="emp_position"  name="emp_position">
                 </div>
 
                 <div class="element-modal">
-                    Chaleco
-                  <input type="text" id="emp_jacket">
+                    Chaleco 
+                  <select id="emp_jacket" name="emp_jacket">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="NO APLICA">NO APLICA</option>
+                    <option value="VERDE">VERDE</option>
+                    <option value="SUB-VERDE">SUB-VERDE</option>
+                    <option value="AMARILLO">AMARILLO</option>
+                    <option value="NARANJA">VERDE</option>
+                  </select>
                 </div>
                 
                 <div class="element-modal">
                     Aplicación
-                  <input type="text" id="emp_aplication">
+                  <input type="date" id="emp_aplication" name="emp_aplication">
                 </div>
                 <div class="element-modal">
                     Rendimiento
-                  <input type="text" id="emp_performance">
-                </div>
-                <div class="element-modal">
-                    Fecha de nacimiento
-                  <input type="text" id="emp_birth_date">
+                  <select id="emp_performance" name="emp_performance">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="NO">NO</option>
+                    <option value="SI">SI</option>
+                  </select>
                 </div>
                 
                 <div class="element-modal">
-                    Nacionalidad
-                  <input type="text" id="emp_nationality">
+                    Nacionalidad 
+                  <select id="emp_nationality" name="emp_nationality">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="Mexicano(a)">Mexicano(a)</option>
+                    <option value="Taiwán">Taiwán</option>
+                    <option value="China">China</option>
+                  </select>
                 </div>
                 <div class="element-modal">
-                    Lugar de nacimiento
-                  <input type="text" id="emp_place_of_birth">
+                    Lugar de nacimiento 
+                  <select name="emp_place_of_birth"  id="emp_place_of_birth">
+                    <option value="no">Seleccione uno...</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Baja California">Baja California</option>
+                    <option value="Baja California Sur">Baja California Sur</option>
+                    <option value="Campeche">Campeche</option>
+                    <option value="Chiapas">Chiapas</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="CDMX">Ciudad de México</option>
+                    <option value="Coahuila">Coahuila</option>
+                    <option value="Colima">Colima</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Estado de México">Estado de México</option>
+                    <option value="Guanajuato">Guanajuato</option>
+                    <option value="Guerrero">Guerrero</option>
+                    <option value="Hidalgo">Hidalgo</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="Michoacán">Michoacán</option>
+                    <option value="Morelos">Morelos</option>
+                    <option value="Nayarit">Nayarit</option>
+                    <option value="Nuevo León">Nuevo León</option>
+                    <option value="Oaxaca">Oaxaca</option>
+                    <option value="Puebla">Puebla</option>
+                    <option value="Querétaro">Querétaro</option>
+                    <option value="Quintana Roo">Quintana Roo</option>
+                    <option value="San Luis Potosí">San Luis Potosí</option>
+                    <option value="Sinaloa">Sinaloa</option>
+                    <option value="Sonora">Sonora</option>
+                    <option value="Tabasco">Tabasco</option>
+                    <option value="Tamaulipas">Tamaulipas</option>
+                    <option value="Tlaxcala">Tlaxcala</option>
+                    <option value="Veracruz">Veracruz</option>
+                    <option value="Yucatán">Yucatán</option>
+                    <option value="Zacatecas">Zacatecas</option>
+                </select>
                 </div>
                 
                 
                 <div class="element-modal">
                     Municipio
-                  <input type="text" id="emp_municipality">
+                  <select id="emp_municipality" name="emp_municipality">
+                    <option value="Acapulco">Acapulco</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Apodaca">Apodaca</option>
+                    <option value="Buenavista">Buenavista</option>
+                    <option value="Campeche">Campeche</option>
+                    <option value="Cancún">Cancún</option>
+                    <option value="Celaya">Celaya</option>
+                    <option value="Chalco">Chalco</option>
+                    <option value="Chetumal">Chetumal</option>
+                    <option value="Chicoloapan">Chicoloapan</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="Chilpancingo">Chilpancingo</option>
+                    <option value="Chimalhuacán">Chimalhuacán</option>
+                    <option value="Ciudad Acuña">Ciudad Acuña</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
+                    <option value="Ciudad del Carmen">Ciudad del Carmen</option>
+                    <option value="Ciudad López Mateos">Ciudad López Mateos</option>
+                    <option value="Ciudad Madero">Ciudad Madero</option>
+                    <option value="Ciudad Obregón">Ciudad Obregón</option>
+                    <option value="Ciudad Valles">Ciudad Valles</option>
+                    <option value="Ciudad Victoria">Ciudad Victoria</option>
+                    <option value="Coatzacoalcos">Coatzacoalcos</option>
+                    <option value="Colima">Colima</option>
+                    <option value="Córdoba">Córdoba</option>
+                    <option value="Cuauhtémoc">Cuauhtémoc</option>
+                    <option value="Cuautitlán">Cuautitlán</option>
+                    <option value="Cuautitlán Izcalli">Cuautitlán Izcalli</option>
+                    <option value="Cuautla">Cuautla</option>
+                    <option value="Cuernavaca">Cuernavaca</option>
+                    <option value="Culiacán">Culiacán</option>
+                    <option value="Delicias">Delicias</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Ecatepec">Ecatepec</option>
+                    <option value="Ensenada">Ensenada</option>
+                    <option value="Fresnillo">Fresnillo</option>
+                    <option value="General Escobedo">General Escobedo</option>
+                    <option value="Gómez Palacio">Gómez Palacio</option>
+                    <option value="Guadalajara">Guadalajara</option>
+                    <option value="Guadalupe">Guadalupe</option>
+                    <option value="Guaymas">Guaymas</option>
+                    <option value="Hermosillo">Hermosillo</option>
+                    <option value="Hidalgo del Parral">Hidalgo del Parral</option>
+                    <option value="Iguala">Iguala</option>
+                    <option value="Irapuato">Irapuato</option>
+                    <option value="Ixtapaluca">Ixtapaluca</option>
+                    <option value="Jiutepec">Jiutepec</option>
+                    <option value="Juárez">Juárez</option>
+                    <option value="La Paz">La Paz</option>
+                    <option value="León">León</option>
+                    <option value="Los Cabos">Los Cabos</option>
+                    <option value="Los Mochis">Los Mochis</option>
+                    <option value="Manzanillo">Manzanillo</option>
+                    <option value="Matamoros">Matamoros</option>
+                    <option value="Mazatlán">Mazatlán</option>
+                    <option value="Mérida">Mérida</option>
+                    <option value="Mexicali">Mexicali</option>
+                    <option value="Minatitlán">Minatitlán</option>
+                    <option value="Miramar">Miramar</option>
+                    <option value="Monclova">Monclova</option>
+                    <option value="Monterrey">Monterrey</option>
+                    <option value="Morelia">Morelia</option>
+                    <option value="Naucalpan">Naucalpan</option>
+                    <option value="Naucalpan de Juárez">Naucalpan de Juárez</option>
+                    <option value="Navojoa">Navojoa</option>
+                     <option value="Nezahualcóyotl">Nezahualcóyotl</option>
+
+                     <option value="Nogales">Nogales</option>
+
+                     <option value="Nuevo Laredo">Nuevo Laredo</option>
+                     <option value="Oaxaca de Juárez">Oaxaca de Juárez</option>
+                     <option value="Ojo de Agua">Ojo de Agua</option>
+                     <option value="Orizaba">Orizaba</option>
+                     <option value="Pachuca">Pachuca</option>
+                     <option value="Piedras Negras">Piedras Negras</option>
+                     <option value="Playa del Carmen">Playa del Carmen</option>
+                     <option value="Poza Rica de Hidalgo">Poza Rica de Hidalgo</option>
+                     <option value="Puebla">Puebla</option>
+                     <option value="Puerto Vallarta">Puerto Vallarta</option>
+                     <option value="Querétaro">Querétaro</option>
+                     <option value="Reynosa">Reynosa</option>
+                     <option value="Salamanca">Salamanca</option>
+                     <option value="Saltillo">Saltillo</option>
+                     <option value="San Cristóbal de las Casas">San Cristóbal de las Casas</option>
+                     <option value="San Francisco Coacalco">San Francisco Coacalco</option>
+                     <option value="San Juan Bautista Tuxtepec">San Juan Bautista Tuxtepec</option>
+                     <option value="San Juan del Río">San Juan del Río</option>
+                     <option value="San Luis Potosí">San Luis Potosí</option>
+                     <option value="San Luis Río Colorado">San Luis Río Colorado</option>
+                     <option value="San Miguel de Allende">San Miguel de Allende</option>
+                     <option value="San Nicolás de los Garza">San Nicolás de los Garza</option>
+                     <option value="San Pablo de las Salinas">San Pablo de las Salinas</option>
+                     <option value="San Pedro Garza García">San Pedro Garza García</option>
+                     <option value="Santa Catarina">Santa Catarina</option>
+                     <option value="Soledad de Graciano Sánchez">Soledad de Graciano Sánchez</option>
+                     <option value="Tampico">Tampico</option>
+                     <option value="Tapachula">Tapachula</option>
+                     <option value="Taxco">Taxco</option>
+                     <option value="Tehuacán">Tehuacán</option>
+                     <option value="Tepexpan">Tepexpan</option>
+                     <option value="Tepic">Tepic</option>
+                     <option value="Texcoco de Mora">Texcoco de Mora</option>
+                     <option value="Tijuana">Tijuana</option>
+                     <option value="Tlalnepantla">Tlalnepantla</option>
+                     <option value="Tlaquepaque">Tlaquepaque</option>
+                     <option value="Toluca">Toluca</option>
+                     <option value="Tonalá">Tonalá</option>
+                     <option value="Torreón">Torreón</option>
+                     <option value="Tulancingo de Bravo">Tulancingo de Bravo</option>
+                     <option value="Tuxtla">Tuxtla</option>
+                     <option value="Uruapan">Uruapan</option>
+                     <option value="Veracruz">Veracruz</option>
+                     <option value="Villa de Álvarez">Villa de Álvarez</option>
+                     <option value="Villa Nicolás Romero">Villa Nicolás Romero</option>
+                     <option value="Villahermosa">Villahermosa</option>
+                     <option value="Xalapa Enriquez">Xalapa Enriquez</option>
+                     <option value="Xico">Xico</option>
+                     <option value="Zacatecas">Zacatecas</option>
+                     <option value="Zamora">Zamora</option>
+                     <option value="Zapopan">Zapopan</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Localidad
-                  <input type="text" id="emp_location">
+                  <input type="text" id="emp_location" name="emp_location">
                 </div>
                 <div class="element-modal">
                     Fraccionamiento
-                  <input type="text" id="emp_division">
+                  <input type="text" id="emp_division" name="emp_division">
                 </div>
                 <div class="element-modal">
                     Colonia
-                  <input type="text" id="emp_suburb">
+                  <input type="text" id="emp_suburb" name="emp_suburb">
                 </div>
                 <div class="element-modal">
                     Calle
-                  <input type="text" id="emp_street">
+                  <input type="text" id="emp_street" name="emp_street">
                 </div>
                 <div class="element-modal">
                     Número de casa
-                  <input type="text" id="emp_house_number">
+                  <input type="text" id="emp_house_number" name="emp_house_number">
                 </div>
                 <div class="element-modal">
                     Estudios
-                  <input type="text" id="emp_studies">
+                  <select id="emp_studies" name="emp_studies">
+                    <option value="SUPERIOR">SUPERIOR</option>
+                    <option value="SUPERIOR TRUNCA">SUPERIOR TRUNCA</option>
+                    <option value="PREPARATORIA">PREPARATORIA</option>
+                    <option value="PREPARATORIA TRUNCA">PREPARATORIA TRUNCA</option>
+                    <option value="SECUNDARIA">SECUNDARIA</option>
+                    <option value="SECUNDARIA TRUNCA">SECUNDARIA TRUNCA</option>
+                    <option value="PRIMARIA">PRIMARIA</option>
+                    <option value="PRIMARIA TRUNCA">PRIMARIA TRUNCA</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Correo
-                  <input type="text" id="emp_email">
+                  <input type="email" id="emp_email" name="emp_email">
                 </div>
                 <div class="element-modal">
                     Télefono
-                  <input type="text" id="emp_phone">
+                  <input type="text" id="emp_phone" name="emp_phone">
                 </div>
                 <div class="element-modal">
                     Tipo de sangre
-                  <input type="text" id="emp_blood_type">
+                  <input type="text" id="emp_blood_type" name="emp_blood_type">
                 </div>
                 <div class="element-modal">
                     Alergias
-                  <input type="text" id="emp_allergies">
+                  <input type="text" id="emp_allergies" name="emp_allergies">
                 </div>
                 <div class="element-modal">
                     Razón Social
-                  <input type="text" id="emp_marital_status">
+                  <input type="text" id="emp_marital_status" name="emp_marital_status">
                 </div>
                 <div class="element-modal">
                     Ruta
-                  <input type="text" id="emp_route" >
+                  <input type="text" id="emp_route" name="emp_route" >
                 </div>
                 <div class="element-modal">
                     Parada del Bus
-                  <input type="text" id="emp_bus_stop">
+                  <input type="text" id="emp_bus_stop" name="emp_bus_stop">
                 </div>
                 <div class="element-modal">
                     Télefono Emergencia 1
-                  <input type="text" id="emp_emergency_phone1">
+                  <input type="text"  id="emp_emergency_phone1" name="emp_emergency_phone1">
                 </div>
                 <div class="element-modal">
                     Télefono Emergencia 2
-                  <input type="text" id="emp_emergency_phone2">
+                  <input type="text" id="emp_emergency_phone2" name="emp_emergency_phone2">
                 </div>
                 <div class="element-modal">
                     Télefono Emergencia 3
-                  <input type="text" id="emp_emergency_phone3">
+                  <input type="text" id="emp_emergency_phone3" name="emp_emergency_phone3">
                 </div>
                 <div class="element-modal">
                     Horario
@@ -1892,53 +2136,59 @@
                 </div>
                 <div class="element-modal">
                     Número de Hijos
-                  <input type="text" id="emp_number_of_children">
+                  <input type="text" id="emp_number_of_children" name="emp_number_of_children">
                 </div>
                 <div class="element-modal">
                     Hijo 1
-                  <input type="text" id="emp_kid1">
+                  <input type="text" id="emp_kid1" name="emp_kid1>
                 </div>
                 <div class="element-modal">
                     Hijo 2
-                  <input type="text" id="emp_kid2">
+                  <input type="text" id="emp_kid2" names="emp_kid2">
                 </div>
                 <div class="element-modal">
                     Hijo 3
-                  <input type="text" id="emp_kid3">
+                  <input type="text" id="emp_kid3" name="emp_kid3">
                 </div>
                 <div class="element-modal">
                     Hijo 4
-                  <input type="text" id="emp_kid4">
+                  <input type="text" id="emp_kid4" name="emp_kid4">
                 </div>
                 <div class="element-modal">
                     Hijo 5
-                  <input type="text" id="emp_kid5">
+                  <input type="text" id="emp_kid5" name="emp_kid5">
                 </div>
                 <div class="element-modal">
                     ID NOI
-                  <input type="text" id="emp_id_noi">
+                  <input type="text" id="emp_id_noi" name="emp_id_noi">
                 </div>
                 <div class="element-modal">
                     Apoyo Jefe
-                  <input type="text" id="emp_boss_support">
+                  <input type="text" id="emp_boss_support" name="emp_boss_support">
                 </div>
                 <div class="element-modal">
                     Relación
-                  <input type="text" id="emp_relation">
+                  <select id="emp_relation" name="emp_relation">
+                    <option value="">NO APLICA</option>
+                    <option value="CONFIANZA">CONFIANZA</option>
+                    <option value="SINDICALIZADO">SINDICALIZADO</option>
+                    <option value="EXT">EXT</option>
+                  </select>
                 </div>
                 <div class="element-modal">
                     Imagen
-                  <input type="text" id="emp_picture">
+                  <input type="file" id="emp_picture" name="emp_picture" onchange="loadFile(event)">
                 </div>
                 <div class="element-modal">
                     Visualización
                     <div class="modal-image">
-                        <img class="background_img" id="employee_img" src="{% static 'images/employees/' %}" alt="">
+                        <img class="background_img" id="employee_img"  name="employee_img" src="{% static 'images/employees/' %}" alt="">
                     </div>
                 </div>
                 
             </div>
         </div>
+    </form>
     </div>
     <!-- BEGIN: PAGE SCRIPTS -->
 
@@ -1976,6 +2226,7 @@
 
     <!-- Page Javascript -->
     <script type="text/javascript" src="{% static 'assets/js/pages/widgets.js' %}"></script>
+    <script src="{% static 'assets/sweetalertv11.3.0/dist/sweetalert2.all.min.js' %}"></script>
 
 
 
@@ -1984,16 +2235,72 @@
 
     <script type="text/javascript">
 
+        modal_delete = document.getElementById("modal_delete")
+
+
+        modal_delete.addEventListener("click",function () {
+            emp_id= document.getElementById("emp_id").value
+            console.log("hey")
+            console.log(emp_id)
+            console.log(emp_id == "")
+            if(emp_id == ""){
+                Swal.fire('No hay ningún empleado para borrar selecionado')
+            }else{
+                Swal.fire({
+                    title: '¿Quieres borrar al empleado?', 
+                    showCancelButton: true,
+                    confirmButtonText: 'Borrar',
+                  }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{% url 'delete_employee' %}?id_tax=" + emp_id,
+                            type: "get",
+                            success: function (data) {
+                              data = JSON.parse(data);
+                            
+                            },
+                            failure: function (response) {
+                              Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "El empleado no pudo haber sido eliminado",
+                              });
+                            },
+                          });
+                          document.getElementById("modal_form").value=0
+                        modal_div.classList.remove("modal-div-none")
+                        modal_div.classList.add("modal-div")
+                      Swal.fire('Empleado eliminado correctamente!', '', 'success')
+                    } else if (result.isDenied) {
+                        modal_div.classList.remove("modal-div-none")
+                        modal_div.classList.add("modal-div")
+                      Swal.fire('Empleado no eliminado', '', 'info')
+                    }
+                  })
+            }
+
+            
+
+
+        });
+
         modal_cancel = document.getElementById("modal_close")
         modal_save = document.getElementById("modal_save")
         modal_div = document.getElementById("modal-div")
+        
 
-
+        
         modal_cancel.addEventListener("click",function () {
             modal_div.classList.remove("modal-div")
             modal_div.classList.add("modal-div-none")
         });
 
+        employee_img = document.getElementById("employee_img");
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            employee_img.src = URL.createObjectURL(event.target.files[0]);
+        };
 
         jQuery(document).ready(function() {
 
@@ -2007,18 +2314,6 @@
             // Init Demo JS
             Demo.init();
 
-            // Init Widget Demo JS
-            // demoHighCharts.init();
-
-            // Because we are using Admin Panels we use the OnFinish 
-            // callback to activate the demoWidgets. It's smoother if
-            // we let the panels be moved and organized before 
-            // filling them with content from various plugins
-
-            // Init plugins used on this page
-            // HighCharts, JvectorMap, Admin Panels
-
-            // Init Admin Panels on widgets inside the ".admin-panels" container
             $('.admin-panels').adminpanel({
                 grid: '.admin-grid',
                 draggable: true,

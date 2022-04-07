@@ -13,6 +13,8 @@ from openpyxl import Workbook
 import os
 from PyPDF3 import PdfFileMerger
 
+from django.http.response import HttpResponse
+
 def merge_payroll(excel_files):
     pass
     merger = PdfFileMerger()
@@ -390,7 +392,6 @@ def generate_payroll(excel_file):
 
 
     ruta=os.getcwd()
-    print(ruta[0:3])
     try:
         os.mkdir("C:/tempx")
     except:
@@ -410,7 +411,6 @@ def generate_payroll(excel_file):
             worker_number =  sheet.cell(row=fila, column=columna).value
 
         valor = sheet.cell(row=fila, column=columna).value """
-        #print("clave: "+worker_number+" "+str(columna)+" "+str(valor))
     
 
 def print_payroll_movements(fila,sheet,clave_emp,per_ded,codigo,fecha,monto):
@@ -689,16 +689,6 @@ def upload_incidences(excel_file):
     thursday = process_excel_date(ws.cell(3,35).value,wb)
     friday= process_excel_date(ws.cell(3,41).value,wb)
     saturday= process_excel_date(ws.cell(3,47).value,wb)
-    print("************")
-    print(sunday)
-    print(monday)
-    print(thuesday)
-    print(wednesday)
-    print(thursday)
-    print(friday)
-    print(saturday)
-    print(ws.nrows)
-    print(ws.ncols)
 
     for j,a in enumerate(range(ws.nrows)):
         #Las asistencias se guardan con un 0 en horas, lo que significa que trabajo 8 horas y 0 horas extra
@@ -760,13 +750,10 @@ def upload_incidences(excel_file):
                 if(event_sunday=="A"):
                     pass
                     if(extras_sunday!=""):
-                        print("============================")
-                        print(extras_sunday)
                         upload_incideces(employee_number,employee_name,"A",sunday,extras_sunday,0)
 
                 elif(event_sunday=="DL"):
                     pass
-                    print(extras_sunday)
                     upload_incideces(employee_number,employee_name,"DL",sunday,extras_sunday,0)
                 #MONDAY
                 if(event_monday=="A"):
@@ -787,11 +774,9 @@ def upload_incidences(excel_file):
                         upload_incideces(employee_number,employee_name,"V",monday,v_monday,0)
                 elif(event_monday=="DL"):
                     pass
-                    print(extras_sunday)
                     upload_incideces(employee_number,employee_name,"DL",monday,extras_monday,0)
                 elif(event_monday=="F" or event_monday=="f"):
                     pass
-                    print(extras_sunday)
                     upload_incideces(employee_number,employee_name,"F",monday,8,0)
                 else:
                     upload_incideces(employee_number,employee_name,event_monday,monday,8,0)
@@ -1294,3 +1279,147 @@ def create_payroll_excels():
 def process_excel_date(cell_value,wb):
     day = datetime.datetime(*xlrd.xldate_as_tuple(cell_value, wb.datemode))
     return day
+
+
+def last_employee(date_d):
+    emps = Attendance.objects.filter(date=date_d).order_by('employee','date','time')
+    num=0
+    for emp in emps.iterator():
+        pass
+        num=emp.number
+    return num
+        
+
+
+def create_day_attendance(date_d):
+    pass
+    attendance = Attendance.objects.filter(date=date_d).order_by('employee','date','time')
+    wb = Workbook()
+    ws = wb.active
+    ws['A1'] = "Fecha"
+    ws['B1'] = str(date_d)
+    ws['A2'] = "Area"
+    ws['B2'] = "No.Empleado"
+    ws['C2'] = "Nombre"
+    ws['D2'] = "Falta Checadas"
+    ws['E2'] = "Autorización por falta de checadas"
+    ws['F2'] = "Firma"
+
+    number = ""
+    oldnumber = ""
+    event_final=""
+    ws_row = 3
+    ws_column = 1
+    eval0 = 0
+    eval1 = 0
+    eval2 = 0
+    eval3 = 0
+    eval4 = 0
+    eval5 = 0
+    eval6 = ""
+    name1 = ""
+    oldnumber = ""
+    oldname = ""
+    olddepartment = ""
+    texto_checadas = ""
+    texto_checadas2 = ""
+    department1 = ""
+    
+    last = []
+
+    numero_final = last_employee(date_d)
+    for att in attendance.iterator():
+        date = att.date
+        time = att.time
+        number1 = att.number
+        event = att.event
+        device = att.device
+        employee = att.employee
+
+        if eval6 == "" and number1 != oldnumber or number1 == numero_final:
+            pass
+            if numero_final == number1:
+                pass
+                last.append(event)
+                
+
+            oldnumber = number1
+            oldname = employee
+            olddepartment = department1
+            eval6 = "1"
+
+        elif number1 != oldnumber :
+            emps2 = Employees.objects.filter(number=number1)
+ 
+            for emp2 in emps2.iterator():
+                department1 = emp2.department_rp
+                
+            if eval0 == 0:
+                pass
+                texto_checadas2=texto_checadas2+"Entrada - "
+            if eval1 == 0:
+                texto_checadas = texto_checadas+"Salida a descanso - "
+            if eval2 == 0:
+                texto_checadas = texto_checadas+"Regreso descanso - "
+            if eval3 == 0:
+                pass
+                texto_checadas2 = texto_checadas2+"Salida - "
+            if eval4 == 1 or eval5 == 1:
+                if eval4 == 0:
+                    texto_checadas = texto_checadas+"Entrada T.E. - "
+                if eval5 == 0:
+                        texto_checadas = texto_checadas+"Salida T.E. - "
+            ws.cell(ws_row, ws_column).value = olddepartment
+            ws.cell(ws_row, ws_column+1).value = oldnumber
+            ws.cell(ws_row, ws_column+2).value = oldname
+            ws.cell(ws_row, ws_column+3).value = texto_checadas
+            if(texto_checadas != ""):
+                ws.cell(ws_row, ws_column+4).value = 1
+            ws.cell(ws_row, ws_column+6).value = texto_checadas2
+            oldnumber = number1
+            olddepartment = department1
+            oldname = employee
+            ws_row = 1+ws_row
+
+            # Reseteo de variables
+            eval0 = 0
+            eval1 = 0
+            eval2 = 0
+            eval3 = 0
+            eval4 = 0
+            eval5 = 0
+            texto_checadas = ""
+            texto_checadas2 = ""
+        # Evaluacion para imprimir el texto
+        if event == "Entrada":
+            eval0 = 1
+        if event == "Salida a descanso":
+            eval1 = 1
+        if event == "Regreso descanso":
+            eval2 = 1
+        if event == "Salida":
+            eval3 = 1
+        if event == "Entrada T.E.":
+            eval4 = 1
+        if event == "Salida T.E.":
+            eval5 = 1
+
+    if(texto_checadas != ""):
+        ws.cell(ws_row, ws_column+4).value = 1
+    if "Salida a descanso" not in last:
+        pass
+        event_final = event_final+"Salida descanso - "
+    if "Regreso descanso" not in last:
+        event_final = event_final+"Regreso a descanso - "
+    if eval4 == 1 or eval5 == 1:
+        if 'Entrada T.E.' not in last:
+            event_final = event_final+"Entrada T.E. - "
+        if 'Salida T.E.' not in last:
+            pass
+            event_final = texto_checadas+"Salida T.E. - "
+    ws.cell(ws_row, ws_column).value = olddepartment
+    ws.cell(ws_row, ws_column+1).value = oldnumber
+    ws.cell(ws_row, ws_column+2).value = oldname
+    ws.cell(ws_row, ws_column+3).value = event_final
+    wb.save("FaltaChecadas.xlsx")
+     

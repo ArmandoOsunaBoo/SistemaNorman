@@ -183,6 +183,7 @@ def generate_meat_report(week):
     week2=int(week2)
     start_thuesday = datetime.datetime.strptime(week + '-2', "%Y-W%W-%w")
     start_thuesday= str(start_thuesday)
+    
     today = datetime.datetime(int(start_thuesday[0:4]), int(start_thuesday[5:7]), int(start_thuesday[8:10]))
     next_monday = today + datetime.timedelta( (7-today.weekday()) % 7 )
     orders = Order.objects.filter(date__range=(today, next_monday),product_ref__shop_name=9).order_by('-id_user')
@@ -192,10 +193,14 @@ def generate_meat_report(week):
     cont2=0
     row=0
     col=0
+    print("------------")
+    print(today)
+    print(next_monday)
+    print(len(orders))
     wb = Workbook()
     ws = wb.active
     for order in orders.iterator():
-        print("Las ordenes son: "+ order.user_name)
+        print("El dueño es : "+ order.user_name)
         print("Las ordenes son: "+ order.product_name)
         if not order.user_name in names_dict:
             names_dict[order.user_name] = cont
