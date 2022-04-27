@@ -681,20 +681,19 @@ def upload_incidences(excel_file):
     ws = wb.sheet_by_name("INGRESO DE DATOS")
 
     
-    
-    sunday= process_excel_date(ws.cell(3,15).value,wb)
-    monday= process_excel_date(ws.cell(3,17).value,wb)
-    thuesday= process_excel_date(ws.cell(3,23).value,wb)
-    wednesday= process_excel_date(ws.cell(3,29).value,wb)
-    thursday = process_excel_date(ws.cell(3,35).value,wb)
-    friday= process_excel_date(ws.cell(3,41).value,wb)
-    saturday= process_excel_date(ws.cell(3,47).value,wb)
+    sunday= process_excel_date(ws.cell(4,16).value,wb)
+    monday= process_excel_date(ws.cell(4,18).value,wb)
+    thuesday= process_excel_date(ws.cell(4,24).value,wb)
+    wednesday= process_excel_date(ws.cell(4,30).value,wb)
+    thursday = process_excel_date(ws.cell(4,35).value,wb)
+    friday= process_excel_date(ws.cell(4,41).value,wb)
+    saturday= process_excel_date(ws.cell(4,47).value,wb)
 
     for j,a in enumerate(range(ws.nrows)):
         #Las asistencias se guardan con un 0 en horas, lo que significa que trabajo 8 horas y 0 horas extra
         #... si tiene horas extra vendra la asistencia con un numero
         #... los minutos que se quitan de esas 8 horas salen del resultado de guardar PS,R,F
-        if j>=5:
+        if j>=6:
                 employee_number = ws.cell(j,1).value
                 employee_number =str(employee_number)
                 employee_number=employee_number[:-2]
@@ -961,6 +960,7 @@ def upload_employees(ws,wb):
             ne = ne[:-2]
             try:
                 cont=cont+1
+                print(cont)
                 emp = Employees.objects.get(master_id=ne)
                 if emp:
                     load_employee(i,ws,wb,emp)
@@ -973,13 +973,12 @@ def upload_employees(ws,wb):
 
 def load_employee(i,ws,wb,employee):
     id = str(ws.cell(i, 0).value)
-    
     employee.master_id = id[:-2]
     old = str(ws.cell(i, 1).value)
     employee.old_number = old[:-2]
     numberx = str(ws.cell(i, 2).value)
     numberx = numberx[:-2]
-    employee.number = numberx
+    employee.number = numberx 
     employee.name = ws.cell(i, 3).value
     employee.group = ws.cell(i, 4).value
     employee.team = ws.cell(i, 5).value
@@ -988,7 +987,6 @@ def load_employee(i,ws,wb,employee):
     employee.area_rp = ws.cell(i, 8).value
     employee.position_rp = ws.cell(i, 9).value
     employee.payroll = ws.cell(i, 10).value
-
     a1 = ws.cell_value(i, 11)
     a1_as_datetime = datetime.datetime(*xlrd.xldate_as_tuple(a1, wb.datemode))
     employee.admission_date = a1_as_datetime
@@ -1013,27 +1011,32 @@ def load_employee(i,ws,wb,employee):
         employee.birth_date = a1_as_datetime
     else:
         employee.birth_date = ""
+     
+    employee.e_age = ws.cell(i, 20).value
     
-    employee.age = ws.cell(i, 20).value
     employee.gender = ws.cell(i, 21).value
     employee.department = ws.cell(i, 22).value
     employee.position = ws.cell(i, 23).value
+    
     employee.jacket = ws.cell(i, 24).value
-    employee.application = ws.cell(i, 25).value
-    employee.performance = ws.cell(i, 26).value
-    employee.nationality = ws.cell(i, 27).value
-    employee.place_of_birth = ws.cell(i, 28).value
-    employee.municipality = ws.cell(i, 29).value
-    employee.location = ws.cell(i, 30).value
-    employee.division = ws.cell(i, 31).value
-    employee.suburb = ws.cell(i, 32).value
-    employee.street = ws.cell(i, 33).value
-    employee.house_number = ws.cell(i, 34).value
-    employee.studies = ws.cell(i, 35).value
-    employee.email = ws.cell(i, 36).value
-    employee.phone = ws.cell(i, 37).value
+    
+    employee.relation = ws.cell(i, 25).value
+    employee.application = ws.cell(i, 26).value
+    employee.performance = ws.cell(i, 27).value
+    employee.nationality = ws.cell(i, 28).value
+    employee.place_of_birth = ws.cell(i, 29).value
+    employee.municipality = ws.cell(i, 30).value
+    employee.location = ws.cell(i, 31).value
+    employee.division = ws.cell(i, 32).value
+    employee.suburb = ws.cell(i, 33).value
+    employee.street = ws.cell(i, 34).value
+    employee.house_number = ws.cell(i, 35).value
+    employee.studies = ws.cell(i, 36).value
+    employee.email = ws.cell(i, 37).value
+    employee.phone = ws.cell(i, 38).value
+    
     try:
-        list = ws.cell(i, 38).value
+        list = ws.cell(i, 39).value
         if list !="":
                 if list.find('/') != -1:
                     value = list.split('/')
@@ -1052,22 +1055,22 @@ def load_employee(i,ws,wb,employee):
     except Exception as e:
         print("Error"+str(e))
 
-    employee.marital_status = ws.cell(i,39).value
-    employee.route = ws.cell(i, 40).value
-    employee.bus_stop = ws.cell(i, 41).value
-    employee.emergency_phone_1 = ws.cell(i, 42).value
-    employee.emergency_phone_2 = ws.cell(i, 43).value
-    employee.emergency_phone_3 = ws.cell(i, 44).value
-    employee.schedule = ws.cell(i, 45).value
-    employee.number_of_children = ws.cell(i, 46).value
-    employee.age_of_kid_1 = ws.cell(i, 47).value
-    employee.age_of_kid_2 = ws.cell(i, 48).value
-    employee.age_of_kid_3 = ws.cell(i, 49).value
-    employee.age_of_kid_4= ws.cell(i, 50).value
-    employee.age_of_kid_5 = ws.cell(i, 51).value
-    employee.id_noi = ws.cell(i, 52).value
-    employee.boss_support = ws.cell(i, 53).value
-    employee.relation = ws.cell(i, 54).value
+    employee.marital_status = ws.cell(i,40).value
+    employee.route = ws.cell(i, 41).value
+    employee.bus_stop = ws.cell(i, 42).value
+    employee.emergency_phone_1 = ws.cell(i, 43).value
+    employee.emergency_phone_2 = ws.cell(i, 44).value
+    employee.emergency_phone_3 = ws.cell(i, 45).value
+    employee.schedule = ws.cell(i, 46).value
+    employee.number_of_children = ws.cell(i, 47).value
+    employee.age_of_kid_1 = ws.cell(i, 48).value
+    employee.age_of_kid_2 = ws.cell(i, 49).value
+    employee.age_of_kid_3 = ws.cell(i, 50).value
+    employee.age_of_kid_4= ws.cell(i, 51).value
+    employee.age_of_kid_5 = ws.cell(i, 52).value
+    employee.id_noi = ws.cell(i, 53).value
+    employee.boss_support = ws.cell(i, 54).value
+    employee.habilities = ws.cell(i, 55).value
     employee.save()
 
 def insert_on_excel(wb,ws,employee,row):
@@ -1138,7 +1141,12 @@ def insert_on_excel(wb,ws,employee,row):
     ws.cell(row, c).value = employee.birth_date
     ws.cell(1, 20).value = "Fecha de Nacimiento"
     c=c+1
-    ws.cell(row, c).value = employee.age
+    a=employee.admission_date[0:10]
+    print(a)
+    da=(datetime.date.today() - datetime.date(int(a[0:4]), int(a[5:7]), int(a[8:10]))).days
+    a = ( (da / 31.4))
+    
+    ws.cell(row, c).value = "{:.2f}".format(a)
     ws.cell(1, 21).value = "Edad"
     c=c+1
     ws.cell(row, c).value = employee.gender
@@ -1153,95 +1161,98 @@ def insert_on_excel(wb,ws,employee,row):
     ws.cell(row, c).value = employee.jacket
     ws.cell(1, 25).value = "Chaleco"
     c=c+1
+    ws.cell(row, c).value = employee.relation
+    ws.cell(1, 26).value = "Relacion"
+    c=c+1
     ws.cell(row, c).value = employee.aplication
-    ws.cell(1, 26).value = "Aplicacion"
+    ws.cell(1, 27).value = "Aplicacion"
     c=c+1
     ws.cell(row, c).value = employee.performance
-    ws.cell(1, 27).value = "Rendimiento"
+    ws.cell(1, 28).value = "Rendimiento"
     c=c+1
     ws.cell(row, c).value = employee.nationality
-    ws.cell(1, 28).value = "Nacionalidad"
+    ws.cell(1, 29).value = "Nacionalidad"
     c=c+1
     ws.cell(row, c).value = employee.place_of_birth
-    ws.cell(1, 29).value = "Lugar de nacimiento"
+    ws.cell(1, 30).value = "Lugar de nacimiento"
     c=c+1
     ws.cell(row, c).value = employee.municipality
-    ws.cell(1, 30).value = "Municipio"
+    ws.cell(1, 31).value = "Municipio"
     c=c+1
     ws.cell(row, c).value = employee.location
-    ws.cell(1, 31).value = "Localidad"
+    ws.cell(1, 32).value = "Localidad"
     c=c+1
     ws.cell(row, c).value = employee.division
-    ws.cell(1, 32).value = "Fraccionamiento"
+    ws.cell(1, 33).value = "Fraccionamiento"
     c=c+1
     ws.cell(row, c).value = employee.suburb
-    ws.cell(1, 33).value = "Colonia"
+    ws.cell(1, 34).value = "Colonia"
     c=c+1
     ws.cell(row, c).value = employee.street
-    ws.cell(1, 34).value = "Calle"
+    ws.cell(1, 35).value = "Calle"
     c=c+1
     ws.cell(row, c).value = employee.house_number
-    ws.cell(1, 35).value = "Numero Casa"
+    ws.cell(1, 36).value = "Numero Casa"
     c=c+1
     ws.cell(row, c).value = employee.studies
-    ws.cell(1, 36).value = "Nivel de estudios"
+    ws.cell(1, 37).value = "Nivel de estudios"
     c=c+1
     ws.cell(row, c).value = employee.email
-    ws.cell(1, 37).value = "E-mail"
+    ws.cell(1, 38).value = "E-mail"
     c=c+1
     ws.cell(row, c).value = employee.phone
-    ws.cell(1, 38).value = "Télefono"
+    ws.cell(1, 39).value = "Télefono"
     c=c+1
     ws.cell(row, c).value = employee.blood_type+"/"+employee.allergies
-    ws.cell(1, 39).value = "Tipo de sangre"
+    ws.cell(1, 40).value = "Tipo de sangre"
     c=c+1
     ws.cell(row, c).value = employee.marital_status
-    ws.cell(1, 40).value = "Estado Civil"
+    ws.cell(1, 41).value = "Estado Civil"
     c=c+1
     ws.cell(row, c).value = employee.route
-    ws.cell(1, 41).value = "Ruta"
+    ws.cell(1, 42).value = "Ruta"
     c=c+1
     ws.cell(row, c).value = employee.bus_stop
-    ws.cell(1, 42).value = "Parada"
+    ws.cell(1, 43).value = "Parada"
     c=c+1
     ws.cell(row, c).value = employee.emergency_phone_1
-    ws.cell(1, 43).value = "No. Emergencia 1"
+    ws.cell(1, 44).value = "No. Emergencia 1"
     c=c+1
     ws.cell(row, c).value = employee.emergency_phone_2
-    ws.cell(1, 44).value = "No. Emergencia 2"
+    ws.cell(1, 45).value = "No. Emergencia 2"
     c=c+1
     ws.cell(row, c).value = employee.emergency_phone_3
-    ws.cell(1, 45).value = "No. Emergencia 3"
+    ws.cell(1, 46).value = "No. Emergencia 3"
     c=c+1
     ws.cell(row, c).value = employee.schedule
-    ws.cell(1, 46).value = "Horario"
+    ws.cell(1, 47).value = "Horario"
     c=c+1
     ws.cell(row, c).value = employee.number_of_children
-    ws.cell(1, 47).value = "Cantidad Hijos"
+    ws.cell(1, 48).value = "Cantidad Hijos"
     c=c+1
     ws.cell(row, c).value = employee.age_of_kid_1
-    ws.cell(1, 48).value = "Edad de hijo 1"
+    ws.cell(1, 49).value = "Edad de hijo 1"
     c=c+1
     ws.cell(row, c).value = employee.age_of_kid_2
-    ws.cell(1, 49).value = "Edad de hijo 2"
+    ws.cell(1, 50).value = "Edad de hijo 2"
     c=c+1
     ws.cell(row, c).value = employee.age_of_kid_3
-    ws.cell(1, 50).value = "Edad de hijo 3"
+    ws.cell(1, 51).value = "Edad de hijo 3"
     c=c+1
     ws.cell(row, c).value = employee.age_of_kid_4
-    ws.cell(1, 51).value = "Edad de hijo 4"
+    ws.cell(1, 52).value = "Edad de hijo 4"
     c=c+1
     ws.cell(row, c).value = employee.age_of_kid_5
-    ws.cell(1, 52).value = "Edad de hijo 5"
+    ws.cell(1, 53).value = "Edad de hijo 5"
     c=c+1
     ws.cell(row, c).value = employee.id_noi
-    ws.cell(1, 53).value = "Id Noi"
+    ws.cell(1, 54).value = "Id Noi"
     c=c+1
     ws.cell(row, c).value = employee.boss_support
-    ws.cell(1, 54).value = "Apoyo Jefe de Linea"
+    ws.cell(1, 55).value = "Apoyo Jefe de Linea"
     c=c+1
-    ws.cell(row, c).value = employee.relation
-    ws.cell(1, 55).value = "Relacion"
+    ws.cell(row, c).value = employee.habilities
+    ws.cell(1, 56).value = "Habilidades"
     c=c+1
 
 def create_payroll_excels():

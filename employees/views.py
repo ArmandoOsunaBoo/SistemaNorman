@@ -98,7 +98,6 @@ def employee_attendance(request):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename('FaltaChecadas1.xlsx')
             return response   
 
-
         if  'carga_checadas' in request.FILES:
             doc = request.FILES
             excel_file = doc["carga_checadas"]
@@ -106,17 +105,14 @@ def employee_attendance(request):
         
         if 'reporte_semanal' in request.POST:
             d = request.POST.get('reporte_semanal', None)
-            
             r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
             format = "%Y-%m-%d %H:%M:%S"
             date_1 = datetime.datetime.strptime(str(r), format)
             end_date = date_1 + datetime.timedelta(days=5)
             date_1 = date_1 + datetime.timedelta(days=-1)
             date_1 = str(date_1)
-            end_date = str(end_date)    
-            # El documento
+            end_date = str(end_date)
             wb = Workbook()
-            # grab the active worksheet
             ws = wb.active
             download_week_atendance(date_1,end_date,wb,ws)
             wb.save("ReporteOrdenado.xlsx")
@@ -143,8 +139,6 @@ def employee_attendance(request):
 @login_required
 def employee_index(request):
     if request.method == 'POST':
-        print("Aqui empieza")
-        print(request.POST["modal_form"])
         if 'upload_employees' in request.FILES:
             doc = request.FILES
             excel_file = doc["upload_employees"]
@@ -153,10 +147,8 @@ def employee_index(request):
             try:
                 upload_employees(ws,wb)
             except Exception as e: print(e)
-        if 'modal_form' in request.POST:
-            print("El poder nuestro es")
-            modal_form= request.POST["modal_form"]
-            print(modal_form)
+        if 'modal_form' in request.POST: 
+            modal_form= request.POST["modal_form"] 
             if(modal_form=="0"):
                 obj_e = Employees()
                 obj_e.old_number = request.POST.get("emp_oldnumber","00000")
@@ -177,13 +169,11 @@ def employee_index(request):
                 obj_e.curp =  request.POST.get("emp_curp","NO INGRESADA")
                 obj_e.rfc = request.POST.get("emp_rfc","NO INGRESADA")
                 obj_e.nss =  request.POST.get("emp_nss","NO INGRESADA")
-                #obj_e.age = request.POST.get("emp_age","0")
+                #obj_e.e_age = request.POST.get("emp_age","0")
                 obj_e.gender = request.POST.get("emp_gender","NO INGRESADA")
                 obj_e.department =  request.POST.get("emp_department","NO INGRESADA")
                 obj_e.position =  request.POST.get("emp_position","NO INGRESADA")
-                print("HEHEE")
-                print( request.POST.get("emp_jacket","NA"))
-                print("-------------------------------")
+
                 obj_e.jacket = request.POST.get("emp_jacket","NA") 
                 obj_e.aplication =  request.POST.get("emp_aplication","NO INGRESADA")
                 obj_e.performance =  request.POST.get("emp_performance","NO INGRESADA")
@@ -215,8 +205,7 @@ def employee_index(request):
                 obj_e.age_of_kid_4 =  request.POST.get("emp_kid4","NO INGRESADA")
                 obj_e.age_of_kid_5 =  request.POST.get("emp_kid5","NO INGRESADA")
                 obj_e.id_noi =  request.POST.get("emp_id_noi","NO INGRESADA")
-                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                print(obj_e.bus_stop)
+
                 if len(request.FILES) != 0:
                     file = request.FILES['emp_picture']
                     filename = file.name
@@ -233,8 +222,6 @@ def employee_index(request):
                 obj_e.relation =  request.POST.get("emp_relation","NO INGRESADA")
                 
                 obj_e.master_id = "NA"
-                print("LLLLLLLLLLLLLLLLL")
-                print(obj_e)
                 obj_e.save()
 
                 page = request.GET['page']
@@ -245,7 +232,6 @@ def employee_index(request):
                 return render(request,'employees/index.html',{"page":page,'employees': employees})
            
             if(modal_form=="1"):
-                print("Ya entramos")
                 obj_e = Employees.objects.get(id=request.POST["emp_id"])
                 obj_e.old_number = request.POST.get("emp_oldnumber","00000")
                 obj_e.number = request.POST.get("emp_number","00000")
@@ -259,7 +245,7 @@ def employee_index(request):
                 obj_e.payroll = request.POST.get("emp_payroll","NO INGRESADA") 
                 obj_e.admission_date =   request.POST.get("emp_admission_date","NO INGRESADA")
                 obj_e.antiquity =  request.POST.get("emp_antiquity","NO INGRESADA")
-                obj_e.status = request.POST.get("emp_status","NO INGRESADA")
+                obj_e.status = request.POST.get("emp_status","Activo")
                 obj_e.leaving_date =  request.POST.get("emp_leaving_date","NO INGRESADA")
                 obj_e.reason_of_leaving = request.POST.get("emp_reason_of_leaving","NO INGRESADA")
                 obj_e.curp =  request.POST.get("emp_curp","NO INGRESADA")
@@ -269,9 +255,7 @@ def employee_index(request):
                 obj_e.gender = request.POST.get("emp_gender","NO INGRESADA")
                 obj_e.department =  request.POST.get("emp_department","NO INGRESADA")
                 obj_e.position =  request.POST.get("emp_position","NO INGRESADA")
-                print("HEHEE")
-                print( request.POST.get("emp_jacket","NA"))
-                print("-------------------------------")
+        
                 obj_e.jacket = request.POST.get("emp_jacket","NA") 
                 obj_e.aplication =  request.POST.get("emp_aplication","NO INGRESADA")
                 obj_e.performance =  request.POST.get("emp_performance","NO INGRESADA")
@@ -303,8 +287,6 @@ def employee_index(request):
                 obj_e.age_of_kid_4 =  request.POST.get("emp_kid4","NO INGRESADA")
                 obj_e.age_of_kid_5 =  request.POST.get("emp_kid5","NO INGRESADA")
                 obj_e.id_noi =  request.POST.get("emp_id_noi","NO INGRESADA")
-                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                print(obj_e.bus_stop)
                 if len(request.FILES) != 0:
                     file = request.FILES['emp_picture']
                     filename = file.name
@@ -321,8 +303,6 @@ def employee_index(request):
                 obj_e.relation =  request.POST.get("emp_relation","NO INGRESADA")
                 
                 obj_e.master_id = "NA"
-                print("LLLLLLLLLLLLLLLLL")
-                print(obj_e)
                 obj_e.save()
 
                 page = request.GET['page']

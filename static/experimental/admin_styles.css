@@ -6,20 +6,20 @@
 
 .search_input {
     position: absolute;
-    top: -60px;
+    top: -150px;
     transition: top 0.01s;
 }
 
 .search_input_active{
     position: absolute;
     height: 100px;
-    top: 175px;
+    top: 338px;
     align-items: center;
 }
 
 .options_search {
-    height: 76px;
-    max-height: 100px;
+    height: 200px;
+    max-height: 200px;
     margin-top: 10px;
     overflow-y: auto;
     overflow-x: hidden;

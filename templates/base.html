@@ -1892,6 +1892,7 @@
                     <option value="China">China</option>
                   </select>
                 </div>
+                
                 <div class="element-modal">
                     Lugar de nacimiento 
                   <select name="emp_place_of_birth"  id="emp_place_of_birth">
@@ -2258,7 +2259,6 @@
                             type: "get",
                             success: function (data) {
                               data = JSON.parse(data);
-                            
                             },
                             failure: function (response) {
                               Swal.fire({

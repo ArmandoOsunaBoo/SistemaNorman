@@ -36,21 +36,21 @@ class Employees(models.Model):
     personal = models.CharField(max_length=25,blank=True,verbose_name='Personal')
     department_rp = models.CharField(max_length=30,blank=True,verbose_name='Departamento RP')
     area_rp = models.CharField(max_length=100,blank=True,verbose_name='Area RP')
-    position_rp = models.CharField(max_length=30,blank=True,verbose_name='Puesto RP')
+    position_rp = models.CharField(max_length=150,blank=True,verbose_name='Puesto RP')
     payroll = models.CharField(max_length=20,blank=True,verbose_name='Nómina')
     admission_date = models.CharField(max_length=20,blank=True,verbose_name='ALTA')
     antiquity= models.CharField(max_length=30,blank=True,verbose_name='Antiguedad')
-    status= models.CharField(max_length=20,blank=True,verbose_name='Estatus')
+    status= models.CharField(max_length=20,blank=True,verbose_name='Estatus',default="Activo")
     leaving_date = models.CharField(max_length=20,blank=True,verbose_name='Fecha de Baja')
-    reason_of_leaving = models.CharField(max_length=50,blank=True,verbose_name='Causa de Baja')
+    reason_of_leaving = models.CharField(max_length=200,blank=True,verbose_name='Causa de Baja')
     curp = models.CharField(max_length=40,blank=True,verbose_name='CURP')
     rfc = models.CharField(max_length=30,blank=True,verbose_name='RFC')
     nss = models.CharField(max_length=30,blank=True,verbose_name='NSS')
     birth_date = models.CharField(max_length=20,blank=True,verbose_name='Fecha de Nacimiento')
-    age = models.CharField(max_length=20,blank=True,verbose_name='Edad',default=0)
+    e_age = models.CharField(max_length=20,blank=True,verbose_name='Edad',default=0)
     gender = models.CharField(max_length=20,blank=True,verbose_name='Sexo')
     department = models.CharField(max_length=30,blank=True,verbose_name='Departamento')
-    position = models.CharField(max_length=100,blank=True,verbose_name='Puesto')
+    position = models.CharField(max_length=150,blank=True,verbose_name='Puesto')
     jacket = models.CharField(max_length=60,blank=True,verbose_name='Chaleco')
     aplication = models.CharField(max_length=30,blank=True,verbose_name='Aplicación')
     performance = models.CharField(max_length=30,blank=True,verbose_name='Rendimiento')
@@ -87,6 +87,11 @@ class Employees(models.Model):
     picture = models.ImageField(upload_to='users/pictures',blank=True,null=True,verbose_name='Foto')
     created = models.DateTimeField(auto_now_add=True,verbose_name='Fecha Creación')
     modified = models.DateTimeField(auto_now=True,verbose_name='Fecha Modificación')
+
+    habilities = models.CharField(max_length=150,blank=True,verbose_name='Habilidades')
+    clasification_taiwan = models.CharField(max_length=150,blank=True,verbose_name='Clasificacion Taiwan')
+    turn = models.CharField(max_length=150,blank=True,verbose_name='Turno')
+    
 
     @property
     def age(self):

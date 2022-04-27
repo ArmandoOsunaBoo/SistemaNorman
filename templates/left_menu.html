@@ -10,7 +10,7 @@
         </a>
     </li>
 
-    {{request.user.profile_user.area}} {% if request.user.profile_user.area == "Recursos Humanos" or request.user.profile_user.area == "Admin" %}
+    {% if request.user.profile_user.area == "Recursos Humanos" or request.user.profile_user.area == "Admin" %}
     <li>
         <a class="accordion-toggle" href="#">
             <span class="glyphicons glyphicons-user"></span>

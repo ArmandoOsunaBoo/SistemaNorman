@@ -20,6 +20,7 @@ class Profile(models.Model):
         ('3', '3'),
         ('4', '4'),
     )
+
     type = models.CharField(max_length=20,blank=True,choices=TYPE_LIST)
     active = models.CharField(max_length=20,blank=True,default="Activo")
     picture = models.ImageField(upload_to='users/pictures',blank=True,null=True)
