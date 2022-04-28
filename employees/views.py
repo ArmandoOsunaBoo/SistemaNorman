@@ -152,6 +152,7 @@ def employee_index(request):
             if(modal_form=="0"):
                 obj_e = Employees()
                 obj_e.old_number = request.POST.get("emp_oldnumber","00000")
+                obj_e.turn = request.POST.get("employee_turn","NA")
                 obj_e.number = request.POST.get("emp_number","00000")
                 obj_e.name = request.POST.get("emp_name","NO INGRESADA")
                 obj_e.group =   request.POST.get("emp_group","NO INGRESADA")
@@ -255,7 +256,7 @@ def employee_index(request):
                 obj_e.gender = request.POST.get("emp_gender","NO INGRESADA")
                 obj_e.department =  request.POST.get("emp_department","NO INGRESADA")
                 obj_e.position =  request.POST.get("emp_position","NO INGRESADA")
-        
+                obj_e.turn = request.POST.get("employee_turn","NA")
                 obj_e.jacket = request.POST.get("emp_jacket","NA") 
                 obj_e.aplication =  request.POST.get("emp_aplication","NO INGRESADA")
                 obj_e.performance =  request.POST.get("emp_performance","NO INGRESADA")
